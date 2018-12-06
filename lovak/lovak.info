@@ -1,0 +1,11 @@
+; $Id: lovak.info,v 1.6 2008/02/27 18:03:46 zoli Exp $
+name = "lovak"
+description = "lovak"
+core = "7.x"
+
+; Information added by drupal.org packaging script on 2009-02-21
+version = "7.x-1.2"
+core = "7.x"
+project = "lovak"
+datestamp = "1235227525"
+

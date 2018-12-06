@@ -1,0 +1,3536 @@
+<?php
+
+function lovak_help($section) {
+  switch ($section) {
+    case 'admin/modules#description':
+    function lovak_importalas(){
+    }
+    return t('Lovak adatbázismûveletek');
+  }
+}
+
+function lovak_perm(){
+    return array('lovak', 'lovak adm', 'lovak_lista', 'lovak listavari', 'lovak listaforma');
+}
+
+function theme_lovak_block($felirat) {
+  return $felirat . ' Itt az elso Drupal blokkom';
+}
+
+function lovak_menu() {
+  $items = array();
+  $access = array('lovak');
+  $access_adm = array('lovak adm');
+  $items['lovak'] = array(
+    'title' => drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'description' => 'Lovak',
+    'page callback' => 'lovak_page',
+    'access arguments' => $access,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['lovak/adm/%'] = array(
+    'title' => drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'description' => 'Lovak',
+    'page callback' => 'lovak_page',
+    'access arguments' => $access_adm,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  $items['lovak/lista/csiko'] = array(
+    'title' => drupal_convert_to_utf8(t('Évjárat listája'), 'iso-8859-2'),
+    'description' => 'Lovak',
+    'page callback' => 'lovak_page',
+    'access arguments' => $access,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  $items['lovak/lista/varipub'] = array(
+    'title' => drupal_convert_to_utf8(t('Beállítható lista'), 'iso-8859-2'),
+    'description' => 'Lovak',
+    'page callback' => 'lovak_page',
+    'access arguments' => $access,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  $items['lovak/teny'] = array(
+    'title' => drupal_convert_to_utf8(t('Származás modellezése'), 'iso-8859-2'),
+    'page callback' => 'lokerteny',
+    'access arguments' => $access,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['lovak/listavari'] = array(
+    'title' => drupal_convert_to_utf8(t('Lovak listája'), 'iso-8859-2'),
+    'page callback' => 'lovak_listavari',
+    'access arguments' => $access_adm,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  $items['lovak/listaforma'] = array(
+    'title' => drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'page callback' => 'lovak_listaforma',
+    'access arguments' => $access_adm,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['lovak/menstat'] = array(
+    'title' => drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'page callback' => 'lovak_menstat',
+    'access arguments' => $access,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['lovak/listaujlovak'] = array(
+    'title' => drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'page callback' => 'lovak_listaujlovak',
+    'access arguments' => $access_adm,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  $items['lovak/listamodlovak'] = array(
+    'title' =>drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'page callback' => 'lovak_listamodlovak',
+    'access arguments' => $access_adm,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  $items['lovak/listamodtullovak'] = array(
+    'title' =>drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'page callback' => 'lovak_listamodtullovak',
+    'access arguments' => $access_adm,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  $items['lovak/importalas'] = array(
+    'title' =>drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'page callback' => 'lovak_importalas',
+    'access arguments' => $access_adm,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+  $items['lovak/autocomplete'] = array(
+    'title' => drupal_convert_to_utf8(t('Lovak keresése'), 'iso-8859-2'),
+    'page callback' => 'lovak_autocomplete',
+    'access arguments' => $access,
+    'file' => 'lovak.module',
+    'type' => MENU_CALLBACK,
+  );
+    
+  return $items;
+} 
+
+
+
+
+
+
+
+
+function lovak_page(){
+
+
+
+ if(isset($_GET["lovak_dbturk"])){
+    
+        $res = db_query("SELECT neve, ev, apja, apja_ev, anyja, anyja_ev FROM lovak");
+        $res=db_fetch_array($res);
+        //print_r($res);
+        foreach($res as $k => $v){
+        $nev=$k[neve];
+        //print "<br>Neve:".$nev;
+        }       
+
+//heeader("location: /");
+//  return;
+  } 
+  if(isset($_GET["lovak_upload"])){
+    lovak_upload();
+    return;
+  } 
+  if(isset($_GET["lovak_upload_report"])){
+    lovak_upload_report();
+    return;
+  } 
+
+
+  if(isset($_GET["lovak_evbeiras_univerzalis"])){
+    lovak_evbeiras_univerzalis();
+    return;
+  } 
+
+
+  if(isset($_GET["lovak_evbeiras"])){
+    lovak_evbeiras();
+    return;
+  }                                                                                                                     
+
+  if(isset($_GET["lovak_evbeiras_apja"])){
+    lovak_evbeiras_apja();
+    return;
+  } 
+  if(isset($_GET["lovak_evbeiras_anyja"])){
+    lovak_evbeiras_anyja();
+    return;
+  }
+  //if(isset($_GET["lovak/adm"]) || isset($_POST["fv"])){
+  //  lovak_adm();
+  //  return;
+  //} 
+  if(isset($_GET["lovak_mod"])){
+    lovak_mod();
+    return;
+  } 
+  if(isset($_GET["lovak_teny"])){
+    lovak_teny();
+    return;
+  } 
+ 
+  if(isset($_GET["ivadekai"])){
+    ivadekai("apja");
+    ivadekai($_GET["mod"], $_GET["ordered"], $_GET["lo_no"]);
+    return;
+  } 
+  //print_r($_GET);
+  foreach($_GET as $k=>$v){
+        //print "<br>key:".$v;
+        if(substr($k,0,7)=='lokeres'){
+            preg_match('!_(.+)!', $k, $no);     
+            $kerno=$no['1'];
+            $eredmeny = db_query("SELECT neve, ev FROM lovak WHERE no = '$kerno'");
+            $tal_db=db_affected_rows();
+            if($tal_db){
+                $res=db_fetch_array($eredmeny);
+                $lonev=$res['neve'];
+                $ev=$res['ev'];
+                lovak_sablon($lonev,$ev);
+                return;
+            }
+            
+        }
+        if(substr($v,0,9)=='lovak/adm'){$sa=explode('/',$v);if(isset($sa['2'])){$action=$sa['2'];}lovak_adm($action);return;}
+        if(substr($v,0,10)=='lovak/teny'){$sa=explode('/',$v);if(isset($sa['2'])){$action=$sa['2'];}lokerteny();return;}
+        if(substr($v,0,15)=='lovak/listavari'){$sa=explode('/',$v);if(isset($sa['2'])){$listafajta=$sa['2'];}lovak_listavari($listafajta);return;}
+        if(substr($v,0,16)=='lovak/listaforma'){$sa=explode('/',$v);if(isset($sa['2'])){$listafajta=$sa['2'];}lovak_listaforma($listafajta);return;}
+        if(substr($v,0,18)=='lovak/menstat'){$sa=explode('/',$v);if(isset($sa['2'])){$listafajta=$sa['2'];}lovak_menstat($listafajta);return;}
+        if(substr($v,0,18)=='lovak/listaujlovak'){$sa=explode('/',$v);if(isset($sa['2'])){$listafajta=$sa['2'];}lovak_listaujlovak($listafajta);return;}
+        if(substr($v,0,19)=='lovak/listamodlovak'){$sa=explode('/',$v);if(isset($sa['2'])){$listafajta=$sa['2'];}lovak_listamodlovak($listafajta);return;}
+        if(substr($v,0,22)=='lovak/listamodtullovak'){$sa=explode('/',$v);if(isset($sa['2'])){$listafajta=$sa['2'];}lovak_listamodtullovak($listafajta);return;}
+        if(substr($v,0,16)=='lovak/importalas'){$sa=explode('/',$v);if(isset($sa['2'])){$listafajta=$sa['2'];}lovak_importalas($listafajta);return;}
+        if(substr($v,0,11)=='lovak/lista'){$sa=explode('/',$v);if(isset($sa['2'])){$listafajta=$sa['2'];}lovak_lista($listafajta);return;}
+        if(substr($v,0,12)=='lovak/sablon'){
+            $sa=explode('/',$v);
+            if(isset($sa['2'])){
+                $no=$sa['2'];
+            }
+            if(isset($sa['3'])){
+                $vaneforma=$sa['3'];
+                $iloid=$sa['4'];
+                lovak_sablon($no,"","","","",$vaneforma,$iloid,$orszag);
+            }else{
+            lovak_sablon($no);
+            }
+            return;
+        }
+        if(substr($v,0,11)=='lovak/forma'){$sa=explode('/',$v);if(isset($sa['2'])){$no=$sa['2'];}lovak_forma($no);return;}
+        if(substr($k,0,8)=='lovakmod'){
+            preg_match('!_(.+)!', $k, $no);     
+            $kerno=$no['1'];
+            $eredmeny = db_query("SELECT neve, ev FROM lovak WHERE no = '$kerno'");
+            $tal_db=db_affected_rows();
+            if($tal_db){
+                $res=db_fetch_array($eredmeny);
+                $lonev=$res['neve'];
+                $ev=$res['ev'];
+                lovak_mod($lonev,$ev);
+                return;
+            }
+            
+        }
+        if(substr($v,0,11)=='lovak/upgrd'){
+        
+            $sa=explode('/',$v);
+            if(isset($sa['2'])){
+                $no=$sa['2'];
+            }
+            print_r($sa);
+            //print "<br>no".$no;
+            lovak_upgrd($sa['2']);
+            return;
+        }
+  }
+  
+  $no=loker("normal", "normal", "page");
+  //print_r($lonev_array);
+  //if($no!=0){
+    //}    
+  
+ }
+
+
+
+
+function lovak_cron() {
+ $time = time();
+ $hours =date("G",$time);
+ //node-ban levo egy napnal regebbi pedigre es forma adatok rendszeres kigyomlalasa
+ $res=db_query("DELETE FROM node WHERE changed < '$time'-3000000 && nid > 998000000 && nid < 999999998");
+ $res=db_query("DELETE FROM node_revisions WHERE timestamp < '$time'-3000000 && nid > 998000000 && nid < 999999998");
+
+ // automatikus adatátvétel NL.KFT-tõl......., ha jött új ló, akkor lovak_upgrd is indul.
+// lovak_importalas();
+ if($hours==11){
+      lovak_importalas();
+ }
+
+ 
+ return;
+}
+ 
+
+
+
+
+function lovak_adm($action="new"){
+    global $no, $user;
+        
+    $out="";
+    $err="";
+
+    //print "<br>act:".$action;
+    
+    if($action=="mod"){
+        loker("normal","mod","page");
+        return;
+    }
+
+    if($action!="mod" && $action!="new"){
+        $no=$action;
+        $action="update";
+    }
+    
+
+    //print_r($_POST);
+    if(isset($_POST['szine'])){
+        $szine=$_POST['szine'];
+        $neme=$_POST['neme'];
+        $lonev=$_POST['lonev'];
+        $sa=explode('--',$lonev);
+        if(isset($sa['0'])){$lonev=$sa['0'];}else{$lonev="";}
+        if(isset($sa['1'])){$ev=$sa['1'];}else{$ev="";}
+        if(isset($sa['2'])){$orszag=$sa['2'];}else{$orszag="";}unset($sa);
+        $egybevetes=$_POST['egybevetes'];
+        $anyja=$_POST['lonev_anyja'];
+        $sa=explode('--',$anyja);
+        if(isset($sa['0'])){$anyja=$sa['0'];}else{$anyja="";}
+        if(isset($sa['1'])){$anyja_ev=$sa['1'];}else{$anyja_ev="";}
+        if(isset($sa['2'])){$anyja_orszag=$sa['2'];}else{$anyja_orszag="";}unset($sa);
+        $apja=$_POST['lonev_apja'];
+        $sa=explode('--',$apja);
+        if(isset($sa['0'])){$apja=$sa['0'];}else{$apja="";}
+        if(isset($sa['1'])){$apja_ev=$sa['1'];}else{$apja_ev="";}
+        if(isset($sa['2'])){$apja_orszag=$sa['2'];}else{$apja_orszag="";}unset($sa);
+        $rekord=$_POST['rekord'];
+        $penz=$_POST['penz'];
+        $ellet=$_POST['ellet'];
+        $belyeg=$_POST['belyeg'];
+        $tulajdonos=$_POST['tulajdonos'];
+        $tulajdonos_osszes=$_POST['tulajdonos_osszes'];
+        $tuldat=$_POST['tuldat'];
+        $nevel=$_POST['nevel'];
+        $imp_orsz=$_POST['imp_orsz'];
+        $imp_kelt=$_POST['imp_kelt'];
+        $elozo=$_POST['elozo'];
+        $fedezomen=$_POST['fedezomen'];
+        if($szine=="0"){$szine=" ";}if($szine=="1"){$szine="f";}if($szine=="2"){$szine="f/sz";}if($szine=="3"){$szine="p";}if($szine=="4"){$szine="p/stp";}if($szine=="5"){$szine="p/vlp";}if($szine=="6"){$szine="s";}if($szine=="7"){$szine="stp";}if($szine=="8"){$szine="stp/f";}if($szine=="9"){$szine="stp/sz";}if($szine=="10"){$szine="sz";}if($szine=="11"){$szine="sz/stp";}if($szine=="12"){$szine="tarka";}if($szine=="13"){$szine="vlp";}
+        if($neme=="0"){$neme=" ";}if($neme=="1"){$neme="m";}if($neme=="2"){$neme="k";}if($neme=="3"){$neme="h";}
+        if($fedezomen=="0"){$fedezomen="NEM";}if($fedezomen=="1"){$fedezomen="IGEN";}
+        $torles=$_POST['torles'];
+        if(trim($lonev)==""){$err="nincs l&oacute; megadva";}
+        //if(trim($anyja)==""){$err="nincs anyja megadva";}
+        if($action=="update"){
+        }else{
+            db_query("SELECT * from lovak WHERE binary neve='%s' && ev='%d' && (orszag='%s' || orszag='')", $lonev,$ev,$orszag);
+            if(db_affected_rows()>0){$err.="Van m&aacute;r ilyen nev&ucirc; l&oacute;".db_affected_rows().$lonev;}
+        }
+        if($err!="" && $torles=="0"){
+            $out.=$err;
+        }else{
+            if($action=="update"){
+                
+                //HA AZ UTOLSO TULAJDONOST TOROLNI KELL
+                if($torles=="2"){
+                    db_query("DELETE FROM tulajdonos WHERE no='%d' ORDER BY datum DESC LIMIT 1", $no);
+                    if(db_affected_rows()){
+                        print "<br>torles $no :".db_affected_rows();
+                    } 
+                }
+                
+                //HA A LOVAT TOROLNI KELL
+                if($torles=="1"){
+                    $out.=$lonev." T&Ouml;R&Ouml;LVE !!!";
+                    db_query("DELETE FROM lovak WHERE no='%d'",$no);
+                    db_query("DELETE FROM tulajdonos WHERE no='%d'",$no); 
+                }else{
+                    //modositas datumanak beirasa
+                    $mkt=gmdate("Y-m-d\TH:i:s\Z");
+                    $uservar=$user->name;
+                    $out.=$lonev." m&oacute;dos&iacute;t&aacute;sa megt&ouml;rt&eacute;nt...";
+                    db_query("UPDATE lovak SET neve='%s', ev='%s', orszag='%s', szine='%s', neme='%s', anyja='%s', anyja_ev='%s', anyja_orszag='%s', apja='%s', apja_ev='%s', apja_orszag='%s', rekord='%s', penz='%d', ellet='%s', belyeg='%s', tulajdonos='%s', nevel='%s', imp_orsz='%s', imp_kelt='%s', elozo='%s', fedezomen='%s', egybevetes='%s', updater='%s', updated_date='%s' WHERE no='%d'", $lonev,$ev,$orszag,$szine,$neme,$anyja,$anyja_ev,$anyja_orszag,$apja,$apja_ev,$apja_orszag,$rekord,$penz,$ellet,$belyeg,$tulajdonos,$nevel,$imp_orsz,$imp_kelt,$elozo,$fedezomen,$egybevetes,$uservar,$mkt,$no);
+
+                    //tulajdonos táblába beírás modosításnál
+                    if($tulajdonos != ''){
+                    db_query("SELECT * FROM tulajdonos WHERE no = '%d' && tulajdonos = '%s'", $no, $tulajdonos);
+                        if(db_affected_rows()==0){
+                            db_query("INSERT INTO tulajdonos (no, tulajdonos, datum) VALUES ('%d', '%s', '%s')", $no, $tulajdonos, $tuldat);
+                        }else{
+                            //db_query("UPDATE tulajdonos SET tulajdonos='%s', datum='%d' WHERE no='%d' && tulajdonos='%s'", $lonev,$ev,$orszag,$szine,$neme,$anyja,$anyja_ev,$anyja_orszag,$apja,$apja_ev,$apja_orszag,$rekord,$penz,$ellet,$belyeg,$tulajdonos,$nevel,$imp_orsz,$imp_kelt,$elozo,$fedezomen,$egybevetes,$uservar,$mkt,$no);
+                        }
+                    }       
+                    
+                    
+                    //if($neme!="k" && $apja_ev != 0 && $apja_orszag != ""){
+                    //  db_query("SELECT * FROM lovak WHERE apja = '$lonev'");
+                    //  if(db_affected_rows()==1){
+                    //      db_query("UPDATE lovak SET apja_ev='%s', apja_orszag='%s' WHERE apja = '%s'", $apja_ev, $apja_orszag, $apja); 
+                    //  }
+                    //}
+                }
+            }else{  
+                $out.=$lonev." felvitele megt&ouml;rt&eacute;nt...";
+                $mkt=gmdate("Y-m-d\TH:i:s\Z");
+                $uservar=$user->name;
+                db_query("INSERT INTO lovak (neve, ev, orszag, szine, neme, anyja, anyja_ev, anyja_orszag, apja, apja_ev, apja_orszag, rekord, penz, ellet, belyeg, tulajdonos, nevel, imp_orsz, imp_kelt, elozo, fedezomen, egybevetes, author, authored_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", $lonev,$ev,$orszag,$szine,$neme,$anyja,$anyja_ev,$anyja_orszag,$apja,$apja_ev,$apja_orszag,$rekord,$penz,$ellet,$belyeg,$tulajdonos,$nevel,$imp_orsz,$imp_kelt,$elozo,$fedezomen,$egybevetes,$uservar,$mkt);
+                
+                $no=mysql_insert_id();
+                
+                //tulajdonos táblába beírás újfelvitelnél
+                if($tulajdonos != ''){
+                    db_query("SELECT * FROM tulajdonos WHERE no = '%d' && tulajdonos = '%s'", $no, $tulajdonos);
+                    if(db_affected_rows()==0){
+                        db_query("INSERT INTO tulajdonos (no, tulajdonos, datum) VALUES ('%d', '%s', '%s')", $no, $tulajdonos, $tuldat);
+                    }else{
+                        //db_query("UPDATE tulajdonos SET tulajdonos='%s', datum='%d' WHERE no='%d' && tulajdonos='%s'", $lonev,$ev,$orszag,$szine,$neme,$anyja,$anyja_ev,$anyja_orszag,$apja,$apja_ev,$apja_orszag,$rekord,$penz,$ellet,$belyeg,$tulajdonos,$nevel,$imp_orsz,$imp_kelt,$elozo,$fedezomen,$egybevetes,$uservar,$mkt,$no); 
+                    }
+                }
+            }
+        
+        }
+    }else{
+        $out.=drupal_get_form('lovak_new_form');
+                
+    }
+    print theme("page", $out);  
+    
+return;
+}
+
+
+
+function lovak_menstat($listafajta="apara"){
+
+//print "<br>LISTAMENSTAT";
+$param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)<br><br><br>";          
+
+    if((isset($_POST['apja']) && $_POST['apja']!='') || (isset($_POST['evad']) && $_POST['evad']!='')){
+        if($listafajta == "apara"){
+            $apja_szulev_nemzet=$_POST['apja'];
+            $sa=explode('--',$apja_szulev_nemzet);
+            //print $sa['0'];
+            $apja=$sa['0'];
+            $apjaker=preg_replace("/'/","\'",$apja);
+            $apja_ev=$sa['1'];
+            // Men szarmazasi lapja miatt kell a lovak/no azonositoo//////////////////////////////
+            $apja_link=0;
+            $res_apja_link=db_query("SELECT no FROM lovak WHERE neve = '$apjaker' && ev = '$apja_ev'");
+            if(db_affected_rows()==1){
+                while($egysor_apja_link = db_fetch_array($res_apja_link)) {
+                    $apja_link=$egysor_apja_link['no'];
+                }
+            }       
+            $param.="<a href='/lovak/sablon/$apja_link'><font size='3' color='black' ><b>".$apja."</b></font></a> &nbsp;ivad&eacute;kai";
+            $apja=preg_replace("/'/","\'",$apja);
+            //$evad=$_POST['evad'];
+            $rekord=$_POST['rekord'];
+            //$rekord=substr($rekord,0,4).substr($rekord,5,1);
+            
+            //ÖSSZES IVADÉK LEKÉRÉSE/////////////////////////////////////////////////////////////////////////
+            $res_ossz=db_query("SELECT ev, neve, COUNT(neve) AS ossz FROM lovak WHERE apja = '$apja' && apja_ev = '$apja_ev' && orszag = 'HU' GROUP BY ev");
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                //print db_affected_rows();
+                $out.="".$param."<table class='varilista'><tr>";
+                $out.="<td>&eacute;vj&aacute;rat</td><td>&ouml;ssz</td><td>futott</td><td>'$rekord' alatt</td><td>teny&eacute;szt&eacute;sbe &aacute;ll&iacute;tva - l&aacute;nya(i)</td>";
+                $out.="</tr>";
+                $ossz_sum=0;
+                $futott_sum=0;
+                $alatti_sum=0;
+                $teny_sum=0;
+                while($egysor = db_fetch_array($res_ossz)) {
+                    //print "<br>";
+                    //print_r($egysor); 
+                    $out.="<tr class='varilista'>";
+                    $out.="<td>".$egysor['ev']."</td>";
+                    $ev=$egysor['ev'];
+                    $out.="<td>".$egysor['ossz']."</td>";   
+                    $ossz_sum+=$egysor['ossz'];
+                    //FUTOTT IVADÉKOK LEKÉRÉSE $egysor['ev'] ÉVJÁRATRA////////////////////////////////////////////////////////
+                    $res_futott=db_query("SELECT ev, COUNT(neve) AS futott FROM lovak WHERE ev = '$ev' && apja = '$apja' && apja_ev = '$apja_ev' && rekord > 0 && orszag = 'HU' GROUP BY ev");
+                    if(db_affected_rows()){
+                        //print '<br>';
+                        while($egysor_futott = db_fetch_array($res_futott)) {
+                            //print '<br>';
+                            //print_r($egysor_futott);
+                            $out.="<td>".$egysor_futott['futott']."</td>";  
+                            $futott_sum+=$egysor_futott['futott'];
+                        }
+                    }else{
+                        $out.="<td>-</td>"; 
+                    }
+                    //REKORD ALATTI IVADÉKOK LEKÉRÉSE $egysor['ev'] ÉVJÁRATRA/////////////////////////////////////////////////
+                    $res_alatti=db_query("SELECT ev, COUNT(neve) AS alatti FROM lovak WHERE ev = '$ev' && apja = '$apja' && apja_ev = '$apja_ev' && rekord > 0 && rekord < '$rekord' && orszag = 'HU' GROUP BY ev");
+                    if(db_affected_rows()){
+                        while($egysor_alatti = db_fetch_array($res_alatti)) {
+                            $out.="<td>".$egysor_alatti['alatti']."</td>";
+                            $alatti_sum+=$egysor_alatti['alatti'];
+                        }
+                    }else{
+                        $out.="<td>-</td>"; 
+                    }
+                    //TENYESZTESBE ALLITOTT IVADEKOK $egysor['ev'] ÉVJÁRATRA/////////////////////////////////////////////////
+                    
+                    
+                    $res_teny=db_query("SELECT DISTINCT l1.neve AS teny 
+                    FROM lovak AS l1 
+                    INNER JOIN lovak AS l2 ON l1.neve = l2.anyja && l1.ev = l2.anyja_ev 
+                    WHERE l1.ev = '$ev' && l1.apja = '$apja' && l1.apja_ev = '$apja_ev' && l2.anyja_orszag = 'HU'
+                    ");
+    
+                    
+                    ////$res_teny=db_query("SELECT l1.ev, COUNT(l1.neve) AS teny FROM lovak AS l1 INNER JOIN lovak AS l2 ON l1.neve = l2.anyja && l1.ev = l2.anyja_ev WHERE l1.ev = '$ev' && l1.apja = '$apja' && l1.apja_ev = '$apja_ev' GROUP BY l1.ev");
+                    //SELECT l1.ev, COUNT( l1.neve ) AS teny FROM lovak AS l1 INNER JOIN lovak AS l2 ON l1.neve = l2.anyja && l1.ev = l2.anyja_ev WHERE l1.apja = 'Dale Lobell' GROUP BY l1.ev
+                    if(db_affected_rows()){
+                        $out.="<td>";
+                        while($egysor_teny = db_fetch_array($res_teny)) {
+                            $out.=$egysor_teny['teny'].", ";
+                            $teny_sum++;
+                        }
+                        $out.="</td>";
+                    }else{
+                        $out.="<td>-</td>"; 
+                    }
+                    
+                }
+                $out.="<tr><td>&ouml;ssz.</td><td>".$ossz_sum."</td><td>".$futott_sum."</td><td>".$alatti_sum."</td><td>".$teny_sum."</td></tr></table>";
+                //print $out;
+            }
+        }
+        if($listafajta == "evjaratra"){
+            $evjarat=$_POST['evad'];
+            $param.="$evjarat -ben sz&uuml;letett lovak apam&eacute;n-statisztik&aacute;ja";        
+            $rekord=$_POST['rekord'];   
+            //ÖSSZES IVADÉK LEKÉRÉSE/////////////////////////////////////////////////////////////////////////
+            $res_ossz=db_query("SELECT ev, apja, apja_ev, COUNT(neve) AS ossz FROM lovak WHERE ev = '$evjarat' && orszag = 'HU' GROUP BY apja, apja_ev");
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                //print db_affected_rows();
+                $out.="".$param."<table class='varilista'><tr>";
+                $out.="<td>apam&eacute;n</td><td>&ouml;ssz</td><td>futott</td><td>'$rekord' alatt</td><td>teny&eacute;szt&eacute;sbe &aacute;ll&iacute;tva - l&aacute;nya(i)</td>";
+                $out.="</tr>";
+                $ossz_sum=0;
+                $futott_sum=0;
+                $alatti_sum=0;
+                $teny_sum=0;
+                while($egysor = db_fetch_array($res_ossz)) {
+                    //print "<br>";
+                    //print_r($egysor); 
+                    $out.="<tr class='varilista'>";
+                    $apja=$egysor['apja'];
+                    $apjaprint=$egysor['apja'];
+                    $apja_ev=$egysor['apja_ev'];
+                    $apja=preg_replace("/'/","\'",$apja);
+                        // Men szarmazasi lapja miatt kell a lovak/no azonositoo//////////////////////////////
+                        $apja_link=0;
+                        $res_apja_link=db_query("SELECT no FROM lovak WHERE neve = '$apja' && ev = '$apja_ev'");
+                        if(db_affected_rows()==1){
+                            while($egysor_apja_link = db_fetch_array($res_apja_link)) {
+                                $apja_link=$egysor_apja_link['no'];
+                            }
+                        }       
+                        $apjalink="<a href='/lovak/sablon/$apja_link'><font size='2' color='black' ><b>".$apjaprint."</b></font></a>";
+                    
+                    $out.="<td>".$apjalink."</td>";
+                    $apja_ev=$egysor['apja_ev'];
+                    $out.="<td>".$egysor['ossz']."</td>";   
+                    $ossz_sum+=$egysor['ossz'];
+                    //FUTOTT IVADÉKOK LEKÉRÉSE $egysor['apja'] -RA////////////////////////////////////////////////////////
+                    $res_futott=db_query("SELECT COUNT(neve) AS futott FROM lovak WHERE ev = '$evjarat' && apja = '$apja' && apja_ev = '$apja_ev' && rekord > 0 && orszag = 'HU' ");
+                    if(db_affected_rows()){
+                        //print '<br>';
+                        while($egysor_futott = db_fetch_array($res_futott)) {
+                            //print '<br>';
+                            //print_r($egysor_futott);
+                            $out.="<td>".$egysor_futott['futott']."</td>";  
+                            $futott_sum+=$egysor_futott['futott'];
+                        }
+                    }else{
+                        $out.="<td>-</td>"; 
+                    }
+                    //REKORD ALATTI IVADÉKOK LEKÉRÉSE $egysor['ev'] ÉVJÁRATRA/////////////////////////////////////////////////
+                    $res_alatti=db_query("SELECT COUNT(neve) AS alatti FROM lovak WHERE ev = '$evjarat' && apja = '$apja' && apja_ev = '$apja_ev' && rekord > 0 && rekord < '$rekord' && orszag = 'HU' ");
+                    if(db_affected_rows()){
+                        while($egysor_alatti = db_fetch_array($res_alatti)) {
+                            $out.="<td>".$egysor_alatti['alatti']."</td>";  
+                            $alatti_sum+=$egysor_alatti['alatti'];
+                        }
+                    }else{
+                        $out.="<td>-</td>"; 
+                    }
+                    //TENYESZTESBE ALLITOTT IVADEKOK $egysor['ev'] ÉVJÁRATRA/////////////////////////////////////////////////
+                    
+
+                    $res_teny=db_query("SELECT DISTINCT l1.neve AS teny 
+                    FROM lovak AS l1 
+                    INNER JOIN lovak AS l2 ON l1.neve = l2.anyja && l1.ev = l2.anyja_ev 
+                    WHERE l1.ev = '$evjarat' && l1.apja = '$apja' && l1.apja_ev = '$apja_ev'
+                    ");
+    
+                    
+                    ////$res_teny=db_query("SELECT l1.ev, COUNT(l1.neve) AS teny FROM lovak AS l1 INNER JOIN lovak AS l2 ON l1.neve = l2.anyja && l1.ev = l2.anyja_ev WHERE l1.ev = '$ev' && l1.apja = '$apja' && l1.apja_ev = '$apja_ev' GROUP BY l1.ev");
+                    //SELECT l1.ev, COUNT( l1.neve ) AS teny FROM lovak AS l1 INNER JOIN lovak AS l2 ON l1.neve = l2.anyja && l1.ev = l2.anyja_ev WHERE l1.apja = 'Dale Lobell' GROUP BY l1.ev
+                    if(db_affected_rows()){
+                        $out.="<td>";
+                        while($egysor_teny = db_fetch_array($res_teny)) {
+                            $out.=$egysor_teny['teny'].", ";    
+                            $teny_sum++;
+                        }
+                        $out.="</td>";
+                    }else{
+                        $out.="<td>-</td>"; 
+                    }
+                    
+                }
+                $out.="<tr><td>&ouml;ssz.</td><td>".$ossz_sum."</td><td>".$futott_sum."</td><td>".$alatti_sum."</td><td>".$teny_sum."</td></tr></table>";
+                //print $out;
+            }
+        }
+    }else{
+        
+        
+        if($listafajta == "apara"){
+            $out.=drupal_get_form('menstat_form_apara');
+        }
+        if($listafajta == "evjaratra"){
+            $out.=drupal_get_form('menstat_form_evjaratra');
+        }
+    //  $out.=drupal_get_form('lista_variforma_form');
+        print theme("page", $out);
+        return;
+    }
+    $changed=time();
+    $nidvege=substr(strval($changed),-2);
+    $nidbe='9999000'.$nidvege;
+    db_query("SELECT * FROM node WHERE nid='$nidbe'");
+    if(db_affected_rows()==0){
+        db_query("INSERT INTO node (nid, vid) VALUES ('%d', '%d')", $nidbe, $nidbe);
+        db_query("INSERT INTO node_revisions (nid, vid) VALUES ('%d','%d')", $nidbe, $nidbe);
+    }
+
+    db_query("UPDATE node SET changed='%s',uid = '1', title='%s' where nid='$nidbe'", $changed, 'Lista');
+    db_query("UPDATE node_revisions SET body='%s', teaser='%s', uid = '1', timestamp='%s' where nid='$nidbe'", $out, $out, $changed);
+    header("location:/node/".$nidbe);
+    return;
+return;
+}
+
+function lovak_listaforma(){
+
+    $param="Lista:<br>";            
+    if(isset($_POST['evad']) && $_POST['evad']!=0){
+            $evad=$_POST['evad'];
+            $rekord=$_POST['rekord'];
+            $rekord=conv_ug2nl($rekord);
+            $rek=$rekord;
+            $order='rekord';
+            if($_POST['rendezes']==0){
+                $order='rekord';
+            }
+            if($_POST['rendezes']==1){
+                $order='lonev';
+            }
+            if($_POST['rendezes']==2){
+                $order='apnev';
+            }                                                                                                                                                                                                                                                                                                                  
+            //print $_POST['rendezes'];                                                                                                                                                                                                                                                                                                                
+            $rekord=substr($rekord,0,4).substr($rekord,5,1);
+            
+            //print $order;
+            $param.=" ".$evad."-&eacute;vben ";
+            if($rekord!=""){
+                $param.=" ".$rek." alatt";
+                $lista_res=db_query("SELECT LO.ILOID, LO.SLONEV as lonev, APLO.SLONEV as apnev, FORMA.DTDATUM, FORMA.FDIJ, MIN(FORMA.SKORATLAG) as rekord from FORMA, LO LEFT JOIN LO as APLO ON APLO.ILOID = LO.IAPAID WHERE LO.ILOID=FORMA.ILOID && left(FORMA.DTDATUM,4)='$evad' && FORMA.SKORATLAG > 0 && concat(substring(FORMA.SKORATLAG,1,4),substring(FORMA.SKORATLAG,6,1))< '$rekord' && IFUTAMID!=0 GROUP BY LO.SLONEV ORDER BY ".$order);
+                //$lista_res=db_query("SELECT LO.ILOID, LO.SLONEV as lonev, FORMA.DTDATUM, FORMA.FDIJ, MIN(FORMA.SKORATLAG) as rekord from LO, FORMA WHERE LO.ILOID=FORMA.ILOID && left(FORMA.DTDATUM,4)='$evad' && FORMA.SKORATLAG > 0 && concat(substring(FORMA.SKORATLAG,1,4),substring(FORMA.SKORATLAG,6,1))< '$rekord' GROUP BY LO.SLONEV ORDER BY rekord");
+            }else{
+                //$lista_res=db_query("SELECT LO.ILOID, LO.SLONEV as lonev, FORMA.DTDATUM, FORMA.FDIJ, MIN(FORMA.SKORATLAG) as rekord, FUTAM.IFUTAMID from LO, FORMA, FUTAM WHERE LO.ILOID=FORMA.ILOID && left(FORMA.DTDATUM,4)='$evad' && FORMA.SKORATLAG > 0 && FORMA.IFUTAMID!=0 GROUP BY LO.SLONEV ORDER BY LO.SLONEV");
+                $lista_res=db_query("SELECT LO.ILOID, LO.SLONEV as lonev, APLO.SLONEV as apnev, FORMA.DTDATUM, FORMA.FDIJ, MIN(FORMA.SKORATLAG) as rekord from FORMA, LO LEFT JOIN LO as APLO ON APLO.ILOID = LO.IAPAID WHERE LO.ILOID=FORMA.ILOID && left(FORMA.DTDATUM,4)='$evad' && FORMA.SKORATLAG > 0 && FORMA.IFUTAMID!=0 GROUP BY LO.SLONEV ORDER BY ".$order);
+                //$lista_res=db_query("SELECT LO.ILOID, LO.SLONEV as lonev, APLO.SLONEV as apnev from LO LEFT JOIN LO as APLO ON APLO.ILOID = LO.IAPAID");
+            
+            }           
+            $param.="<br>";
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                $out.="<b>".$param."</b><br><table class='varilista'><tr>";
+                $out.="<td><b>L&oacute; neve</b></td><td>Rekord</td><td>Apa</td>";
+                $out.="</tr>";
+                while($egysor = db_fetch_array($lista_res)) {
+                    $out.="<tr class='varilista'>";
+                    $out.="<td><b>".$egysor['lonev']."</b></td>";
+                    $out.="<td>".conv_nl2ug($egysor['rekord'])."</td>";
+                    $out.="<td>".$egysor['apnev']."</td>";  
+                }
+                $out.="</tr></table>";
+            }
+        }else{
+            $out.=drupal_get_form('lista_variforma_form');
+            print theme("page", $out);
+            return;
+        }
+            
+
+    $changed=time();
+    $nidvege=substr(strval($changed),-2);
+    $nidbe='9999000'.$nidvege;
+    db_query("SELECT * FROM node WHERE nid='$nidbe'");
+    if(db_affected_rows()==0){
+        db_query("INSERT INTO node (nid, vid) VALUES ('%d', '%d')", $nidbe, $nidbe);
+        db_query("INSERT INTO node_revisions (nid, vid) VALUES ('%d','%d')", $nidbe, $nidbe);
+    }
+
+    db_query("UPDATE node SET changed='%s',uid = '1', title='%s' where nid='$nidbe'", $changed, 'Lista');
+    db_query("UPDATE node_revisions SET body='%s', teaser='%s', uid = '1', timestamp='%s' where nid='$nidbe'", $out, $out, $changed);
+    header("location:/node/".$nidbe);
+    return;
+}
+
+
+
+function lovak_listaujlovak(){
+
+    $param="Lista:<br>";
+    if(isset($_POST['evho']) && $_POST['evho']!=0){
+            $evho=$_POST['evho'];
+
+            $param.=" ".$evho."";
+                $lista_res=db_query("SELECT no, neve, apja, anyja, author, authored_date FROM lovak WHERE left(authored_date,7)='$evho' ORDER BY authored_date");
+                    
+            $param.="<br>";
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                $out.="<b>".$param."</b><br><table class='varilista'><tr>";
+                $out.="<td>L&oacute; neve</td><td>Apja</td><td>Anyja</td><td>Szerz&otilde;</td><td>Felvitel id&otilde;pontja</td>";
+                $out.="</tr>";
+                while($egysor = db_fetch_array($lista_res)) {
+                    $no=$egysor['no'];
+                    $out.="<tr class='varilista'>";
+                    $out.="<td><b><a href='/lovak/sablon/$no'>".$egysor['neve']."</a></b></td>";
+                    $out.="<td><b>".$egysor['apja']."</b></td>";
+                    $out.="<td><b>".$egysor['anyja']."</b></td>";
+                    $out.="<td><b>".$egysor['author']."</b></td>";
+                    $out.="<td><b>".$egysor['authored_date']."</b></td>";
+                }
+                $out.="</tr></table>";
+            }
+        }else{
+            $out.=drupal_get_form('lista_ujlovak_form');
+            print theme("page", $out);
+            return;
+        }
+            
+
+    $changed=time();
+    $nidvege=substr(strval($changed),-2);
+    $nidbe='9999000'.$nidvege;
+    db_query("SELECT * FROM node WHERE nid='$nidbe'");
+    if(db_affected_rows()==0){
+        db_query("INSERT INTO node (nid, vid) VALUES ('%d', '%d')", $nidbe, $nidbe);
+        db_query("INSERT INTO node_revisions (nid, vid) VALUES ('%d','%d')", $nidbe, $nidbe);
+    }
+
+    db_query("UPDATE node SET changed='%s', uid = '1', title='%s' where nid='$nidbe'", $changed, 'Lista');
+    db_query("UPDATE node_revisions SET body='%s', teaser='%s', uid = '1', timestamp='%s' where nid='$nidbe'", $out, $out, $changed);
+    header("location:/node/".$nidbe);
+    return;
+}
+
+
+function lovak_listamodlovak(){
+
+    $param="Lista:<br>";            
+    if(isset($_POST['evho']) && $_POST['evho']!=0){
+            $evho=$_POST['evho'];
+
+            $param.=" ".$evho."";
+                $lista_res=db_query("SELECT no, neve, apja, anyja, updater, updated_date FROM lovak WHERE left(updated_date,7)='$evho' ORDER BY updated_date");
+                    
+            $param.="<br>";
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                $out.="<b>".$param."</b><br><table class='varilista'><tr>";
+                $out.="<td>L&oacute; neve</td><td>Apja</td><td>Anyja</td><td>M&oacute;dos&iacute;totta</td><td>M&oacute;dos&iacute;t&aacute;s id&otilde;pontja</td>";
+                $out.="</tr>";
+                while($egysor = db_fetch_array($lista_res)) {
+                    $no=$egysor['no'];
+                    $out.="<tr class='varilista'>";
+                    $out.="<td><b><a href='/lovak/sablon/$no'>".$egysor['neve']."</a></b></td>";
+                    $out.="<td><b>".$egysor['apja']."</b></td>";
+                    $out.="<td><b>".$egysor['anyja']."</b></td>";
+                    $out.="<td><b>".$egysor['updater']."</b></td>";
+                    $out.="<td><b>".$egysor['updated_date']."</b></td>";
+                }
+                $out.="</tr></table>";
+            }
+        }else{
+            $out.=drupal_get_form('lista_modlovak_form');
+            print theme("page", $out);
+            return;
+        }
+            
+
+    $changed=time();
+    $nidvege=substr(strval($changed),-2);
+    $nidbe='9999000'.$nidvege;
+    db_query("SELECT * FROM node WHERE nid='$nidbe'");
+    if(db_affected_rows()==0){
+        db_query("INSERT INTO node (nid, vid) VALUES ('%d', '%d')", $nidbe, $nidbe);
+        db_query("INSERT INTO node_revisions (nid, vid) VALUES ('%d','%d')", $nidbe, $nidbe);
+    }
+
+    db_query("UPDATE node SET changed='%s', uid = '1', title='%s' where nid='$nidbe'", $changed, 'Lista');
+    db_query("UPDATE node_revisions SET body='%s', teaser='%s', uid = '1', timestamp='%s' where nid='$nidbe'", $out, $out, $changed);
+    header("location:/node/".$nidbe);
+    return;
+}
+
+function lovak_listamodtullovak(){
+    $param="Lista: lovak tulajdonosvaltozasai<br>";         
+    if(isset($_POST['evho']) && $_POST['evho']!=0){
+            $evho=$_POST['evho'];
+            $year=substr($evho,0,4);
+            $month=substr($evho,5,2);
+            $param.=" ".$evho."";
+            $lista_res=db_query("SELECT lovak.no as no, lovak.neve as neve, tulajdonos.tulajdonos as tulaj, tulajdonos.datum as datum FROM lovak, tulajdonos 
+            WHERE lovak.no=tulajdonos.no && year(tulajdonos.datum) = '$year' && month(tulajdonos.datum) = '$month'");
+            $param.="<br>";
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                $out.="<b>".$param."</b><br><table class='varilista'><tr>";
+                $out.="<td>L&oacute; neve</td><td>Tulajdonos</td><td>M&oacute;dos&iacute;t&aacute;s id&otilde;pontja</td>";
+                $out.="</tr>";
+                while($egysor = db_fetch_array($lista_res)) {
+                    $no=$egysor['no'];
+                    $ue_tul_res=db_query("SELECT no, tulajdonos, datum FROM tulajdonos WHERE no='$no' ORDER BY datum DESC");
+                    while($ue_egysor = db_fetch_array($ue_tul_res)) {
+                        $sz=0;
+                        if(db_affected_rows($ue_tul_res)>1){
+                            $ue_tul=$ue_egysor['tulajdonos'];
+                            $ue_tul_datum=$ue_egysor['datum'];
+                            if($sz==1){
+                                break;
+                            }
+                        }else{
+                            $ue_tul='';
+                            $ue_tul_datum='';
+                        }
+                        $sz++;
+                    }   
+                    $out.="<tr class='varilista'>";
+                    $out.="<td><b>".$egysor['neve']."</b></td>";
+                    if($ue_tul=='' || $ue_tul == $egysor['tulaj']){
+                        $out.="<td><b>".$egysor['tulaj']."</b></td>";
+                    }else{
+                        $out.="<td><b>".$egysor['tulaj']."</b> /elozo:".$ue_tul."/</td>";
+                    }
+                    $out.="<td><b>".$egysor['datum']."</b></td>";
+                }
+                $out.="</tr></table>";
+            }
+        }else{
+            $out.=drupal_get_form('lista_modtullovak_form');
+            print theme("page", $out);
+            return;
+        }
+            
+
+    $changed=time();
+    $nidvege=substr(strval($changed),-2);
+    $nidbe='9999000'.$nidvege;
+    db_query("SELECT * FROM node WHERE nid='$nidbe'");
+    if(db_affected_rows()==0){
+        db_query("INSERT INTO node (nid, vid) VALUES ('%d', '%d')", $nidbe, $nidbe);
+        db_query("INSERT INTO node_revisions (nid, vid) VALUES ('%d','%d')", $nidbe, $nidbe);
+    }
+
+    db_query("UPDATE node SET changed='%s', uid = '1', title='%s' where nid='$nidbe'", $changed, 'Lista');
+    db_query("UPDATE node_revisions SET body='%s', teaser='%s', uid = '1', timestamp='%s' where nid='$nidbe'", $out, $out, $changed);
+    header("location:/node/".$nidbe);
+    return;
+}
+
+
+function lovak_importalas(){
+
+
+  //FORMA adatbazis uprgade--------------------------
+     $message="";
+     //utolsó meglevõ versenynap dátumának kikérése UPGRD táblából
+        $res_upgrd=db_query("SELECT FORMA_upgrd_versenynap FROM UPGRD WHERE id=1");
+        $res=db_fetch_array($res_upgrd);
+        $utolso_datum=$res[FORMA_upgrd_versenynap];
+        $utolso_datum=preg_replace('/-/','.',$utolso_datum);
+        $y=substr($utolso_datum,0,4);
+        $m=substr($utolso_datum,5,2);
+        $d=substr($utolso_datum,8,2);
+
+   for ($i = 1; $i <= 30; $i++) {
+        $day_plus1=date("Y.m.d", mktime(0, 0, 0, $m, $d+$i, $y));  //JZ ide kell a $d+1
+        //print "<br>date:".$day_plus1;
+        $stream = getUrlStream("http://82.131.211.99/zoli/ugeto_UTOE.php?func=forma&param=$day_plus1&secu=abrakadabra");
+        //print "<br>stream:".$stream;
+        if(strlen($stream)>7){
+           $streamvagott=substr($stream,6);
+        }else{
+           $streamvagott=$stream;
+        }
+       // print "<br>streamvagott:".$streamvagott;
+        $stream_array = explode("br>", $streamvagott);
+
+        //NL stream feldarabolása és feldolgozása
+      $jottujforma=0;
+      foreach($stream_array as $v){
+        if(substr($v,6,1)=="_"){
+             //print "<br>sor:".$v;
+             $egylo=explode("__",$v);
+               $FORMAID=$egylo[0];
+               $IFUTAMID=$egylo[1];
+               $DTDATUM=$egylo[2];
+               $ILOID=$egylo[3];
+               $ITAV=$egylo[4];    // JZ itav
+               $IHELYEZES=$egylo[5];
+               $FDIJ=$egylo[6];
+               $SKORATLAG=$egylo[7];
+
+               $jottujforma++;
+               $versenydatum=$day_plus1;
+               db_query("INSERT INTO FORMA VALUES ('%d','%d','%s','%d','%d','%d','%d','%s')",$FORMAID,$IFUTAMID,$DTDATUM,$ILOID,$ITAV,$IHELYEZES,$FDIJ,$SKORATLAG);
+               //db_query("INSERT INTO FORMA VALUES ('%d','%d','%s','%d','%d','%d','%s')",$FORMAID,$IFUTAMID,$DTDATUM,$ILOID,$IHELYEZES,$FDIJ,$SKORATLAG);
+
+        }
+      }
+      $day_plus1=preg_replace('/\./','-',$day_plus1);
+      $message.=$jottujforma;
+      if($jottujforma>0){
+          print "<br>Versenynap:".$day_plus1;
+          db_query("UPDATE UPGRD SET FORMA_upgrd_versenynap = '$day_plus1', FORMA_upgrd_datum = NOW(), FORMA_upgrd_ujsorok = '$jottujforma', FORMA_upgrd_vizsgaltnap = '$day_plus1'");
+          mailsend('zojuhasz@gmail.com','FORMA_table_UPGRD',$message);
+          break;
+      }else{
+          db_query("UPDATE UPGRD SET FORMA_upgrd_vizsgaltnap = '$day_plus1'");
+          mailsend('zojuhasz@gmail.com','FORMA_table_UPGRD','Nemjott');
+
+      }
+
+
+    }
+  //-------------------------------------------------
+
+
+  //LO adatbazis uprgade--------------------------
+      $message="";
+      //UTOE LO tábla nullázása
+      db_query("DELETE FROM LO");
+
+      //NL stream begyüjtése
+      $stream = getUrlStream("http://82.131.211.99/zoli/ugeto_UTOE.php?func=lovak&param=3000&secu=abrakadabra");
+      $stream = iconv("ISO-8859-2","UTF-8",$stream);
+      $stream_array = explode("br>", $stream);
+      $LO_recno=sizeof($stream_array);
+
+      //NL stream feldarabolása és feldolgozása
+      foreach($stream_array as $v){
+        if(substr($v,4,1)=="_"){
+             print "<br>sor:".$v."<br>";
+             $egylo=explode("__",$v);
+               $ILOID=$egylo[0];
+               $SLONEV=$egylo[1];
+               $SLONEVELOZO=$egylo[2];
+               $DTLONEVVALTOZAS=$egylo[3];
+               $SORSZAG=$egylo[4];
+               $ISZULETESIEV=$egylo[5];
+               $IHALEV=$egylo[6];
+               $IKOR=$egylo[7];
+               $IANYAID=$egylo[8];
+               $IAPAID=$egylo[9];
+               $ITENYESZTOID=$egylo[10];
+               $ITENYESZTES=$egylo[11];
+               $ISZIN=$egylo[12];
+               $INEM=$egylo[13];
+               $ISTATUSZ=$egylo[14];
+               $IISTALLOID=$egylo[15];
+               $SREKORD_RT=$egylo[16];
+               $SREKORD_KT=$egylo[17];
+               $SREKORD_HT=$egylo[18];
+               $FELETNYEREMENY=$egylo[19];
+               $IINTERNET=$egylo[20];
+               $ROVIDNEV=$egylo[21];
+               db_query("INSERT INTO LO VALUES ('%d','%s','%s','%s','%s','%d','%d','%d','%d','%d','%d','%d','%d','%d','%d','%d','%s','%s','%s','%d','%d','%s')", $ILOID,$SLONEV,$SLONEVELOZO,$DTLONEVVALTOZAS,$SORSZAG,$ISZULETESIEV,$IHALEV,$IKOR,$IANYAID,$IAPAID,$ITENYESZTOID,$ITENYESZTES,$ISZIN,$INEM,$ISTATUSZ,$IISTALLOID,$SREKORD_RT,$SREKORD_KT,$SREKORD_HT,$FELETNYEREMENY,$IINTERNET,$ROVIDNEV);
+
+        }
+      }
+  //---------------------------------------------
+  $message.='LO upgrd lefutott';
+  db_query("UPDATE UPGRD SET LO_upgrd_modosulas_datum = NOW()");
+  mailsend('zojuhasz@gmail.com','LO_table_UPGRD',$message);
+  lovak_upgrd();
+
+}
+
+function mailsend($mailto, $subject, $message){
+
+$headers = "From: ugeto@ugeto.com \n";
+    $headers.= "Content-Type: text/html; charset=UTF-8";
+    $headers .= "MIME-Version: 1.0 ";
+    global $language;
+    $params['subject'] = $subject;
+    $address=$mailto;
+    $message=$message;
+    $params['body']    =  $message;
+    $params['headers'] = $headers;
+    drupal_mail('smtp', 'smtp-test', $address, $language, $params);
+
+}
+
+
+
+
+
+
+function getUrlStream($url){
+        $ret="";
+        $ch = curl_init();
+        // set url
+        //curl_setopt($ch, CURLOPT_URL, "http://82.131.211.99/php/ugeto_UTOE.php?func=forma&param=2010.12.31&secu=abrakadabra");
+        curl_setopt($ch, CURLOPT_URL, $url);
+        //return the transfer as a string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // $output contains the output string
+        $stream = curl_exec($ch);
+        $ret=$stream;
+        curl_close($ch);
+        return $ret;
+}
+
+function conv_nl2ug($korido){
+    $ret="";
+    $ret=substr($korido,0,1).".".substr($korido,2,2).",".substr($korido,5,1);
+return $ret;
+}
+function conv_ug2nl($korido){
+    $ret="";
+    $ret=substr($korido,0,1).":".substr($korido,2,2).",".substr($korido,5,1);
+return $ret;
+}
+
+
+function lovak_listavari(){
+    if(isset($_POST['apja'])){
+            $apja=$_POST['apja'];
+            
+            $apja_sa=explode('--',$apja);
+            if(isset($apja_sa['0'])){$apja_nev=$apja_sa['0'];}else{$apja_nev="";}
+            if(isset($apja_sa['1'])){$apja_ev=$apja_sa['1'];}else{$apja_ev="";}
+            if(isset($apja_sa['2'])){$apja_orszag=$apja_sa['2'];}else{$apja_orszag="";}unset($apja_sa);
+                        
+            $anyja=$_POST['anyja'];
+            $anyja_sa=explode('--',$anyja);
+            if(isset($anyja_sa['0'])){$anyja_nev=$anyja_sa['0'];}else{$anyja_nev="";}
+            if(isset($anyja_sa['1'])){$anyja_ev=$anyja_sa['1'];}else{$anyja_ev="";}
+            if(isset($anyja_sa['2'])){$anyja_orszag=$anyja_sa['2'];}else{$anyja_orszag="";}unset($anyja_sa);
+            
+            
+            $apja_nev=preg_replace("/'/","\'",$apja_nev);
+            $anyja_nev=preg_replace("/'/","\'",$anyja_nev);
+            
+            $rekord=$_POST['rekord'];
+            $penz=$_POST['penz'];
+            $ev=$_POST['ev'];
+            if(strstr($ev, '-')){
+                if(strlen($ev)==9){$ev1=substr($ev,0,4);$ev2=substr($ev,5,4);}else{$ev=0;}
+            };
+
+            //zdebug($ev,$ev1,$ev2);
+            //$evjarat_array=array('1982','1983','1984','1985','1986','1987','1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005');
+            //$ev=$evjarat_array[$ev];  
+            $orszag=$_POST['orszag'];
+            $nevel=$_POST['nevel'];
+            $tulajdonos=$_POST['tulajdonos'];
+
+
+
+                        
+            //kereso str osszeall
+            $keresostr="WHERE TRUE ";
+            //zdebug($ev);
+            if($apja!=""){$keresostr.=" && apja='$apja_nev'";}
+            if($anyja!=""){$keresostr.="&& anyja='$anyja_nev' && anyja_ev='$anyja_ev'";}
+            if(!empty($rekord)){$keresostr.="&& rekord<'$rekord' && rekord !=''";}
+            if(!empty($penz)){$keresostr.="&& penz>'$penz'";}
+            if(isset($ev1)){
+                $keresostr.="&& ev>='$ev1' && ev<='$ev2'";
+            }else{
+               if(!empty($ev)){$keresostr.="&& ev='$ev'";}
+            }
+            if(!empty($orszag)){$keresostr.="&& orszag='$orszag'";}
+            if(!empty($nevel)){$keresostr.="&& nevel like '%$nevel%'";}
+            if(!empty($tulajdonos)){$keresostr.="&& tulajdonos like '%$tulajdonos%'";}
+            
+            //order str osszeall
+            $orderbystr="";
+            if(!empty($rekord)){        
+                if(!empty($apja) && empty($anyja)){$orderbystr=" ORDER BY rekord, apja ";}
+                if(!empty($anyja) && empty($apja)){$orderbystr=" ORDER BY rekord, anyja ";}
+                if(!empty($anyja) && !empty($apja)){$orderbystr=" ORDER BY rekord, apja, anyja";}
+                if(empty($anyja) && empty($apja)){$orderbystr=" ORDER BY rekord, apja, anyja";}
+            }else{
+                if(!empty($apja) && empty($anyja)){$orderbystr=" ORDER BY apja, ev, anyja";}
+                if(!empty($anyja) && empty($apja)){$orderbystr=" ORDER BY anyja, ev, apja";}
+                if(!empty($anyja) && !empty($apja)){$orderbystr=" ORDER BY apja, anyja, ev";}
+                if(!empty($ev)){$orderbystr=" ORDER BY neve";}
+                
+            }
+        
+            $param="Lista";         
+            
+            $lista_res=db_query("SELECT neve, ev, orszag, apja, anyja, nevel, belyeg, tulajdonos, rekord, penz, szine, neme from lovak ".$keresostr.$orderbystr);
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                $out.="<b>".$param."</b><br><table class='varilista'><tr>";
+                $out.="<td><b>L&oacute; neve</b>--&Eacute;v--Orsz&aacute;g</td><td><b></a>Apja</td><td><b></a>Anyja</td><td><b></a>B&eacute;lyeg</td><td><b>Teny&eacute;szt&otilde;</td><td><b>Rekord</td><td><b>Nyerem&eacute;ny</td>";
+                if(!empty($tulajdonos)){
+                    $out.="<td><b>Tulajdonos</td>";
+                }
+                $out.="</tr>";
+                while($egysor = db_fetch_array($lista_res)) {
+                    $out.="<tr class='varilista'>";
+                    $out.="<td><b>".$egysor['neve']."</b>--".$egysor['ev'].$egysor['szine'].$egysor['neme']."--".$egysor['orszag']."</td>";
+//                  $out.="<td>".$egysor['szine'].$egysor['neme']."</td>";  
+                    $out.="<td>".$egysor['apja']." ".$egysor['apja_ev']." ".$egysor['apja_orszag']."</td>"; 
+                    $out.="<td>".$egysor['anyja']." ".$egysor['anyja_ev']." ".$egysor['anyja_orszag']."</td>";  
+                    $out.="<td>".$egysor['belyeg']."</td>";
+                    $out.="<td>".$egysor['nevel']."</td>";  
+                    $out.="<td>".$egysor['rekord']."</td>"; 
+                    $out.="<td align='right'>".number_format($egysor['penz'])."</td>";  
+                    if(!empty($tulajdonos)){
+                        $out.="<td>".$egysor['tulajdonos']."</td>";
+                    }
+                }
+                $out.="</tr></table>";
+                
+            }
+        }else{
+            $out.=drupal_get_form('lista_vari_form');
+            print theme("page", $out);
+            return;
+        }
+            
+
+    $changed=time();
+    $nidvege=substr(strval($changed),-2);
+    $nidbe='9999000'.$nidvege;
+    db_query("SELECT * FROM node WHERE nid='$nidbe'");
+    if(db_affected_rows()==0){
+        db_query("INSERT INTO node (nid, vid) VALUES ('%d', '%d')", $nidbe, $nidbe);
+        db_query("INSERT INTO node_revisions (nid, vid) VALUES ('%d','%d')", $nidbe, $nidbe);
+    }
+
+    db_query("UPDATE node SET changed='%s', uid = '1', title='%s' where nid='$nidbe'", $changed, 'Lista');
+    db_query("UPDATE node_revisions SET body='%s', teaser='%s', uid = '1', timestamp='%s' where nid='$nidbe'", $out, $out, $changed);
+    header("location:/node/".$nidbe);
+    return;
+}
+
+
+
+function lovak_lista($listafajta){
+    $out="";
+    //print "<br>listafajta:".$listafajta;
+    
+    if($listafajta=="varipub"){
+        if(isset($_POST['apja'])){
+            $apja=$_POST['apja'];
+            
+            $apja_sa=explode('--',$apja);
+            if(isset($apja_sa['0'])){$apja_nev=$apja_sa['0'];}else{$apja_nev="";}
+            if(isset($apja_sa['1'])){$apja_ev=$apja_sa['1'];}else{$apja_ev="";}
+            if(isset($apja_sa['2'])){$apja_orszag=$apja_sa['2'];}else{$apja_orszag="";}unset($apja_sa);
+                        
+            $anyja=$_POST['anyja'];
+            $anyja_sa=explode('--',$anyja);
+            if(isset($anyja_sa['0'])){$anyja_nev=$anyja_sa['0'];}else{$anyja_nev="";}
+            if(isset($anyja_sa['1'])){$anyja_ev=$anyja_sa['1'];}else{$anyja_ev="";}
+            if(isset($anyja_sa['2'])){$anyja_orszag=$anyja_sa['2'];}else{$anyja_orszag="";}unset($anyja_sa);
+            
+            
+            $apja_nev=preg_replace("/'/","\'",$apja_nev);
+            $anyja_nev=preg_replace("/'/","\'",$anyja_nev);
+            if($apja_nev=="" && $anyja_nev==""){
+                print theme("page", "Nincs megadva sem apa, sem anya!");
+                return;
+            }
+            
+            $rekord=$_POST['rekord'];
+            $penz=$_POST['penz'];
+            
+            $orszag=$_POST['orszag'];
+                                    
+            //kereso str osszeall
+            $keresostr="WHERE TRUE ";
+            if($apja!=""){$keresostr.=" && apja='$apja_nev'";}
+            if($anyja!=""){$keresostr.="&& anyja='$anyja_nev' && anyja_ev='$anyja_ev'";}
+            if(!empty($rekord)){$keresostr.="&& rekord<'$rekord' && rekord !=''";}
+            if(!empty($penz)){$keresostr.="&& penz>'$penz'";}
+            if(!empty($orszag)){$keresostr.="&& orszag='$orszag'";}
+                        
+            //order str osszeall
+            $orderbystr="";
+            if(!empty($rekord)){        
+                if(!empty($apja) && empty($anyja)){$orderbystr=" ORDER BY rekord, apja ";}
+                if(!empty($anyja) && empty($apja)){$orderbystr=" ORDER BY rekord, anyja ";}
+                if(!empty($anyja) && !empty($apja)){$orderbystr=" ORDER BY rekord, apja, anyja";}
+                if(empty($anyja) && empty($apja)){$orderbystr=" ORDER BY rekord, apja, anyja";}
+            }else{
+                if(!empty($apja) && empty($anyja)){$orderbystr=" ORDER BY apja, ev, anyja";}
+                if(!empty($anyja) && empty($apja)){$orderbystr=" ORDER BY anyja, ev, apja";}
+                if(!empty($anyja) && !empty($apja)){$orderbystr=" ORDER BY apja, anyja, ev";}
+                
+                
+            }
+        
+            $param="Lista";
+            
+            $lista_res=db_query("SELECT no, neve, ev, orszag, apja, anyja, rekord, penz, szine, neme from lovak ".$keresostr.$orderbystr);
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                $out.="<b>$param</b><br><table class='varilista'><tr>";
+                $out.="<td><b>L&oacute; neve</b>--&Eacute;v--Orsz&aacute;g</td><td><b></a>Apja</td><td><b></a>Anyja</td><td><b>Rekord</td><td><b>Nyerem&eacute;ny</td>";
+                $out.="</tr>";
+                while($egysor = db_fetch_array($lista_res)) {
+                    $out.="<tr class='varilista'>";
+                    $no=$egysor['no'];
+                    $out.="<td><a href='/lovak/sablon/$no'><b>".$egysor['neve']."</b></a>--".$egysor['ev'].$egysor['szine'].$egysor['neme']."--".$egysor['orszag']."</td>";
+//                  $out.="<td>".$egysor['szine'].$egysor['neme']."</td>";  
+                    $out.="<td>".$egysor['apja']." ".$egysor['apja_ev']." ".$egysor['apja_orszag']."</td>"; 
+                    $out.="<td>".$egysor['anyja']." ".$egysor['anyja_ev']." ".$egysor['anyja_orszag']."</td>";  
+                    $out.="<td>".$egysor['rekord']."</td>"; 
+                    $out.="<td align='right'>".number_format($egysor['penz'])."</td>";  
+                    
+                }
+                $out.="</tr></table>";
+                
+            }
+        }else{
+            $out.=drupal_get_form('lista_varipub_form');
+            print theme("page", $out);
+            return;
+        }
+            
+    }
+
+    if($listafajta=="csiko"){
+        if(isset($_POST['ev'])){
+            $ev=$_POST['ev'];
+            $evjarat_array=array('2009','2008','2007','2006','2005','2004','2003','2002','2001','2000','1999','1998','1997','1996','1995','1994','1993','1992','1991','1990','1989','1988','1987','1986','1985','1984','1983','1982','1981','1980','1979','1978','1977','1976','1975','1974','1973','1972','1971','1970','1969','1968','1967','1966','1965','1964');
+            $ev=$evjarat_array[$ev];    
+                        
+            $lista_res=db_query("SELECT no, neve, ev, orszag, apja, anyja, nevel, tulajdonos, rekord, penz, szine, neme from lovak WHERE ev='$ev' && orszag='HU' ORDER BY neve");
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                $out.="<b>Csik&oacute; lista</b><br><table class='losablon'><tr>";
+                $out.="<td><b>L&oacute; neve</td><td><b></a>Apja</td><td><b></a>Anyja</td><td><b>Teny&eacute;szt&otilde;</td><td><b>Rekord</td><td><b>Nyerem&eacute;ny</td>";
+                $out.="</tr>";
+                while($egysor = db_fetch_array($lista_res)) {
+                    $out.="<tr>";
+                    $no=$egysor['no'];
+                    $out.="<td><a href='/lovak/sablon/$no'><b>".$egysor['neve']."</b></a> ".$egysor['szine'].$egysor['neme']."</td>";
+//                  $out.="<td>".$egysor['szine'].$egysor['neme']."</td>";  
+                    $out.="<td>".$egysor['apja']." ".$egysor['apja_ev']." ".$egysor['apja_orszag']."</td>"; 
+                    $out.="<td>".$egysor['anyja']." ".$egysor['anyja_ev']." ".$egysor['anyja_orszag']."</td>";  
+                    $out.="<td>".$egysor['nevel']."</td>";  
+                    $out.="<td>".$egysor['rekord']."</td>"; 
+                    $out.="<td align='right'>".number_format($egysor['penz'])."</td>";  
+                    
+                }
+                $out.="</tr></table>";
+                
+            }
+        }else{
+            $out.=drupal_get_form('lista_csiko_form');
+            print theme("page", $out);
+            return;
+        }
+            
+    }
+    if($listafajta=="fedezo"){
+            $lista_res=db_query("SELECT no, neve, ev, szine, neme, apja, anyja FROM lovak WHERE fedezomen='IGEN' ORDER BY neve");
+            if(db_affected_rows()<1){
+                $out.="Nincs eredm&eacute;nye a list&aacute;nak";
+            }else{
+                $out.="<b>Fedez&otilde;m&eacute;nek list&aacute;ja</b><br><table class='losablon'><tr>";
+                $out.="<td><b>L&oacute; neve</td><td><b>&Eacute;vj&aacute;rat</td><td><b>Sz&iacute;ne</td><td><b>Neme</td><td><b>Apja</td><td><b>Anyja</td>";
+                $out.="</tr>";
+                while($egysor = db_fetch_array($lista_res)) {
+                    $out.="<tr>";
+                    $no=$egysor['no'];
+                    $out.="<td><a href='/lovak/sablon/$no'><b>".$egysor['neve']."</b></a></td>";
+                    $out.="<td>".$egysor['ev']."</td>";
+                    $out.="<td>".$egysor['szine']."</td>";
+                    $out.="<td>".$egysor['neme']."</td>";
+                    $out.="<td>".$egysor['apja']."</td>";
+                    $out.="<td>".$egysor['anyja']."</td>";
+                }
+                $out.="</tr></table>";
+                
+            }
+    }
+    
+    $changed=time();
+    $nidvege=substr(strval($changed),-2);
+    $nidbe='9999000'.$nidvege;
+    db_query("SELECT * FROM node WHERE nid='$nidbe'");
+    if(db_affected_rows()==0){
+        db_query("INSERT INTO node (nid, vid) VALUES ('%d', '%d')", $nidbe, $nidbe);
+        db_query("INSERT INTO node_revisions (nid, vid) VALUES ('%d','%d')", $nidbe, $nidbe);
+    }
+
+    db_query("UPDATE node SET changed='%s', uid = '1', title='%s' where nid='$nidbe'", $changed, 'Lista');
+    db_query("UPDATE node_revisions SET body='%s', teaser='%s', uid = '1', timestamp='%s' where nid='$nidbe'", $out, $out, $changed);
+    header("location:/node/".$nidbe);
+    
+    //print theme("page", $out);    
+    
+    
+    //db_query("SELECT * from lovak WHERE neve='%s' && ev='%d' && (orszag='%s' || orszag='')", $lonev,$ev,$orszag);
+    //if(db_affected_rows()<1){$err.="Nincs eredm&eacute;nye a list&aacute;nak".$listafajta;}
+            
+
+return;
+}
+
+
+function lovak_mod($lonev="", $ev=""){
+
+    $ret="";
+    
+    $rekord="";
+    $penz="";
+    $ellet="";
+    $szine="";
+    $neme="";
+    $belyeg="";
+    $tulajdonos="";
+    $nevel="";
+    $orszag="";
+    $apja="";
+    $apja_ev="";
+    $apja_2="";
+    $apja_2_ev="";
+    $anyja="";
+    $anyja_ev="";
+    $imp_orsz="";
+    $imp_kelt="";
+    $elozo="";
+    $fedezomen="";
+        
+    
+    
+    //volt már form, akkor ell.
+    if(isset($_POST['edit']['stadium']) && $_POST['edit']['stadium']=='elso_form'){
+        //print_r($_POST);
+        $lonev=$_POST['edit']['neve'];
+        $ev=$_POST['edit']['ev'];
+        $apja_ev=$_POST['edit']['apja_ev'];
+        $apja_2_ev=$_POST['edit']['apja_2_ev'];
+        $anyja_ev=$_POST['edit']['anyja_ev'];
+        $lonev_elozo=$_POST['edit']['lonev_elozo'];
+        $lonev_elozo=preg_replace("/'/","\'",$lonev_elozo);
+        
+        $torles=$_POST['edit']['torles'];
+        //print "<br>torles:".$torles;
+        
+        $ev_elozo=$_POST['edit']['ev_elozo'];
+        $rekord=$_POST['edit']['rek'];
+        $penz=$_POST['edit']['penz'];
+        //print "penz:".$penz;
+
+        $ellet=$_POST['edit']['ellet'];
+        $szine=$_POST['edit']['szine'];
+        
+        
+        if($szine=="0"){$szine=" ";}
+        if($szine=="1"){$szine="f";}
+        if($szine=="2"){$szine="f/sz";}
+        if($szine=="3"){$szine="p";}
+        if($szine=="4"){$szine="p/stp";}
+        if($szine=="5"){$szine="p/vlp";}
+        if($szine=="6"){$szine="s";}
+        if($szine=="7"){$szine="stp";}
+        if($szine=="8"){$szine="stp/f";}
+        if($szine=="9"){$szine="stp/sz";}
+        if($szine=="10"){$szine="sz";}
+        if($szine=="11"){$szine="sz/stp";}
+        if($szine=="12"){$szine="tarka";}
+        if($szine=="13"){$szine="vlp";}
+        
+                
+        //print "<br>szine:".$szine;
+        //$szine=convert_key_to_value("lovak", "szine", $szine);
+        $neme=convert_key_to_value("lovak", "neme", $_POST['edit']['neme']);
+        $belyeg=$_POST['edit']['belyeg'];
+        $nevel=$_POST['edit']['nevel'];
+        $tulajdonos=$_POST['edit']['tulajdonos'];
+        if($_POST['edit']['tulajdonos_esetleg']==""){$tulajdonos=convert_key_to_value("lovak", "tulajdonos", $tulajdonos);}else{$tulajdonos=$_POST['edit']['tulajdonos_esetleg'];}
+        $tulajdonos=preg_replace("/'/","\'",$tulajdonos);
+        if($_POST['edit']['nevel_esetleg']==""){$nevel=convert_key_to_value("lovak", "nevel", $nevel);}else{$nevel=$_POST['edit']['nevel_esetleg'];}
+        $nevel=preg_replace("/'/","\'",$nevel);
+        $orszag=$_POST['edit']['orszag'];
+        if($_POST['edit']['orszag_esetleg']==""){$orszag=convert_key_to_value("lovak", "orszag", $orszag);}else{$orszag=$_POST['edit']['orszag_esetleg'];}
+        
+        $apja=$_POST['edit']['apja'];
+        if($_POST['edit']['apja_esetleg']==""){$apja=convert_key_to_value("lovak", "apja", $apja);}else{$apja=$_POST['edit']['apja_esetleg'];}
+        $apja=preg_replace("/'/","\'",$apja);
+
+        $apja_2=$_POST['edit']['apja_2'];
+        if($_POST['edit']['apja_2_esetleg']==""){$apja_2=convert_key_to_value("lovak", "apja_2", $apja_2);}else{$apja_2=$_POST['edit']['apja_2_esetleg'];}
+        $apja_2=preg_replace("/'/","\'",$apja_2);
+        
+        
+        $anyja=$_POST['edit']['anyja'];
+        if($_POST['edit']['anyja_esetleg']==""){$anyja=convert_key_to_value("lovak", "anyja", $anyja);}else{$anyja=$_POST['edit']['anyja_esetleg'];}
+//      print "<br>ANYJA:".$anyja;
+        $anyja=preg_replace("/'/","\'",$anyja);
+        $imp_orsz=$_POST['edit']['imp_orsz'];
+        if($_POST['edit']['imp_orsz_esetleg']==""){$imp_orsz=convert_key_to_value("lovak", "imp_orsz", $imp_orsz);}else{$imp_orsz=$_POST['edit']['imp_orsz_esetleg'];}
+        $imp_kelt=$_POST['edit']['imp_kelt'];
+        //print "imp_kelt:".$imp_kelt;
+        $elozo=$_POST['edit']['elozo'];
+        //print "elozo:".$elozo;
+        if(isset($_POST['edit']['fedezomen'])){
+            $fedezomen=convert_key_to_value("lovak", "fedezomen", $_POST['edit']['fedezomen']);
+        }else{
+            $fedezomen="NEM";
+        }
+        $no=$_POST['edit']['no'];
+        
+        //VALAMILYEN ELLENÕRZÉS KELL ITT IS     
+        $error="";
+        //Ha volt LONÉV változtatás
+        $lokernev=preg_replace("/'/","\'",$lonev);
+        if($lonev_elozo != $lokernev){
+            $lokernev=preg_replace("/'/","\'",$lonev_elozo);
+            $lo_res = db_query("SELECT * FROM lovak WHERE apja = '$lokernev' || anyja='$lokernev'");
+            $talalt=db_affected_rows();
+            if($talalt>0){print "<br> FIGYELEM!!! ".$lonev_elozo."-szerepel ANYJA v. APA -kent az adadbazisban ".$talalt." esetben mas lonal!!!!";print "<br> Emiatt nem lehet modositani, mert az adatbazis konzisztencia serul!!!";$error="Lonev valtozas tiltas";
+                return;
+            }    
+        }
+        
+        
+//      print "<br>Anyja:".$anyja;      
+        $lokernev=preg_replace("/'/","\'",$lonev);
+        $nevkernev=preg_replace("/'/","\'",$nevel);
+        $tulajdonoskernev=preg_replace("/'/","\'",$tulajdonos);
+                
+//print "<br>neme:".$neme;
+
+        //db_query('UPDATE lovak SET neve="$lonev", ev="$ev", rekord="$rekord", rekord_ok="$rekord", penz="$penz", ellet="$ellet", szine="$szine", neme="$neme", belyeg="$belyeg", tulajdonos="$tulajdonos", nevel="$nevel", orszag="$orszag", apja="$apja", anyja="$anyja", imp_orsz="$imp_orsz", imp_kelt="$imp_kelt", elozo="$elozo" WHERE no="$no"');
+        
+        if($torles==1){
+            db_query("DELETE FROM lovak WHERE no='$no'");
+            if(db_affected_rows()){
+            print "<br> ".$lonev. " TOROLVE...";
+            }else{
+            print "<br> ".$lonev. " TORLESE NEM SIKERULT !!!!";
+            }
+            print "<br><br><a href='/?q=lovak'>". drupal_convert_to_utf8("UGRÁS A LOVAKHOZ...", "iso-8859-2") ."</a>";  
+
+            return;    
+        }
+        
+        //print "<br>no:".$no;      
+        //print "<br>apja:".$apja;      
+        //print "<br>apja_ev:".$apja_ev;        
+        //print "<br>apja_2:".$apja_2;      
+        //print "<br>apja_2_ev:".$apja_2_ev;        
+        //print "<br>fed:".$fedezomen;
+        
+        
+        
+        db_query("UPDATE lovak SET neve='$lokernev', ev='$ev', rekord='$rekord', rekord_ok='$rekord', penz='$penz', ellet='$ellet', szine='$szine', neme='$neme', belyeg='$belyeg', tulajdonos='$tulajdonoskernev', nevel='$nevkernev', orszag='$orszag', apja='$apja', apja_ev='$apja_ev', apja_2='$apja_2', apja_2_ev='$apja_2_ev', anyja='$anyja', anyja_ev='$anyja_ev', imp_orsz='$imp_orsz', imp_kelt='$imp_kelt', elozo='$elozo', fedezomen='$fedezomen' WHERE no='$no'");
+        $talalt=db_affected_rows();
+        if($talalt==1){print "<br> SIKERESEN MODOSITVA...";
+            print "no:".$no;
+            print " lonev:".$lokernev;
+        }   
+        if($talalt==0){print "<br> NINCS VALTOZAS !!!!!, a MODOSITAS NEM SIKERULT!!!!";}    
+        if($talalt>1){print "<br> TOBB ILYEN NEVU VAN, SZAMSZERINT ".$talalt." db. !!!!!, a MODOSITAS VEGREHAJTVA MINDENGYIKNEL!!!!";}  
+        
+        print "<br><br><a href='/?q=lovak&&lovak_mod'>". drupal_convert_to_utf8("UGRÁS A MÓDOSÍTÁSHOZ MÁSIK LÓ ADATAINAK BEÍRÁSA VÉGETT...", "iso-8859-2") ."</a>"; 
+        print "<br><br><a href='/?q=lovak&&lovak_new'>". drupal_convert_to_utf8("KÖVETKEZÕ ÚJ LÓ FELVITELE", "iso-8859-2") ."</a>"; 
+            
+        return;
+
+    }
+
+    
+    
+    //Ha nincs meeg kiválasztva ló akkor SELECT
+//  if($lonev==""){
+    if($lonev=="" || $ev==""){
+        $lonev_array=loker("neve", "modositando lo neve", "page");
+        $lonev=$lonev_array["neve"];
+        $ev=$lonev_array["ev"];
+        //return;
+    }
+    
+    //kigyüjteni a lo alapadatait
+    $lokernev=preg_replace("/'/","\'",$lonev);
+    $lo_res = db_query("SELECT * FROM lovak WHERE binary neve = '$lokernev' && ev='$ev'");
+    if(db_affected_rows()>1){print "<br> ERROR: ".$lonev."-".$ev."-bol duplikalva van!!!!";return;}
+    if(db_affected_rows()==1){while($egysor = db_fetch_array($lo_res)){
+    $lo_no=$egysor["no"];$lo_rek=$egysor["REKORD"];$lo_penz=$egysor["PENZ"];$lo_ellet=$egysor["ELLET"];$lo_szine=$egysor["SZINE"];$lo_neme=$egysor["NEME"];$lo_belyeg=$egysor["BELYEG"];$lo_tulajdonos=$egysor["TULAJDONOS"];$lo_nevel=$egysor["NEVEL"];$lo_orszag=$egysor["ORSZAG"];$lo_apja=$egysor["APJA"];$lo_apja_ev=$egysor["APJA_EV"];$lo_apja_2=$egysor["APJA_2"];$lo_apja_2_ev=$egysor["APJA_2_EV"];$lo_anyja=$egysor["ANYJA"];$lo_anyja_ev=$egysor["ANYJA_EV"];$lo_imp_orsz=$egysor["IMP_ORSZ"];$lo_imp_kelt=$egysor["IMP_KELT"];$lo_elozo=$egysor["ELOZO"];$fedezomen=$egysor["FEDEZOMEN"];}}    
+    
+//  print_r($_POST);    
+    //lonev
+        //form összeállítás
+////            $form_text_lonev = "<br><br>".form_textfield("Neve", "neve", $lonev, 20, 30);
+    
+
+    //fedezomen
+    //print "<br>loneme:".$lo_neme;
+    if ($lo_neme=="m"){    
+        //$fedezomen_res = db_query("SELECT fedezomen FROM lovak GROUP BY fedezomen");
+        //while($egysor = db_fetch_array($fedezomen_res)) {$fedezomen_array[] = $egysor["fedezomen"];}
+        $fedezomen_array=array("1" => "IGEN", "2" => "NEM");
+        //print_r($fedezomen_array);
+        //print "<br>Fed:".$fedezomen;
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        
+        //$fedezomen_poz=array_search($fedezomen,$fedezomen_array);
+        
+        if($fedezomen=="IGEN"){
+            $fedezomen_poz="1";
+        }else{
+            $fedezomen_poz="2";
+        }
+        
+        //print "<br>FEDEZOMEN:".$fedezomen;
+        //print "<br>FEDEZOMENPOZ:".$fedezomen_poz;
+        //form összeállítás
+////            $form_sel_fedezomen = "<br><br>".form_select(drupal_convert_to_utf8("Aktuális fedezomenlistára kerüljön?", "iso-8859-2"), "fedezomen", $fedezomen_poz, $fedezomen_array, "", "size=1");
+    }
+    
+    //torles
+////            $form_delete = form_checkbox(drupal_convert_to_utf8("LÓ TÖRLÉSE", "iso-8859-2"), "torles")."<br>";
+    
+    
+    //ev
+        //form összeállítás
+////            $form_text_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Évjárat", "iso-8859-2"), "ev", $ev, 2, 4, "");
+        
+    //szine
+        //feltölteni $szine_array -t a SELECT -hez
+        //$szine_res = db_query("SELECT szine FROM lovak GROUP BY szine");
+        //while($egysor = db_fetch_array($szine_res)) {$szine_array[] = $egysor["szine"];}
+        $szine_array=array("0" => " ", "1" => "f", "2" => "f/sz", "3" => "p", "4" => "p/stp", "5" => "p/vlp", "6" => "s", "7" => "stp", "8" => "stp/f", "9" => "stp/sz", "10" => "sz", "11" => "sz/stp", "12" => "tarka", "13" => "vlp");
+
+        $szine=$lo_szine;
+        if($szine==" "){$szine_poz="0";}
+        if($szine=="f"){$szine_poz="1";}
+        if($szine=="f/sz"){$szine_poz="2";}
+        if($szine=="p"){$szine_poz="3";}
+        if($szine=="p/stp"){$szine_poz="4";}
+        if($szine=="p/vlp"){$szine_poz="5";}
+        if($szine=="s"){$szine_poz="6";}
+        if($szine=="stp"){$szine_poz="7";}
+        if($szine=="stp/f"){$szine_poz="8";}
+        if($szine=="stp/sz"){$szine_poz="9";}
+        if($szine=="sz"){$szine_poz="10";}
+        if($szine=="sz/stp"){$szine_poz="11";}
+        if($szine=="tarka"){$szine_poz="12";}
+        if($szine=="vlp"){$szine_poz="13";}
+        //print "<br>SZIEN:".$szine;
+        //print "<br>POZ:".$szine_poz;
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        //$szine_poz=array_search($lo_szine,$szine_array);
+        
+        //form összeállítás
+////            $form_sel_szine_array=$szine_array;
+////            $form_hidden_stadium = form_hidden("stadium", "elso_form"); 
+////            $form_hidden_fv .= form_hidden("fv", "mod");    
+////            $form_hidden_lonev .= form_hidden("lonev_elozo", $lonev);   
+////            $form_hidden_ev .= form_hidden("ev_elozo", $ev);    
+////            $form_hidden_no .= form_hidden("no", $lo_no);   
+////            $form_sel_szine = "<br><br>".form_select(drupal_convert_to_utf8("Színe", "iso-8859-2"), "szine", $szine_poz, $szine_array, "", "size=1");
+        //$form_text_szine .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "szine_esetleg", "", 5, 5);
+            
+    //neme
+        $neme_res = db_query("SELECT neme FROM lovak GROUP BY neme");
+        while($egysor = db_fetch_array($neme_res)) {$neme_array[] = $egysor["neme"];}
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        $neme_poz=array_search($lo_neme,$neme_array);
+        
+//      print "<br>nemepoz:".$neme_poz;
+        //form összeállítás
+////            $form_sel_neme = "<br><br>".form_select(drupal_convert_to_utf8("Neme", "iso-8859-2"), "neme", $neme_poz, $neme_array, "", "size=1");
+            
+    //ellet
+    
+            
+        //form összeállítás
+////            $form_text_ellet = "<br><br>".form_textfield(drupal_convert_to_utf8("Született (pl: 02.19)", "iso-8859-2"), "ellet", $lo_ellet, 1, 5);
+    
+    //rek
+        //form összeállítás
+////            $form_text_rek = "<br><br>".form_textfield("Rek (pl:  1.20,0)", "rek", $lo_rek, 1, 6);
+        
+    
+    //pénz
+        //form összeállítás
+////            $form_text_penz = "<br><br>".form_textfield(drupal_convert_to_utf8("Pénz", "iso-8859-2"), "penz", $lo_penz, 6, 11, "Ft.-");
+        
+    //bélyeg
+        //form összeállítás
+////            $form_text_belyeg = "<br><br>".form_textfield(drupal_convert_to_utf8("Bélyeg", "iso-8859-2"), "belyeg", $lo_belyeg, 1, 5);
+        
+    //tulajdonos
+        //feltölteni $nevel_array -t a SELECT -hez
+        $tulajdonos_res = db_query("SELECT tulajdonos FROM lovak GROUP BY tulajdonos");
+        while($egysor = db_fetch_array($tulajdonos_res)) {$tulajdonos_array[] = $egysor["tulajdonos"];}
+        $tulajdonos_array[]="";
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        $tulajdonos_poz=array_search($lo_tulajdonos,$tulajdonos_array);
+        
+    //nevel
+        //feltölteni $nevel_array -t a SELECT -hez
+        $nevel_res = db_query("SELECT nevel FROM lovak GROUP BY nevel");
+        while($egysor = db_fetch_array($nevel_res)) {$nevel_array[] = $egysor["nevel"];}
+        $nevel_array[]="";
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        $nevel_poz=array_search($lo_nevel,$nevel_array);
+        
+        //form összeállítás
+////            $form_sel_nevel = "<br><br>".form_select(drupal_convert_to_utf8("Nevel", "iso-8859-2"), "nevel", $nevel_poz, $nevel_array, "", "size=1");
+////            $form_text_nevel .= drupal_convert_to_utf8("&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; ...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "nevel_esetleg", "", 50, 60);
+            
+    //orszag
+        //feltölteni $orszag_array -t a SELECT -hez
+        $orszag_res = db_query("SELECT orszag FROM lovak GROUP BY orszag");
+        while($egysor = db_fetch_array($orszag_res)) {$orszag_array[] = $egysor["orszag"];}
+        $orszag_array[]="";
+        
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        $orszag_poz=array_search($lo_orszag,$orszag_array);
+        
+        //form összeállítás
+////            $form_sel_orszag_array=$orszag_array;
+////            $form_sel_orszag = "<br><br>".form_select(drupal_convert_to_utf8("ország", "iso-8859-2"), "orszag", $orszag_poz, $orszag_array, "", "size=1");
+////            $form_text_orszag .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "orszag_esetleg", "", 6, 5);
+        
+    //apja
+        //feltölteni $apja_array -t a SELECT -hez
+        $apja_res = db_query("SELECT apja FROM lovak GROUP BY apja");
+        while($egysor = db_fetch_array($apja_res)) {$apja_array[] = $egysor["apja"];}
+        $apja_array[]="";
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        $apja_poz=array_search($lo_apja,$apja_array);
+        //form összeállítás
+////            $form_sel_apja_array=$apja_array;
+////            $form_sel_apja = "<br><br>".form_select(drupal_convert_to_utf8("Apja", "iso-8859-2"), "apja", $apja_poz, $apja_array, "", "size=1");
+////            $form_text_apja .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "apja_esetleg", "", 20, 30);
+
+
+
+//apja_ev
+        //form összeállítás
+////            $form_text_apja_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Apja evjárat", "iso-8859-2"), "apja_ev", $lo_apja_ev, 2, 4, "");
+
+    //apja_2
+        //feltölteni $apja_array -t a SELECT -hez
+        $apja_2_res = db_query("SELECT apja FROM lovak GROUP BY apja");
+        while($egysor = db_fetch_array($apja_2_res)) {$apja_2_array[] = $egysor["apja"];}
+        $apja_2_array[]="";
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        $apja_2_poz=array_search($lo_apja_2,$apja_2_array);
+        //form összeállítás
+////            $form_sel_apja_2_array=$apja_2_array;
+////            $form_sel_apja_2 = "<br><br>".form_select(drupal_convert_to_utf8("Apja_2", "iso-8859-2"), "apja_2", $apja_2_poz, $apja_2_array, "", "size=1");
+////            $form_text_apja_2 .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "apja_2_esetleg", "", 20, 30);
+
+
+
+    //apja_2_ev
+        //form összeállítás
+////            $form_text_apja_2_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Apja_2 evjárat", "iso-8859-2"), "apja_2_ev", $lo_apja_2_ev, 2, 4, "");
+
+
+            
+    //anyja
+        //feltölteni $anyja_array -t a SELECT -hez
+        $anyja_res = db_query("SELECT anyja FROM lovak GROUP BY anyja");
+        while($egysor = db_fetch_array($anyja_res)) {$anyja_array[] = $egysor["anyja"];}
+        $anyja_array[]="";
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        $anyja_poz=array_search($lo_anyja,$anyja_array);
+        //form összeállítás
+////            $form_sel_anyja_array=$anyja_array;
+////            $form_sel_anyja = "<br><br>".form_select(drupal_convert_to_utf8("Anyja", "iso-8859-2"), "anyja", $anyja_poz, $anyja_array, "", "size=1");
+////            $form_text_anyja .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "anyja_esetleg", "", 20, 30);
+        
+
+//anyja_ev
+        //form összeállítás
+////            $form_text_anyja_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Anyja evjárat", "iso-8859-2"), "anyja_ev", $lo_anyja_ev, 2, 4, "");
+
+    
+    //imp_orszag
+        //feltölteni $imp_o_array -t a SELECT -hez
+        $imp_orsz_res = db_query("SELECT imp_orsz FROM lovak GROUP BY imp_orsz");
+        while($egysor = db_fetch_array($imp_orsz_res)) {$imp_orsz_array[] = $egysor["imp_orsz"];}
+        $imp_orsz_array[]="";
+        //meghatározni az array-ben a poziciót, a SELECT -hez
+        $imp_orsz_poz=array_search($lo_imp_orsz,$imp_orsz_array);
+        //form összeállítás
+////            $form_sel_imp_orsz_array=$imp_orsz_array;
+////            $form_sel_imp_orsz = "<br><br>".form_select(drupal_convert_to_utf8("Imp.orsz", "iso-8859-2"), "imp_orsz", $imp_orsz_poz, $imp_orsz_array, "", "size=1");
+////            $form_text_imp_orsz .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "imp_orsz_esetleg", "", 6, 5);
+        
+    
+    //imp_kelt
+        //form összeállítás
+////            $form_text_imp_kelt = "<br><br>".form_textfield("Imp.kelt (pl: 2001.01.01)", "imp_kelt", $lo_imp_kelt, 6, 10);
+        
+    //regi_neve
+        //form összeállítás
+////            $form_text_elozo = "<br><br>".form_textfield(drupal_convert_to_utf8("Elõzõ neve", "iso-8859-2"), "elozo", $lo_elozo, 25, 30);
+    
+    
+    //submit, group
+////            $form_submit = "<br><br>".form_submit(drupal_convert_to_utf8("Beküldés", "iso-8859-2"));
+////            $group = '<div class="container-inline">' . $form_text_lonev . " &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" . $form_delete . $form_sel_fedezomen . $form_text_ev . $form_sel_szine . $form_sel_neme . $form_sel_apja . $form_text_apja . $form_text_apja_ev . $form_sel_apja_2 . $form_text_apja_2 . $form_text_apja_2_ev . $form_sel_anyja . $form_text_anyja . $form_text_anyja_ev . $form_hidden_stadium . $form_hidden_lonev . $form_hidden_ev . $form_hidden_no . $form_text_ellet . $form_text_rek . $form_text_penz . $form_text_belyeg . $form_sel_nevel . $form_text_nevel . $form_sel_orszag . $form_text_orszag . $form_sel_imp_orsz . $form_text_imp_orsz . $form_text_imp_kelt . $form_text_elozo . $form_submit .'<div>';
+////            $form = form(form_group($lonev." /".$ev."/ ".drupal_convert_to_utf8("adatainak módosítása", "iso-8859-2"), $group));
+        if ($lonev!=""){
+        print theme("page", $form);
+        }
+return;
+}
+
+
+
+function ivadekai($mod="loker", $ordered="-ev", $lo_no=0){
+//param $szulo= anyja v apa;
+
+if($mod==""){$mod="loker";}
+if($ordered==""){$ordered="-ev";}
+if($lo_no==""){$lo_no="0";}
+
+
+if($mod=="loker"){$t=loker("neve","neve");}
+
+if($mod=="lo_no"){
+    $res=db_query("SELECT no, neve, ev, neme, apja, anyja, rekord, penz FROM lovak 
+    WHERE no = '$lo_no'");
+    $t=db_fetch_array($res);
+}
+
+
+if($t["neve"]!=""){ 
+    $szulo_neve=$t["neve"];
+    $szulo_ev=$t["ev"];
+    $lo_no=$t["no"];
+    $lokernev=preg_replace("/'/","\'",$szulo_neve);
+    if($ordered=='rekord'){
+        $ivadekai_res = db_query("SELECT neve, ev, szine, neme, apja, anyja, rekord, penz FROM lovak 
+    WHERE ((apja = '$lokernev' && apja_ev = '$szulo_ev') || (anyja = '$lokernev' && anyja_ev = '$szulo_ev')) && (rekord != 0) ORDER BY $ordered");
+    }else{
+        $ivadekai_res = db_query("SELECT neve, ev, szine, neme, apja, anyja, rekord, penz FROM lovak 
+    WHERE (apja = '$lokernev' && apja_ev = '$szulo_ev') || (anyja = '$lokernev' && anyja_ev = '$szulo_ev') ORDER BY $ordered");
+    }
+    $ii=0;
+    $output="<b>".$szulo_neve.drupal_convert_to_utf8(" <i><font color='#D1B61B'>ivadékai</font></i><br>", "iso-8859-2")."</b>";
+    $output.="<table class='losablon' width='550'>";
+    $output.="<tr>";$output.="<td>no</td>";$output.="<td>";$output.="<a href='?q=lovak&&ivadekai&&ordered=neve&&lo_no=$lo_no&&mod=lo_no'>neve</a>";
+$output.="</td>";$output.="<td>";$output.="<a href='?q=lovak&&ivadekai&&ordered=-ev&&lo_no=$lo_no&&mod=lo_no'>ev</a>";
+$output.="</td>";$output.="<td>";$output.="<a href='?q=lovak&&ivadekai&&ordered=apja&&lo_no=$lo_no&&mod=lo_no'>apja</a>";
+$output.="</td>";$output.="<td>";$output.="<a href='?q=lovak&&ivadekai&&ordered=anyja&&lo_no=$lo_no&&mod=lo_no'>anyja</a>";
+$output.="</td>";$output.="<td>";$output.="<a href='?q=lovak&&ivadekai&&ordered=rekord&&lo_no=$lo_no&&mod=lo_no'>rekord</a>";
+$output.="</td>";$output.="<td>";$output.="<a href='?q=lovak&&ivadekai&&ordered=-penz&&lo_no=$lo_no&&mod=lo_no'>penz</a>";
+$output.="</td>";
+    $sorszam=0;
+    while($egysor = db_fetch_array($ivadekai_res)) {
+        $sorszam++;
+    $output.="<tr>";$output.="<td>$sorszam</td>";$output.="<td>";$output.=$egysor["neve"];
+$output.="</td>";$output.="<td>";$output.=$egysor["ev"]." ";$output.=$egysor["szine"];
+$output.=$egysor["neme"];
+$output.="</td>";$output.="<td>";$output.=$egysor["apja"];
+$output.="</td>";$output.="<td>";$output.=$egysor["anyja"];
+$output.="</td>";$output.="<td>";$output.=$rek=$egysor["rekord"];
+$output.="</td>";$output.="<td>";$output.=$penz=$egysor["penz"]."Ft.";
+$output.="</td>";
+        $output.="</tr>";
+    $ii++;
+    }
+    $output.="</table>";
+    print theme("page", $output);
+}
+return;
+}
+
+function lovak_autocomplete($vid, $string = '') {
+//$string=substr($string,1);
+//print "<br>MOD:".$mod;
+$regexp = '%(?:^|,\ *)("(?>[^"]*)(?>""[^"]* )*"|(?: [^",]*))%x';
+//<?php
+
+  preg_match_all($regexp, $string, $matches);
+  $array = $matches[1];
+
+  // Fetch last tag
+  $string = trim(array_pop($array));
+
+
+  $matches = array();
+  if ($string) {
+     if($vid=='m'){
+        $result = db_query_range("SELECT no, apja, apja_ev, apja_orszag FROM {lovak} WHERE LOWER(apja) LIKE LOWER('%s%%') && orszag = 'HU' GROUP BY apja ORDER BY apja", $string, 0, 30);
+        while ($user = db_fetch_object($result)) {
+            $matches[$user->apja.'--'.$user->apja_ev.'--'.$user->apja_orszag] = check_plain($user->apja.'--'.$user->apja_ev.'--'.$user->apja_orszag);
+        }
+        
+    }
+    if($vid=='a'){
+        $result = db_query_range("SELECT no, neve, ev, orszag FROM {lovak} WHERE LOWER(neve) LIKE LOWER('%s%%') ORDER BY neve", $string, 0, 30);
+        while ($user = db_fetch_object($result)) {
+            $matches[$user->neve.'--'.$user->ev.'--'.$user->orszag] = check_plain($user->neve.'--'.$user->ev.'--'.$user->orszag);
+        }
+    }
+    if($vid=='n'){
+        $result = db_query_range("SELECT no, neve, ev, orszag FROM {lovak} WHERE neme = 'k' && LOWER(neve) LIKE LOWER('%s%%') ORDER BY neve", $string, 0, 30);
+        while ($user = db_fetch_object($result)) {
+            $matches[$user->neve.'--'.$user->ev.'--'.$user->orszag] = check_plain($user->neve.'--'.$user->ev.'--'.$user->orszag);
+        }
+    }
+    if($vid=='p'){
+        $result = db_query_range("SELECT no, neve, ev, orszag FROM {lovak} WHERE neme != 'k' && LOWER(neve) LIKE LOWER('%s%%') ORDER BY neve", $string, 0, 30);
+        while ($user = db_fetch_object($result)) {
+            $matches[$user->neve.'--'.$user->ev.'--'.$user->orszag] = check_plain($user->neve.'--'.$user->ev.'--'.$user->orszag);
+        }
+    }
+    if($vid=='t'){
+        $result = db_query_range("SELECT tulajdonos FROM {tulajdonos} WHERE LOWER(tulajdonos) LIKE LOWER('%s%%') ORDER BY tulajdonos", $string, 0, 30);
+        while ($user = db_fetch_object($result)) {
+            $matches[$user->tulajdonos] = check_plain($user->tulajdonos);
+        }
+    }
+    
+  }
+  print drupal_to_js($matches);
+  exit();
+}
+
+function lovak_new_form() {
+global $no;
+    $szine_array=array('', 'f', 'f/sz', 'p', 'p/stp', 'p/vlp', 's', 'stp', 'stp/f', 'stp/sz', 'sz', 'sz/stp','tarka', 'vlp');
+    $neme_array=array('', 'm', 'k', 'h');
+    $fedezomen_array=array('NEM', 'IGEN');
+    $torles_array=array('-', '!!! TORLES !!!', '!!! utolso TULAJ TORLES !!!');
+    $torles="-";
+    if($no>0){
+    //print "<br>no:".$no;
+        $res=db_query("SELECT * FROM lovak WHERE no='$no'");
+        while($egysor = db_fetch_array($res)) {
+            $lonev=$egysor["neve"]."--".$egysor["ev"]."--".$egysor["orszag"];
+            $szine=$egysor["szine"];
+            $szine=array_search($szine, $szine_array);
+            $neme=$egysor["neme"];
+            $neme=array_search($neme, $neme_array);
+            $lonev_anyja=$egysor["anyja"]."--".$egysor["anyja_ev"]."--".$egysor["anyja_orszag"];
+            $lonev_apja=$egysor["apja"]."--".$egysor["apja_ev"]."--".$egysor["apja_orszag"];
+            $rekord=$egysor["rekord"];
+            $penz=$egysor["penz"];
+            $ellet=$egysor["ellet"];
+            $belyeg=$egysor["belyeg"];
+            //$tulajdonos=$egysor["tulajdonos"];
+            //$tuldat=date("Y-m-d");
+            $nevel=$egysor["nevel"];
+            $imp_orsz=$egysor["imp_orsz"];
+            $imp_kelt=$egysor["imp_kelt"];
+            $elozo=$egysor["elozo"];
+            $fedezomen=$egysor["fedezomen"];
+            $fedezomen=array_search($fedezomen, $fedezomen_array);
+            $egybevetes=$egysor["egybevetes"];
+            //print "<br>szine:".$szine;
+            //print "<br>neme:".$neme;
+            //print "<br>fedezomen:".$fedezomen;
+        }
+        //utolsó tulajdonos kikeresése
+        $restulaj=db_query("SELECT * FROM tulajdonos WHERE no='$no' ORDER BY datum DESC LIMIT 1");
+            while($egysor = db_fetch_array($restulaj)) {
+                $tuldat=$egysor["datum"];
+                $tulajdonos=$egysor["tulajdonos"];
+            }
+            if($tuldat == ''){
+                $tuldat=date("Y-m-d");
+            }
+
+        //összes eddigi tulajdonos kikeresése
+        $restulaj=db_query("SELECT * FROM tulajdonos WHERE no='$no' ORDER BY datum DESC");
+            if(db_affected_rows()){
+                $tulajdonos_osszes='<br><b>Eddigi tulajdonosok:</b><br>';
+            }
+            while($egysor = db_fetch_array($restulaj)) {
+                $tulajdonos_osszes.=$egysor["datum"];
+                $tulajdonos_osszes.="-";
+                $tulajdonos_osszes.=$egysor["tulajdonos"];
+                $tulajdonos_osszes.="<br>";
+            }
+    }else{
+        $lonev="";
+        $szine="p";
+        $neme="k";
+        $lonev_anyja="";
+        $lonev_apja="";
+        $rekord="";
+        $penz="";
+        $ellet="";
+        $belyeg="";
+        $tulajdonos="";
+        $tulajdonos_osszes="";
+        $tuldat=date("Y-m-d");
+        $nevel="";
+        $imp_orsz="";
+        $imp_kelt="";
+        $elozo="";
+        $fedezomen="NEM";
+        $egybevetes="";
+    }   
+    
+    $form['lonev'] = array('#type' => 'textfield','#title' => 'L &Oacute; N &Eacute; V:<br>L&oacute;n&eacute;v--sz&uuml;l&eacute;v--ORSZ&Aacute;G','#default_value' => $lonev,'#maxlength' => 35,'#size' => 35,'#required' => TRUE);
+    $form['szine'] = array('#type' => 'select','#title' =>'S Z &Iacute; N E','#default_value' => $szine,'#options' => $szine_array);
+    $form['neme'] = array('#type' => 'select','#title' =>'N E M E','#default_value' => $neme,'#options' => $neme_array);
+    $form['lonev_apja'] = array('#type' => 'textfield','#title' => 'A P J A :<br>L&oacute;n&eacute;v--sz&uuml;l&eacute;v--ORSZ&Aacute;G','#default_value' => $lonev_apja, '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/p');
+    $form['lonev_anyja'] = array('#type' => 'textfield','#title' => 'A N Y J A :<br>L&oacute;n&eacute;v--sz&uuml;l&eacute;v--ORSZ&Aacute;G','#default_value' => $lonev_anyja, '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/n');
+    $form['rekord'] = array('#type' => 'textfield','#title' => 'R E K O R D :<br>1.11,1','#default_value' => $rekord,'#maxlength' => 6,'#size' => 4);
+    $form['penz'] = array('#type' => 'textfield','#title' => 'P &Eacute; N Z :<br>12345678','#default_value' => $penz,'#maxlength' => 11,'#size' => 8);
+    $form['ellet'] = array('#type' => 'textfield','#title' => 'S Z &Uuml; L E T E T T :<br>02.13','#default_value' => $ellet,'#maxlength' => 5,'#size' => 4);
+    $form['belyeg'] = array('#type' => 'textfield','#title' => 'B &Eacute; L Y E G','#default_value' => $belyeg,'#maxlength' => 20,'#size' => 10);
+    $form['tulajdonos'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('T U L A J D O N O S', 'iso-8859-2'),'#default_value' => $tulajdonos,'#maxlength' => 60,'#size' => 30, '#autocomplete_path' => 'lovak/autocomplete/t', '#description' => $tulajdonos_osszes);
+//  $form['tulajdonos_osszes'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('összes eddigi tulajdonos', 'iso-8859-2'),'#default_value' => $tulajdonos_osszes,'#maxlength' => 300,'#size' => 300);
+    $form['tuldat'] = array('#type' => 'textfield','#title' => 'T U L. V &Aacute; L T. D &Aacute; T U M A: <br>eeee-hh-nn','#default_value' => $tuldat,'#maxlength' => 10,'#size' => 10);
+    $form['nevel'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('T E N Y &Eacute; S Z T &Otilde;', 'iso-8859-2'),'#default_value' => $nevel,'#maxlength' => 60,'#size' => 30);
+    $form['imp_orsz'] = array('#type' => 'textfield','#title' => 'I M P. O R S Z &Aacute; G :<br>SE','#default_value' => $imp_orsz,'#maxlength' => 3,'#size' => 2);
+    $form['imp_kelt'] = array('#type' => 'textfield','#title' => 'I M P. K E L T :<br>1999.11','#default_value' => $imp_kelt,'#maxlength' => 10,'#size' => 8);
+    $form['elozo'] = array('#type' => 'textfield','#title' => 'E L &Otilde; Z &Otilde;','#default_value' => $elozo,'#maxlength' => 25,'#size' => 20);
+    $form['fedezomen'] = array('#type' => 'select','#title' =>'F E D E Z &Otilde; M &Eacute; N','#default_value' => $fedezomen,'#options' => $fedezomen_array);
+    $form['egybevetes'] = array('#type' => 'textfield','#title' => 'Egybevet&eacute;s (az &eacute;rkez&otilde; adatokn&aacute;l ezen l&oacute;nak a hib&aacute;s form&aacute;tum&aacute;t lehet itt megadni):<br>lonev','#default_value' => $egybevetes,'#maxlength' => 100,'#size' => 100);
+        
+    $form['torles'] = array('#type' => 'select','#title' =>'l&oacute; t&ouml;rl&eacute;se','#default_value' => $torles,'#options' => $torles_array);
+    
+    //$form['stadium'] = array('#type' => 'hidden','#value' => 'TEXT_VAL');
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('k e r e s é s', 'iso-8859-2'));
+    
+    return $form;
+}
+
+
+function loker_form() {
+    //$form['stadium'] = array('#type' => 'hidden','#value' => 'TEXT_VAL');
+    $form['lonev'] = array('#type' => 'textfield', '#title' => drupal_convert_to_utf8('', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#size' => 22,'#autocomplete_path' => 'lovak/autocomplete/a','#required' => TRUE);
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('k e r e s é s', 'iso-8859-2'));
+    return $form;
+}
+
+function lista_vari_form() {
+//  $evjarat_array=array('1982','1983','1984','1985','1986','1987','1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005');
+    //$form['stadium'] = array('#type' => 'hidden','#value' => 'TEXT_VAL');
+    $form['apja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Apja', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/a','#required' => FALSE);
+    $form['anyja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Anyja', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/n','#required' => FALSE);
+//  $form['ev'] = array('#type' => 'select','#title' =>'&Eacute;vj&aacute;rat','#default_value' => $ev,'#options' => $evjarat_array);
+    $form['ev'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Evj&aacute;rat (pl.1998 vagy 1997-2002)', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 9, '#size' => 9, '#required' => FALSE);
+    $form['orszag'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Orsz&aacute;g (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => 'HU', '#maxlength' => 2, '#size' => 3, '#required' => FALSE);
+    $form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Rekord "alatt" (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
+    $form['penz'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Nyerem&eacute;ny "felett" (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => '1000000', '#maxlength' => 35, '#required' => FALSE);
+    $form['nevel'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Teny&eacute;szt&otilde; (el&eacute;g csak sz&oacute;t&ouml;red&eacute;ket be&iacute;rni)', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#required' => FALSE);
+    $form['tulajdonos'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Tulajdonos (el&eacute;g csak sz&oacute;t&ouml;red&eacute;ket be&iacute;rni)', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#required' => FALSE);
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+function lista_ujlovak_form() {
+    $year=date("Y");
+    $month=date("m");                                                      
+    $def=$year.'-'.$month;
+    $form['evho'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('&Eacute;v-h&oacute;', 'iso-8859-2'),'#default_value' => $def, '#maxlength' => 7, '#size' => 5, '#required' => FALSE);
+//  $form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Rekord "alatt"', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
+    //$form['orszag'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Orsz&aacute;g (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => 'HU', '#maxlength' => 2, '#size' => 3, '#required' => FALSE);
+//  $form['rendezes'] = array('#type' => 'select','#title' =>'Sorbarendez&eacute;s szempontja','#default_value' => 'rekord','#options' => array('rekord','nev','apa'));
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+function lista_modlovak_form() {
+    $year=date("Y");
+    $month=date("m");                                                      
+    $def=$year.'-'.$month;
+    $form['evho'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('&Eacute;v-h&oacute;', 'iso-8859-2'),'#default_value' => $def, '#maxlength' => 7, '#size' => 5, '#required' => FALSE);
+//  $form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Rekord "alatt"', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
+    //$form['orszag'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Orsz&aacute;g (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => 'HU', '#maxlength' => 2, '#size' => 3, '#required' => FALSE);
+//  $form['rendezes'] = array('#type' => 'select','#title' =>'Sorbarendez&eacute;s szempontja','#default_value' => 'rekord','#options' => array('rekord','nev','apa'));
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+function lista_modtullovak_form() {
+    $year=date("Y");
+    $month=date("m");                                                      
+    $def=$year.'-'.$month;
+    $form['evho'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('&Eacute;v-h&oacute;', 'iso-8859-2'),'#default_value' => $def, '#maxlength' => 7, '#size' => 5, '#required' => FALSE);
+//  $form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Rekord "alatt"', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
+    //$form['orszag'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Orsz&aacute;g (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => 'HU', '#maxlength' => 2, '#size' => 3, '#required' => FALSE);
+//  $form['rendezes'] = array('#type' => 'select','#title' =>'Sorbarendez&eacute;s szempontja','#default_value' => 'rekord','#options' => array('rekord','nev','apa'));
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+function lista_variforma_form() {
+    $form['evad'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('&Eacute;vad', 'iso-8859-2'),'#default_value' => '2007', '#maxlength' => 4, '#size' => 5, '#required' => FALSE);
+    //$form['penz'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Nyerem&eacute;ny "felett" (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => '1000000', '#maxlength' => 35, '#required' => FALSE);
+    $form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Rekord "alatt"', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
+    //$form['orszag'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Orsz&aacute;g (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => 'HU', '#maxlength' => 2, '#size' => 3, '#required' => FALSE);
+    $form['rendezes'] = array('#type' => 'select','#title' =>'Sorbarendez&eacute;s szempontja','#default_value' => 'rekord','#options' => array('rekord','nev','apa'));
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+function menstat_form_apara() {
+    $form['apja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Apam&eacute;n meghat&aacute;roz&aacute;sa', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/m','#required' => FALSE);
+    //$form['evad'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('&Eacute;vad', 'iso-8859-2'),'#default_value' => '2007', '#maxlength' => 4, '#size' => 5, '#required' => FALSE);
+    $form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Id&otilde;teljes&iacute;tm&eacute;ny - "alatt" pl. 1.20,0', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+function menstat_form_evjaratra() {
+    //$form['apja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Apam&eacute;n meghat&aacute;roz&aacute;sa', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/m','#required' => FALSE);
+    $form['evad'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('&Eacute;vad', 'iso-8859-2'),'#default_value' => '2007', '#maxlength' => 4, '#size' => 5, '#required' => FALSE);
+    $form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Id&otilde;teljes&iacute;tm&eacute;ny - "alatt" pl. 1.20,0', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+
+function lista_varipub_form() {
+    $evjarat_array=array('1982','1983','1984','1985','1986','1987','1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005');
+    //$form['stadium'] = array('#type' => 'hidden','#value' => 'TEXT_VAL');
+    $form['apja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('APJA (vagy apát, vagy anyát választani kell!)', 'iso-8859-2'),'#default_value' => drupal_convert_to_utf8('', 'iso-8859-2'), '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/p','#required' => TRUE);
+    $form['anyja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('ANYJA (vagy apát, vagy anyát választani kell!)', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/n','#required' => FALSE);
+    $form['orszag'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('ORSZÁG (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => 'HU', '#maxlength' => 2, '#size' => 3, '#required' => FALSE);
+    //$form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Rekord "alatt" (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
+    //$form['penz'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Nyerem&eacute;ny "felett" (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => '1000000', '#maxlength' => 35, '#required' => FALSE);
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+function lista_csiko_form() {
+    $evjarat_array=array('2009','2008','2007','2006','2005','2004','2003','2002','2001','2000','1999','1998','1997','1996','1995','1994','1993','1992','1991','1990','1989','1988','1987','1986','1985','1984','1983','1982','1981','1980','1979','1978','1977','1976','1975','1974','1973','1972','1971','1970','1969','1968','1967','1966','1965','1964');
+    $form['ev'] = array('#type' => 'select','#title' =>drupal_convert_to_utf8('Évjárat', 'iso-8859-2'),'#default_value' => $ev,'#options' => $evjarat_array);
+//  $form['ev'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Evj&aacute;rat', 'iso-8859-2'),'#default_value' => '2005', '#maxlength' => 4, '#size' => 5, '#required' => FALSE);
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+
+function lokerteny_form() {
+    $res=db_query("SELECT neve, ev, orszag FROM lovak WHERE fedezomen='IGEN' ORDER BY neve");
+    $fedezomen_array[]=drupal_convert_to_utf8('--Válasszon!--', 'iso-8859-2');
+    while($egysor = db_fetch_array($res)) {
+        $fedezomen_array[]=$egysor["neve"].'--'.$egysor["ev"].'--'.$egysor["orszag"];   
+    }   
+    $form['fedezomen'] = array('#type' => 'select','#title' =>'fedez&otilde;m&eacute;n','#default_value' => '','#options' => $fedezomen_array,'#required' => TRUE);
+    $form['anyja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('anya', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/n','#required' => TRUE);
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
+    return $form;
+}
+
+
+
+function loker($kateg="normal", $hova="normal", $block_v_page="block"){
+$ret="";
+if(isset($_POST['lonev'])){
+//print_r($_POST['lonev']);
+//return;
+    $lonev_ev_o=$_POST['lonev'];
+    $lodarabok = explode("--", $lonev_ev_o);
+    $lonev=$lodarabok[0];
+    $ev=$lodarabok[1];
+    $orszag=$lodarabok[2];
+    if($kateg == "normal"){
+        if(trim($orszag)==""){
+            if($ev==0){
+                $res=db_query("SELECT no, ev, szine, neme, rekord, penz, tulajdonos, nevel FROM lovak WHERE binary neve = '%s' && ev = 0", $lonev);
+            }else{
+                $res=db_query("SELECT no, ev, szine, neme, rekord, penz, tulajdonos, nevel FROM lovak WHERE binary neve = '%s' && ev = '%d'", $lonev, $ev);
+            }
+        }else{
+            if($ev==0){
+                $res=db_query("SELECT no, ev, szine, neme, rekord, penz, tulajdonos, nevel FROM lovak WHERE binary neve = '%s' && orszag = '%s' && ev = 0", $lonev, $orszag);
+            }else{
+                $res=db_query("SELECT no, ev, szine, neme, rekord, penz, tulajdonos, nevel FROM lovak WHERE binary neve = '%s' && ev = '%d' && orszag = '%s'", $lonev, $ev, $orszag);
+            }
+        }
+    }
+    if($kateg == "anyja"){
+        $eredmeny = db_query("SELECT $field, ev, no FROM lovak WHERE $field LIKE '$lokernev%' && neme = 'k' ORDER BY $field");
+    }
+    if($kateg == "apja"){
+        $eredmeny = db_query("SELECT $field, ev, no FROM lovak WHERE $field LIKE '$lokernev%' && neme = 'm' && fedezomen = 'IGEN' ORDER BY $field");
+    }
+    while($egysor = db_fetch_array($res)) {
+            $lonev_no=$egysor['no'];
+            $ev=$egysor['ev'];
+            $szine=$egysor['szine'];
+            $neme=$egysor['neme'];
+            $rekord=$egysor['rekord'];
+            $penz=$egysor['penz'];
+            $tulajdonos=$egysor['tulajdonos'];
+            $nevel=$egysor['nevel'];
+    }
+    
+    $ret=$lonev_no;
+    if($lonev_no == ""){
+        $out='';
+        $out.='<center><font size="5">'.$lonev.' ???</font><br>
+        <img name="nincsilyenlo" src="/themes/ugetomarine/nincsilyenlo.gif" width="400" height="400" border="0" usemap="#m_nincsilyenlo" alt=""><map name="m_nincsilyenlo">
+<area shape="rect" coords="115,351,289,379" href="/" alt="" >
+<area shape="rect" coords="158,313,246,336" href="/lovak" alt="" >
+</map></center>
+        ';
+        print theme($block_v_page, $out);
+        //header("location: /");
+        return $ret;
+    }
+    if($hova=="normal"){
+    
+        //megnezni van-e forma adat a FORMA tablaban ehhez a lohoz
+        $vaneforma=0;
+        $res_lovak=db_query("SELECT neve, ev, orszag, szine, neme FROM lovak WHERE no = '%d'", $no);
+        if(db_affected_rows()>=1){
+        while($egysor = db_fetch_array($res_lovak)) {
+                $lonev=$egysor['neve'];
+                $ev=$egysor['ev'];
+                $orszag=$egysor['orszag'];
+                $szine=$egysor['szine'];
+                $neme=$egysor['neme'];
+
+            }
+        }
+        $iloid=0;
+        $res_lo=db_query("SELECT ILOID FROM LO WHERE SLONEV = '%s'", $lonev);
+        $talalt=db_affected_rows();
+        if($talalt==1){
+            while($egysor = db_fetch_array($res_lo)) {
+                $iloid=$egysor['ILOID'];
+//              print "<br>iloid:".$iloid;
+            }
+        }
+        //FUTASOK KILISTAZASA NL KFT ADATBAZISABOL, kiveve azokat amik le vannak tiltva
+        if($iloid!=0 && $iloid!=2877 && $iloid!=3339){
+            //$res_forma=db_query("SELECT FDIJ FROM FORMA WHERE ILOID = '%d' && IFUTAMID!=0 && DTDATUM>'2000'", $iloid);
+            $res_forma=db_query("SELECT ILOID FROM LO WHERE ILOID = %s", $iloid);
+            if(db_affected_rows()>0){
+                $vaneforma=1;
+            }
+        }
+        //print "<br>f:".$vaneforma;
+        //if($lonev_no==8407){
+
+header("location:/lovak/sablon/$lonev_no/$vaneforma/$iloid");
+
+            
+//          $out="
+//          <br><br>
+//          <table bgcolor='#ffffec' border='0' cellpadding='0' cellspacing='0' width='452' align='center'>
+//            <tr>
+//             <td></td>
+//            </tr>
+//             <td class='loneve' align='center'>
+//              <div class='lo_forma_fo'>&nbsp; &nbsp; &nbsp; &nbsp; $lonev <font size='2'>$ev $szine$neme $rekord</font> <a href='/lovak/sablon/$lonev_no/$vaneforma/$iloid' alt='Pedigr&eacute; t&aacute;bla'><img src='/themes/ugetomarine/pedicon.jpg' border='0' alt='Pedigr&eacute; t&aacute;bla'></a>
+//          ";
+            
+            if($vaneforma==1){
+                //$lonev_=utf82iso88592($lonev);
+                //$lonev_=mb_convert_encoding($lonev,"ISO-8859-2","UTF-8");
+                //$lonev_=iconv("UTF-8", "windows-1250", $lonev);
+                //$out.="
+                //  <a href='/lovak/forma/$lonev_no' alt='Fut&aacute;sok versenyekben'><img src='/themes/ugetomarine/futicon.jpg' border='0' alt='Fut&aacute;sok'></a></div>
+                //";
+                $out.="
+                    <a href='http://82.131.211.99/php/uloforma.php?id=$iloid' alt='Fut&aacute;sok versenyekben' target='_new'><img src='/themes/ugetomarine/futicon.jpg' border='0' alt='Fut&aacute;sok'></a>
+                ";
+                
+            }
+            
+            $out.="</div>
+               </td>
+              </tr>
+              <tr>
+               <td></td>
+              </tr>
+            </table>
+            ";
+            
+            
+            //$out.="<div class='lo_forma_fo'>".$lonev." ".$ev.$szine.$neme."<a href='/lovak/sablon/$lonev_no'><img src='files/pedigre.gif' border='0' alt='Pedigr&eacute; t&aacute;bla'></a>"."<a href='/lovak/forma/$lonev_no'><img src='files/futasok.gif' border='0' alt='Fut&aacute;sok 1998-t&oacute;l'></a></div>";
+            print theme($block_v_page, $out);
+        //}
+    
+    return;
+    
+    
+        //header("location: /lovak/sablon/".$lonev_no);
+    }else{
+        //print "<br>lonev_no".$lonev_no;
+        header("location: /lovak/adm/".$lonev_no);
+        return;
+    }
+}else{
+    $out=drupal_get_form('loker_form');
+}
+print theme($block_v_page, $out);
+return $ret;
+
+    
+}
+
+function lokerteny(){
+
+$ret="";
+if(isset($_POST['fedezomen'])){
+    $fedezomen=$_POST['fedezomen'];
+    $anyja=$_POST['anyja'];
+    //tombazonosito visszafejtese
+    $res=db_query("SELECT neve, ev, orszag FROM lovak WHERE fedezomen='IGEN' ORDER BY neve");
+    $fedezomen_array[]='--V&aacute;laszzon!--';
+    while($egysor = db_fetch_array($res)) {
+        $fedezomen_array[]=$egysor["neve"].'--'.$egysor["ev"].'--'.$egysor["orszag"];   
+    }
+    
+    $fedezomen=$fedezomen_array[$fedezomen];
+    $year=DATE("Y");
+    $proba = drupal_convert_to_utf8("SZÁRMAZÁS MODELLEZÉSE", "iso-8859-2");
+    $sa=explode('--',$fedezomen);
+    $apja=$sa[0];
+    $apja_ev=$sa[1];
+    $apja_orszag=$sa[2];
+    
+    $sa=explode('--',$anyja);
+    $anyja=$sa[0];
+    $anyja_ev=$sa[1];
+    $anyja_orszag=$sa[2];
+        
+    $sa=explode('--',$fedezomen);
+    $apja=$sa[0];
+    $apja_ev=$sa[1];
+    $apja_orszag=$sa[2];
+    $no = 10414;
+    $orszag = 'HU';
+    if($anyja == ""){
+        header("location: /");
+        return;
+    }
+    db_query("INSERT INTO lovak (no, neve, ev, apja, anyja, orszag, apja_ev, anyja_ev, apja_orszag, anyja_orszag) VALUES ('%d', '%s', '%d', '%s', '%s', '%s', '%d', '%d', '%s', '%s')", $no, $proba, $year, $apja, $anyja, $orszag, $apja_ev, $anyja_ev, $apja_orszag, $anyja_orszag);
+    //print "<br>lovak_sablon_no:".$no;
+    lovak_sablon($no);
+    db_query("DELETE FROM lovak WHERE no=10414");
+    return;
+}else{
+    $out=drupal_get_form('lokerteny_form');
+}
+
+
+print theme("page", $out);
+return;
+}
+
+
+
+
+
+
+function lovak_rekordmin($r1,$r2,$r3){
+
+$ret='0:00.0';
+if($r1<'1:00.0'){$r1='9:99.9';}
+if($r2<'1:00.0'){$r2='9:99.9';}
+if($r3<'1:00.0'){$r3='9:99.9';}
+
+if($r1<=$r2){$ret=$r1;}else{$ret=$r2;}
+if($ret<=$r3){$ret=$ret;}else{$ret=$r3;}
+if($ret=='9:99.9'){$ret='0:00.0';}
+
+
+
+$ret=substr($ret,0,1).'.'.substr($ret,2,4);
+$ret=substr($ret,0,4).','.substr($ret,5,1);
+
+//print "<br>".$ret;
+return $ret;
+}
+
+
+
+function lovak_upgrd ($csomagmeret){
+
+    //drupal_('start', 'zoli@uzsoki.hu', 'Lovak frissitese', 'start');
+    //$headers = "From: ugeto@ugeto.com \n";
+    //$headers.= "Content-Type: text/html; charset=UTF-8";
+    //$headers .= "MIME-Version: 1.0 ";
+    //mail("zoli@uzsoki.hu", "START", "START", $headers);
+    //$headers = "From: ugeto@ugeto.com \n";
+    //$headers.= "Content-Type: text/html; charset=UTF8";
+    //$headers .= "MIME-Version: 1.0 ";
+    //drupal_mail($module, '2', 'zoli@uzsoki.hu', 'HU', $params = array(), $from = NULL, $send = TRUE);
+
+    db_query("UPDATE lovak SET upgrd=''");
+    //print "<br>csomagmeret:".$csomagmeret;
+    $reslo=db_query("SELECT ILOID, SLONEV, ISZULETESIEV, IANYAID, IAPAID, SORSZAG, SREKORD_RT, SREKORD_KT, SREKORD_HT, FELETNYEREMENY FROM LO");
+    print "<br>AFF:".db_affected_rows();
+    $mailREKstr="\r\n \r\n Az alabbi lovaknal volt rekordmodositas:";
+    $mailPENZstr="\r\n \r\n Az alabbi lovaknal volt penzmodositas";
+    $mailNEWstr="\r\n \r\n Az alabbi uj lovak tuntek fel az adatok kozott!!! Nem vettuk fel az adatbazisba!!!:";
+    $mailEGYBEstr="\r\n \r\n Az alabbi egybevetesek voltak:";
+    $mailERRORstr="\r\n \r\n Az alabbi hibak vannak:";
+    while($egysor = db_fetch_array($reslo)) {
+        $iloid=$egysor['ILOID'];
+        //db_query("UPDATE LO SET IINTERNET = 1 WHERE ILOID = '$iloid'");
+        $slonev=$egysor['SLONEV'];
+        $slonev=trim($slonev);
+        $iszuletesiev=$egysor['ISZULETESIEV'];
+        $ianyaid=$egysor['IANYAID'];
+        $resanyja=db_query("SELECT SLONEV FROM LO WHERE ILOID = '$ianyaid'");
+        while($egysoranyja = db_fetch_array($resanyja)) {
+            $anyja=$egysoranyja['SLONEV'];
+        }
+        //print "<br>lo:".$slonev."-".$anyja;
+        $iapaid=$egysor['IAPAID'];
+        $sorszag=$egysor['SORSZAG'];
+        $sorszag=lovak_orszag($sorszag);
+        $srekord_rt=$egysor['SREKORD_RT'];
+        $srekord_kt=$egysor['SREKORD_KT'];
+        $srekord_ht=$egysor['SREKORD_HT'];
+        $rekord=lovak_rekordmin($srekord_rt,$srekord_kt,$srekord_ht);
+        $feletnyeremeny=$egysor['FELETNYEREMENY'];
+
+        //eloszor megnezzuk az egybevetes mezot, hogy van-e
+
+        $res2=db_query("SELECT * from lovak WHERE egybevetes = '%s'", $slonev);
+        $darab=db_affected_rows();
+        if($darab>=1){
+            $mailEGYBEstr.="\r\n ".$slonev;
+        }else{//ha nincs egybevetes mezoben ilyen
+            $res2=db_query("SELECT * from lovak WHERE binary neve = '%s'", $slonev);
+            $darab=db_affected_rows();
+            if($darab==1){
+            }else{
+                $res2=db_query("SELECT * from lovak WHERE binary neve = '%s' && anyja = '%s'", $slonev, $anyja);
+                $darab=db_affected_rows();
+                if($darab==1){
+                }elseif($iszuletesiev=="1900"){
+                    $res2=db_query("SELECT * from lovak WHERE binary neve = '%s'", $slonev);
+                }else{
+                    $res2=db_query("SELECT * from lovak WHERE binary neve = '%s' && ev = '%d'", $slonev, $iszuletesiev);
+                }
+                $darab=db_affected_rows();
+            }
+        }
+        if($darab==1){
+            while($egysorazon = db_fetch_array($res2)) {
+                $no=$egysorazon['no'];
+                $regirekord=$egysorazon['rekord'];
+                $regipenz=$egysorazon['penz'];
+            }
+            //$rekord=lovak_rekordmin($srekord_rt,$srekord_kt,$srekord_ht);
+            $up="";
+            if(substr($rekord,0,1) != '0'){
+                db_query("UPDATE lovak SET rekord = '%s', upgrd = '%s' WHERE no = '%d' && (rekord > '%s' || rekord='')", $rekord, 'REK', $no, $rekord);
+//ZOLI TESZ db_query("SELECT * FROM lovak WHERE no = '%d' && (rekord > '%s' || rekord='')");
+
+                if(db_affected_rows()){
+                    //print "<br>REK:".$slonev;
+                    $up.="REK";
+                    $mailREKstr.="\r\n $slonev:".$regirekord." -> ".$rekord;
+                }
+            }
+            if($feletnyeremeny != 0){
+            $penzres=db_query("UPDATE lovak SET penz = '%d', upgrd = '%s' WHERE no = '%d' && penz < '%d'", $feletnyeremeny, 'PENZ', $no, $feletnyeremeny);
+//ZOLI TESZT db_query("SELECT * FROM lovak WHERE no = '%d' && penz < '%d'");
+
+                if(db_affected_rows($penzres)){
+                    //print "<br>PENZ:".$slonev;
+                    $up.="PENZ";
+                    $mailPENZstr.="\r\n $slonev:".$regipenz." -> ".$feletnyeremeny;
+                }
+            }
+        }
+        if($darab<1){
+            $res=db_query("SELECT SLONEV FROM LO WHERE ILOID='$ianyaid'");
+            while($egysor = db_fetch_array($res)) {
+                $anyja=$egysor['SLONEV'];
+                if(substr($anyja,0,10)=="ISMERETLEN"){
+                    $anyja="";
+                }
+                $anyja=trim($anyja);
+            }
+            $res=db_query("SELECT SLONEV FROM LO WHERE ILOID='$iapaid'");
+            while($egysor = db_fetch_array($res)) {
+                $apja=$egysor['SLONEV'];
+                if(substr($apja,0,10)=="ISMERETLEN"){
+                    $apja="";
+                }
+                $apja=trim($apja);
+            }
+            //print "<br>".$egysor['ILOID'];
+            //print "<br>lonev:".$slonev."-".$anyja;
+
+            if(substr($slonev,0,10)=="ISMERETLEN"){
+            }else{
+                if($iloid > 3591){
+                // nem t&ouml;rt&eacute;nik meg a felv&eacute;tl db_query("INSERT INTO lovak (neve, ev, orszag, apja, anyja, rekord, penz, upgrd) VALUES ('%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s')", $slonev, $iszuletesiev, $sorszag, $apja, $anyja, $rekord, $feletnyeremeny, 'NEW');
+                $mailNEWstr.="\r\n $iloid - $slonev ".$iszuletesiev."-".$sorszag."-".$apja."-".$anyja."-".$rekord."-".$feletnyeremeny;
+                }
+            }
+        }
+        if($darab>1){
+            if($iloid > 3500){
+                $mailERRORstr.= "\r\n MAR ELEVE TOBB VAN:".$slonev."-".$iszuletesiev."-".$anyja;
+                $mailERRORstr.= "\r\n NEM TUDJUK ATVENNI AZ ADATBAZISBA, UTANA KELLENE NEZNI!!!!!";
+            }
+        }
+    }
+
+    $headers = "From: ugeto@ugeto.com \n";
+    $headers.= "Content-Type: text/html; charset=UTF-8";
+    $headers .= "MIME-Version: 1.0 ";
+    //drupal_mail("","zoli@uzsoki.hu", "Lovak frissitese", $mailREKstr.$mailPENZstr.$mailNEWstr.$mailEGYBEstr.$mailERRORstr, $headers);
+    //drupal_mail('', 'zoli@uzsoki.hu', 'Lovak frissitese', $mailREKstr.$mailPENZstr.$mailNEWstr.$mailEGYBEstr.$mailERRORstr);
+    //drupal_mail('user-pass', $account->mail, $subject, $body, $from);
+
+    //global $language;
+    //$params['subject'] = t('Feltoltes megtortent');
+    //$params['body']    = 'results:'.$mailREKstr.$mailPENZstr.$mailNEWstr.$mailEGYBEstr.$mailERRORstr;
+    //drupal_mail('smtp', 'smtp-upgrd', 'zoli@uzsoki.hu', $language, $params);
+
+    global $language;
+    $params['subject'] = t('UPGRD');
+    $address='zojuhasz@gmail.com';
+    $message=$mailREKstr.$mailPENZstr.$mailNEWstr.$mailEGYBEstr.$mailERRORstr;
+    $params['body']    =  $message;
+    $params['headers'] = $headers;
+    drupal_mail('smtp', 'smtp-test', $address, $language, $params);
+
+    //drupal_mail('upgrd', 'zoli@uzsoki.hu', 'Lovak frissitese', $mailREKstr.$mailPENZstr.$mailNEWstr.$mailEGYBEstr.$mailERRORstr, '', $headers);
+
+
+    return;
+}
+
+
+
+function lovak_forma($no){
+
+    $res_lovak=db_query("SELECT neve, ev, orszag, szine, neme FROM lovak WHERE no = '%d'", $no);
+    if(db_affected_rows()>=1){
+        while($egysor = db_fetch_array($res_lovak)) {
+            $lonev=$egysor['neve'];
+            $ev=$egysor['ev'];
+            $orszag=$egysor['orszag'];
+            $szine=$egysor['szine'];
+            $neme=$egysor['neme'];
+        }
+    }
+    $iloid=0;
+    $res_lo=db_query("SELECT ILOID FROM LO WHERE SLONEV = '%s'", $lonev);
+    $talalt=db_affected_rows();
+    if($talalt==1){
+        while($egysor = db_fetch_array($res_lo)) {
+            $iloid=$egysor['ILOID'];
+        }
+    }
+    
+    if($iloid!=0){
+        $out="";
+        
+        $out.=$lonev="<b class='lo_forma_fo'>".$lonev." ".$ev.$szine.$neme."<a href='/lovak/sablon/$no'><img src='/themes/ugetomarine/pedicon.jpg' border='0' alt='Pedigr&eacute; t&aacute;bla'></a></b>";
+        
+        
+        $out.="<div class='loforma'><br><table><tr class='forma_fej'>";
+        $out.="<td>d&aacute;tum</td>";
+        $out.="<td>t&aacute;v</td>";
+        $out.="<td>hely</td>";
+        $out.="<td>nyerem&eacute;ny</td>";
+        $out.="<td>id&otilde;</td>";
+        $out.="<td>futamn&eacute;v</td>";
+        $out.="<td>els&otilde; d&iacute;j</td>";
+        //$out.="<td>hajt&oacute;</td>";
+        //$out.="<td>idom&aacute;r</td>";
+        $out.="</tr>";
+        $res_forma=db_query("SELECT FORMA.IKIIRASID, FORMA.DTDATUM, FORMA.SFUTAMNEV, FORMA.FELSODIJ, FORMA.ITAV, FORMA.FDIJ, FORMA.IHELYEZES, FORMA.SKORATLAG, FORMA.IIDOMARID, FORMA.IHAJTOID, HAJTO.SHAJTONEV, IDOMAR.SIDOMARNEV FROM FORMA, HAJTO, IDOMAR WHERE ILOID = '%d' && IFUTAMID!=0 && DTDATUM>'2000' && FORMA.IHAJTOID=HAJTO.IHAJTOID && FORMA.IIDOMARID=IDOMAR.IIDOMARID ORDER BY -IFORMAID ", $iloid);
+        while($egysor = db_fetch_array($res_forma)) {
+            $kiirasid=$egysor['IKIIRASID'];
+            $datum=$egysor['DTDATUM'];
+            $futamnev=$egysor['SFUTAMNEV'];
+            $elsodij=$egysor['FELSODIJ'];
+            
+            if(trim($futamnev)==""){
+                $res_kiiras=db_query("SELECT IKIIRASID, SKIIRASNEV, FDIJ1 FROM KIIRAS WHERE IKIIRASID = '%d'", $kiirasid);
+                while($egysor_kiiras = db_fetch_array($res_kiiras)) {
+                    $futamnev=$egysor_kiiras['SKIIRASNEV'];
+                    $elsodij=$egysor_kiiras['FDIJ1']*1000;
+                }
+            }
+            if($elsodij==0){$elsodij=" - ";}
+            $tav=$egysor['ITAV'];
+            $dij=$egysor['FDIJ'];
+            if($dij==0){$dij=" - ";}
+            $helyezes=$egysor['IHELYEZES'];
+            if($helyezes==98){$helyezes=0;}
+            if($helyezes==97){$helyezes=0;}
+            //if($helyezes==0){$helyezes=" ";}
+            $ido=$egysor['SKORATLAG'];
+            if($ido=='0:00.0'){$ido=" - ";}
+            $idomar=$egysor['SIDOMARNEV'];
+            $hajto=$egysor['SHAJTONEV'];
+            if($helyezes==1){
+                $out.="<tr class='forma_nyero'>";
+            }elseif($helyezes>1 && $helyezes<=3){
+                $out.="<tr class='forma_hely'>";
+            }else{
+                $out.="<tr class='forma_sima'>";
+            }
+            $out.="<td>".$datum."</td>";
+            $out.="<td>".$tav."</td>";
+            $out.="<td>".$helyezes."</td>";
+            $out.="<td>".$dij."</td>";
+            $out.="<td>".$ido."</td>";
+            $out.="<td>".$futamnev."</td>";
+            $out.="<td>".$elsodij."</td>";
+            //$out.="<td>".$hajto."</td>";
+            //$out.="<td>".$idomar."</td>";
+            $out.="</tr>";
+        }
+        $out.="</tr></table>";
+        
+    }else{
+        $out.="Nincs adat!";
+    }
+    
+    $changed=time();
+    //$output=preg_replace("/'/","\'",$out);
+    //db_query("UPDATE node SET changed='$changed', title='Forma' where nid='999999999'");
+    //db_query("UPDATE node_revisions SET body='$out', teaser='$out', uid = '1', timestamp='$changed' where nid='999999999'");
+    //header("location:/node/999999999");
+    
+$output=preg_replace("/'/","\'",$out);
+
+$nid=998000000+$no;
+//print $nid;
+
+
+
+$output.="<br>Az adatfelvitel jelenlegi &aacute;llapot&aacute;ban csak a 2000.01.01 - 2007.07.21 -ig tart&oacute; id&otilde;szak fut&aacute;sai el&eacute;rhet&otilde;ek!";
+
+db_query("SELECT * FROM node WHERE nid='$nid'");
+//print db_affected_rows();
+if(db_affected_rows()==0){
+    db_query("INSERT INTO node (nid, vid) VALUES ('%d', '%d')", $nid, $nid);
+    db_query("INSERT INTO node_revisions (nid, vid) VALUES ('%d','%d')", $nid, $nid);
+}
+
+db_query("UPDATE node SET changed='$changed', uid = '1', title='Forma' where nid='$nid'");
+db_query("UPDATE node_revisions SET body='$output', teaser='$output', uid = '1', timestamp='$changed' where nid='$nid'");
+
+//cache_clear_all('content:999999999:0');
+header("location:/node/".$nid);
+//print theme('page', $out);
+
+}
+
+
+
+
+function lovak_sablon($no,$apnev = "", $apev = 0, $annev="", $anev = 0, $vaneforma=0, $iloid=0, $orszag=""){
+global $user;
+
+
+//if($user->name == 'jz'){
+//               print "<br>no:".$no;
+//}
+
+
+
+
+//print_r($lonev_array);
+//kereses lovak.tabla -ban
+
+
+
+
+$res=db_query("SELECT neve, ev, orszag FROM lovak WHERE no = '%d'", $no);
+
+
+    while($egysor = db_fetch_array($res)) {
+        $lonev=$egysor['neve'];
+        $ev=$egysor['ev'];
+        $orszag=$egysor['orszag'];
+    }
+
+        
+//print "<br>LONEV:".$lonev;
+//ha nyomtatóra, akkor ez "0"
+$monitorra=1;
+
+$remo=array();
+$remono=array();
+
+if($apnev==0){
+    lovak_remo($lonev,$ev,$orszag,&$remo,&$remono);
+}else{
+    lovak_remo($lonev,$ev,$orszag,&$remo,&$remono,$apnev,$apev,$annev,$anev);
+}
+
+
+//print "<br>remo:";print_r($remo);
+//print "<br>remono:";print_r($remono);
+
+$lokernev=preg_replace("/'/","\'",$lonev);
+$lonev_=$lonev;
+
+if(strstr($lokernev, 'RMAZ')) {
+    $res = db_query("SELECT szine, neme, penz, rekord, tulajdonos, nevel, elozo, orszag FROM lovak WHERE binary neve = '$lokernev' && ev='$ev'");
+}else{
+    $res = db_query("SELECT szine, neme, penz, rekord, tulajdonos, nevel, elozo, orszag FROM lovak WHERE binary neve = '$lokernev' && ev='$ev' && orszag='$orszag'");
+}
+$lonev='<font size="4">'.$lonev.'</font>'.", ".$ev;
+
+$tal_res=db_affected_rows();
+if($tal_res){
+    $adatjo=1;
+    $reslo=db_fetch_array($res);
+    $loszine=$reslo['szine'];
+    $loneme=$reslo['neme'];
+    $lopenz=$reslo['penz'];
+    $loorszag=$reslo['orszag'];
+    $lonev.=', '.$loorszag;
+    
+    $loelozo=$reslo['elozo'];
+    $lorek=$reslo['rekord'];
+    if($lorek==0){
+        $lorek="";
+    }
+    $loteny=$reslo['nevel'];
+    $tulajdonos=$reslo['tulajdonos'];
+    
+    if($loelozo!=""){
+        $lonev.="(e.".$loelozo.")"; 
+    }
+    if($lopenz==0){
+        if(strlen(trim($tulajdonos))==0){
+            $lonev.=', '.$loszine.$loneme.', '.$lorek.' &nbsp; '.'<font size=1> '.$loteny.'</font>';
+        }else{
+            $lonev.=', '.$loszine.$loneme.', '.$lorek.' &nbsp; '.'<font size=1> '.$loteny.'</font>'.'<font size=1> <i>/tulajdonos:'.$tulajdonos.'/</i></font>';
+        }
+    }else{
+        if(strlen(trim($tulajdonos))==0){
+            $lonev.=', '.$loszine.$loneme.', '.$lorek.', '.$lopenz.'Ft.- '.'<font size=1> '.$loteny.'</font>';
+        }else{
+            $lonev.=', '.$loszine.$loneme.', '.$lorek.', '.$lopenz.'Ft.- '.'<font size=1> '.$loteny.'</font>'.'<font size=1> <i>/tulajdonos:'.$tulajdonos.'/</i></font>';
+        }
+    }
+    
+}else{
+    $adatjo=0;
+}
+
+
+
+
+//$ped_m=pedigre_m(&$remo,'m');
+$kped=pedigre($remo['k'],'k','yeslink');
+$kkped=pedigre($remo['kk'],'k');
+$kkkped=pedigre($remo['kkk'],'k');
+$kkkkped=pedigre($remo['kkkk'],'k');
+
+$mped=pedigre($remo['m'],'m','yeslink');
+
+$lonev_.=", ".$ev.", ".$lorek.", ".$orszag.", , ";
+//print "<br>remo m:".$remo['m'];
+//print "<br>remo 0:".$lonev_;
+$ped=pedigre($lonev_,$loneme,'yeslink');
+
+//$kped="Richtofit<br>1992, 1325678 Ft.-<br><br>Rododendron<br>1999, 1885678 Ft.-<br>";
+$kped="<div class='lo_ped'>".$kped."</div>";
+$kkped="<div class='lo_ped'>".$kkped."</div>";
+$kkkped="<div class='lo_ped'>".$kkkped."</div>";
+$kkkkped="<div class='lo_ped'>".$kkkkped."</div>";
+$mped="<div class='lo_pedm'>".$mped."</div>";
+$ped="<div class='lo_ped'>".$ped."</div>";
+$lonev="<b class='lo_fo'><br>".$lonev."</b>";
+
+
+$apja_link=$remono['m'];
+$anyja_link=$remono['k'];
+
+//$m=preg_replace("/(.+),/U", "<b>$1</b>", $remo['m'], 1); $m="<div class='lo_o1'><br><br><br>".$m."</div>";
+$m=preg_replace("/(.+),/U", "<b>$1</b>", $remo['m'], 1); $m="<div class='lo_o1'><br><br><br><a href='/lovak/sablon/$apja_link'>".$m."</a></div>";
+$mm=preg_replace("/(.+),/U", "<b>$1</b>", $remo['mm'], 1); $mm="<div class='lo_o2'><br><br><br>".$mm."</div>";
+$mk=preg_replace("/(.+),/U", "<b>$1</b>", $remo['mk'], 1); $mk="<div class='lo_o2'><br><br><br>".$mk."</div>";
+$mmk=preg_replace("/(.+),/U", "<b>$1</b>", $remo['mmk'], 1); $mmk="<div class='lo_o3'><br>".$mmk."</div>";
+$mmm=preg_replace("/(.+),/U", "<b>$1</b>", $remo['mmm'], 1); $mmm="<div class='lo_o3'><br>".$mmm."</div>";
+$mkm=preg_replace("/(.+),/U", "<b>$1</b>", $remo['mkm'], 1); $mkm="<div class='lo_o3'><br>".$mkm."</div>";
+$mkk=preg_replace("/(.+),/U", "<b>$1</b>", $remo['mkk'], 1); $mkk="<div class='lo_o3'><br>".$mkk."</div>";
+$mmmk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['mmmk'], 1); $mmmk="<div class='lo_o4'>".$mmmk."</div>";
+$mmmm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['mmmm'], 1); $mmmm="<div class='lo_o4'>".$mmmm."</div>";
+$mmkm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['mmkm'], 1); $mmkm="<div class='lo_o4'>".$mmkm."</div>";
+$mmkk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['mmkk'], 1); $mmkk="<div class='lo_o4'>".$mmkk."</div>";
+$mkmk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['mkmk'], 1); $mkmk="<div class='lo_o4'>".$mkmk."</div>";
+$mkmm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['mkmm'], 1); $mkmm="<div class='lo_o4'>".$mkmm."</div>";
+$mkkm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['mkkm'], 1); $mkkm="<div class='lo_o4'>".$mkkm."</div>";
+$mkkk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['mkkk'], 1); $mkkk="<div class='lo_o4'>".$mkkk."</div>";
+$m_mped=$m.'<br><br>'.$mped;
+
+
+//$k=preg_replace("/(.+),/U", "<b>$1</b>", $remo['k'], 1); $k="<div class='lo_o1'><br><br><br>".$k."</div>";
+$k=preg_replace("/(.+),/U", "<b>$1</b>", $remo['k'], 1); $k="<div class='lo_o1'><br><br><br><a href='/lovak/sablon/$anyja_link'>".$k."</a></div>";
+$km=preg_replace("/(.+),/U", "<b>$1</b>", $remo['km'], 1); $km="<div class='lo_o2'><br><br><br>".$km."</div>";
+$kk=preg_replace("/(.+),/U", "<b>$1</b>", $remo['kk'], 1); $kk="<div class='lo_o2'><br><br><br>".$kk."</div>";
+$kmk=preg_replace("/(.+),/U", "<b>$1</b>", $remo['kmk'], 1); $kmk="<div class='lo_o3'><br>".$kmk."</div>";
+$kmm=preg_replace("/(.+),/U", "<b>$1</b>", $remo['kmm'], 1); $kmm="<div class='lo_o3'><br>".$kmm."</div>";
+$kkm=preg_replace("/(.+),/U", "<b>$1</b>", $remo['kkm'], 1); $kkm="<div class='lo_o3'><br>".$kkm."</div>";
+$kkk=preg_replace("/(.+),/U", "<b>$1</b>", $remo['kkk'], 1); $kkk="<div class='lo_o3'><br>".$kkk."</div>";
+$kmmk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kmmk'], 1); $kmmk="<div class='lo_o4'>".$kmmk."</div>";
+$kmmm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kmmm'], 1); $kmmm="<div class='lo_o4'>".$kmmm."</div>";
+$kmkm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kmkm'], 1); $kmkm="<div class='lo_o4'>".$kmkm."</div>";
+$kmkk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kmkk'], 1); $kmkk="<div class='lo_o4'>".$kmkk."</div>";
+$kkmk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kkmk'], 1); $kkmk="<div class='lo_o4'>".$kkmk."</div>";
+$kkmm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kkmm'], 1); $kkmm="<div class='lo_o4'>".$kkmm."</div>";
+$kkkm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kkkm'], 1); $kkkm="<div class='lo_o4'>".$kkkm."</div>";
+$kkkk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kkkk'], 1); $kkkk="<div class='lo_o4'>".$kkkk."</div>";
+
+
+
+
+//$k="<div class='lo_o1'>".$remo['k'];$k=preg_replace("/(.+),/U", "<b>$1</b>", $k, 1);
+//$kk="<div class='lo_o2'>".$remo['kk'];$kk=preg_replace("/(.+),/U", "<b>$1</b>", $kk, 1);
+//$km="<div class='lo_o2'>".$remo['km'];$km=preg_replace("/(.+),/U", "<b>$1</b>", $km, 1);
+//$kkk="<div class='lo_o3'>".$remo['kkk'];$kkk=preg_replace("/(.+),/U", "<b>$1</b>", $kkk, 1);
+//$kkm="<div class='lo_o3'>".$remo['kkm'];$kkm=preg_replace("/(.+),/U", "<b>$1</b>", $kkm, 1);
+//$kmk="<div class='lo_o3'>".$remo['kmk'];$kmk=preg_replace("/(.+),/U", "<b>$1</b>", $kmk, 1);
+//$kmm="<div class='lo_o3'>".$remo['kmm'];$kmm=preg_replace("/(.+),/U", "<b>$1</b>", $kmm, 1);
+//$kkkk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kkkk'], 1); $kkkk="<div class='lo_o4'>".$kkkk."</div>";
+//$kkkm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kkkm'], 1); $kkkm="<div class='lo_o4'>".$kkkm."</div>";
+//$kkmk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kkmk'], 1); $kkmk="<div class='lo_o4'>".$kkmk."</div>";
+//$kkmm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kkmm'], 1); $kkmm="<div class='lo_o4'>".$kkmm."</div>";
+//$kmkk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kmkk'], 1); $kmkk="<div class='lo_o4'>".$kmkk."</div>";
+//$kmkm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kmkm'], 1); $kmkm="<div class='lo_o4'>".$kmkm."</div>";
+//$kmmk=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kmmk'], 1); $kmmk="<div class='lo_o4'>".$kmmk."</div>";
+//$kmmm=preg_replace("/(.+),(.*)$/U", "<b>$1</b>", $remo['kmmm'], 1); $kmmm="<div class='lo_o4'>".$kmmm."</div>";
+
+
+//$output.="<table border='0'><tr><td width='30'></td><td>".$ped."</td></table>";
+
+$output='';
+
+                
+
+
+$output.="
+
+<div class='losablon'>
+<table width='635' align='left'>
+<tr><td colspan='3'>$lonev </td><td align='center'>
+";
+if($vaneforma==1){
+$output.="<div class='vk'><a href='http://82.131.211.99/php/uloforma.php?id=$iloid' alt='Fut&aacute;sok versenyekben' target='_new'><img src='/themes/ugetomarine/futicon.jpg' border='0' alt='VERSENYKARRIER'></a></div>";
+}
+
+$output.="
+</td></tr>
+<tr><td colspan='4'>$ped</td></tr>
+<tr><td rowspan='8'><img src='/themes/ugetomarine/spacer.gif' width='200' height='1' border='0'><br>$m<br>$mped</td><td rowspan='4'><img src='/themes/ugetomarine/spacer.gif' width='150' height='1' border='0'>$mm</td><td rowspan='2'><img src='/themes/ugetomarine/spacer.gif' width='100' height='1' border='0'>$mmm</td><td rowspan='1'><img src='/themes/ugetomarine/spacer.gif' width='100' height='1' border='0'>$mmmm</td></tr>
+<tr><td rowspan='1'>$mmmk</td></tr>
+<tr><td rowspan='2'>$mmk</td><td rowspan='1'>$mmkm</td></tr>
+<tr><td rowspan='1'>$mmkk</td></tr>
+<tr><td rowspan='4'>$mk</td><td rowspan='2'>$mkm</td><td rowspan='1'>$mkmm</td></tr>
+<tr><td rowspan='1'>$mkmk</td></tr>
+<tr><td rowspan='2'>$mkk</td><td rowspan='1'>$mkkm</td></tr>
+<tr><td rowspan='1'>$mkkk</td></tr>
+<tr><td rowspan='8'><br>$k</td><td rowspan='4'>$km</td><td rowspan='2'>$kmm</td><td rowspan='1'>$kmmm</td></tr>
+<tr><td rowspan='1'>$kmmk</td></tr>
+<tr><td rowspan='2'>$kmk</td><td rowspan='1'>$kmkm</td></tr>
+<tr><td rowspan='1'>$kmkk</td></tr>
+<tr><td rowspan='4'>$kk</td><td rowspan='2'>$kkm</td><td rowspan='1'>$kkmm</td></tr>
+<tr><td rowspan='1'>$kkmk</td></tr>
+<tr><td rowspan='2'>$kkk</td><td rowspan='1'>$kkkm</td></tr>
+<tr><td rowspan='1'>$kkkk</td></tr>
+<tr><td rowspan='8'><img src='/themes/ugetomarine/spacer.gif' width='200' height='1' border='0'>$kped</td><td rowspan='4'><img src='/themes/ugetomarine/spacer.gif' width='150' height='1' border='0'>$kkped</td><td rowspan='2'><img src='/themes/ugetomarine/spacer.gif' width='100' height='1' border='0'>$kkkped</td><td rowspan='1'><img src='/themes/ugetomarine/spacer.gif' width='100' height='1' border='0'>$kkkkped</td></tr>
+</table>
+";
+
+//$output.='<i>Az adatok aktualit&aacute;sa a 2007.04.15-i &aacute;llapot!</i><br><a href="/lovak/forma/'.$no.'"> -EDDIGI FUT&Aacute;SOK- 2000.01.01-t&otilde;l </a>';
+
+$res_upgrd=db_query("SELECT FORMA_upgrd_versenynap FROM UPGRD WHERE id=1");
+//print db_affected_rows();
+$aktu_dattime='';
+$res=db_fetch_array($res_upgrd);
+$aktu_dattime=$res[FORMA_upgrd_versenynap];
+$aktu=$aktu_dattime;
+
+$output.='<br><i>Az adatok aktualit&aacute;sa a '.$aktu.'-i versenynap ut&aacute;ni &aacute;llapot!</i></a></div>';
+
+
+if($adatjo==0){
+    $output="<b>A D A T A I N K &nbsp; H I &Aacute; N Y O S A K !</b><br><br><a href='javascript: history.go(-1)'>Vissza az el&otilde;z&otilde; lapra...</a>";
+}
+
+
+$output=preg_replace("/'/","\'",$output);
+
+
+$changed=time();
+
+$nid=999000000+$no;
+//print $nid;
+
+
+db_query("SELECT * FROM node WHERE nid='$nid'");
+//print db_affected_rows();
+$uid='1'; // kell a userid, mert k&uuml;l&ouml;nben nem jelenik meg a node.
+if(db_affected_rows()==0){
+    db_query("INSERT INTO node (nid, vid, uid) VALUES ('%d', '%d', '%d')", $nid, $nid, $uid);
+    db_query("INSERT INTO node_revisions (nid, vid, uid) VALUES ('%d','%d', '%d')", $nid, $nid, $uid);
+}
+
+
+db_query("UPDATE node SET changed='$changed', uid='$uid', title='Pedigr&eacute;' where nid='$nid'");
+db_query("UPDATE node_revisions SET body='$output', teaser='$output',  uid='$uid', timestamp='$changed' where nid='$nid'");
+
+
+
+//cache_clear_all('content:999999999:0');
+
+//print "<br>nid:".$nid;
+header("location:/node/".$nid);
+//print theme('page', $output);
+
+
+}
+
+
+
+function lovak_remo($lonev,$ev,$orszag,$remo,$remono, $apnev ="", $apev =0, $annev ="", $apev=0){
+
+
+//zdebug($lonev,$ev,$orszag);
+
+//if($lonev=='Stella'){
+
+
+//print "<br>remo lonev:".$lonev;
+//print "<br>remo ev:".$ev;
+//print "<br>remo orszag:".$orszag;
+
+
+//}
+
+$ret_m_vagy_k=array();
+
+if($apnev == ""){
+    $prefix="";
+    $lonev_osszetett=$lonev.', '.$ev.', '.$orszag;
+    //if($lonev=='Stella'){
+    //    print "<br>nincsapnev";
+    //}
+    //print "<BR>ELOTTE:".print_r($remo);
+    lovak_remo_prefixbol($prefix, &$remo, &$remono, $lonev_osszetett);
+//zdebug($prefix,$remo,$remono);
+    $prefix="m";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+//zdebug($prefix,$remo,$remono);
+    $prefix="k";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="km";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mmm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mmk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mkm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mkk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kmm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kmk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kkm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kkk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    //zdebug($prefix,$remo,$remono);
+}else{
+    //if($lonev=='Stella'){
+    //    print "<br>vanapnev";
+    //}
+    $prefix="m";lovak_remo_prefixbol($prefix, &$remo, $apnev.', '.$apev);
+    $prefix="k";lovak_remo_prefixbol($prefix, &$remo, $annev.', '.$anev);
+
+    $prefix="mk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="km";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mmm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mmk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mkm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="mkk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kmm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kmk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kkm";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+    $prefix="kkk";lovak_remo_prefixbol($prefix, &$remo, &$remono);
+//  zdebug($prefix,$remo,$remono);
+}
+
+
+//print "<br>RET:";print_r($ret);
+//print "<br>RETNO:";print_r($retno);
+
+return;
+}
+
+
+function lovak_remo_prefixbol($prefix, $ret, $retno, $lonev=''){
+
+//zdebug($prefix, $ret, $retno, $lonev);
+
+    if($prefix==''){
+        $lonev_osszetett=$lonev;
+    }else{
+        $lonev_osszetett=$ret[$prefix];
+    }
+    
+    $lonev_array=preg_split('!, !',$lonev_osszetett);
+    if(isset($lonev_array['3'])){
+        $lonev_array['2']=$lonev_array['3'];
+    }
+    //zdebug ($lonev_array);
+//    print_r($lonev_array);
+
+
+    //////////////////////////////////////////////a $lonev_array['2']-nek mindig az orszagnak kellene lennie
+    lovak_remo1($lonev_array['0'],$lonev_array['1'],$lonev_array['2'],$ret_m_vagy_k);
+  //  zdebug($lonev_array['0'],$lonev_array['1'],$lonev_array['2'],$ret_m_vagy_k);
+    //print "<br>k:".$ret_m_vagy_k['m'];
+    //print "<br>m:".$ret_m_vagy_k['k'];
+    $m=$ret_m_vagy_k['m'];
+    $k=$ret_m_vagy_k['k'];
+    
+    preg_match('!(.+)/!', $m, $mm);
+    preg_match('!(.+)/!', $k, $kk);
+    preg_match('!/(.+)!', $m, $mmno);
+    preg_match('!/(.+)!', $k, $kkno);
+
+//ZOLI  
+    //$ret[$prefix]="<b>".$ret[$prefix]."</b>"; 
+    $ret[$prefix.'m']=$mm['1'];
+    $ret[$prefix.'k']=$kk['1'];
+    $retno[$prefix.'m']=$mmno['1'];
+    $retno[$prefix.'k']=$kkno['1'];
+    //zdebug($ret);
+    //print "<br>RET:";print_r($ret);
+    //print "<br>RETNO:";print_r($retno);
+}
+
+function lovak_remo1($lonev,$ev,$orszag,&$loarray){
+    $ret=array();
+    
+    
+    //zdebug($lonev,$ev,$orszag,$loarray);
+    $loapan_root=lovak_one($lonev,$ev,$orszag);
+    //zdebug($loapan_root);
+    //print_r($loapan_root);    
+    if(strstr($loapan_root['ap'],"ISMERETLEN")){$loapan_root['ap']="";}
+    if(strstr($loapan_root['an'],"ISMERETLEN")){$loapan_root['an']="";}
+    
+    
+    if($loapan_root['ap']==""){
+        $loarray['m']="";
+    }else{
+        if($loapan_root['ap_penz']==0){
+            $loarray['m']=$loapan_root['ap'].', '.$loapan_root['ap_ev'].', '.$loapan_root['ap_szine'].$loapan_root['ap_neme'].', '.$loapan_root['ap_orszag'].', '.$loapan_root['ap_rek'].',  /'.$loapan_root['ap_no'].'';
+        }else{
+            $loarray['m']=$loapan_root['ap'].', '.$loapan_root['ap_ev'].', '.$loapan_root['ap_szine'].$loapan_root['ap_neme'].', '.$loapan_root['ap_orszag'].', '.$loapan_root['ap_rek'].', '.$loapan_root['ap_penz'].'Ft.- /'.$loapan_root['ap_no'].'';
+        }
+    }
+    if($loapan_root['an']==""){
+        $loarray['k']="";
+    }else{
+        if($loapan_root['an_penz']==0){
+            $loarray['k']=$loapan_root['an'].', '.$loapan_root['an_ev'].', '.$loapan_root['an_szine'].$loapan_root['an_neme'].', '.$loapan_root['an_orszag'].', '.$loapan_root['an_rek'].',  /'.$loapan_root['an_no'].'';
+        }else{
+            $loarray['k']=$loapan_root['an'].', '.$loapan_root['an_ev'].', '.$loapan_root['an_szine'].$loapan_root['an_neme'].', '.$loapan_root['an_orszag'].', '.$loapan_root['an_rek'].', '.$loapan_root['an_penz'].'Ft.- /'.$loapan_root['an_no'].'';
+        }
+    }
+return;
+}
+
+
+function lovak_one($lonev,$ev,$orszag=''){
+$ret=array();
+
+//zdebug($lonev,$ev,$orszag);
+$lokernev=preg_replace("/'/","\'",$lonev);
+$eredmeny = db_query("SELECT apja, apja_ev, apja_orszag, anyja, anyja_ev, anyja_orszag FROM lovak WHERE binary neve = '$lokernev'");
+if(db_affected_rows()>1){
+    //$eredmeny = db_query("SELECT apja, apja_ev, anyja, anyja_ev FROM lovak WHERE binary neve = '$lokernev' && ev = '$ev' && orszag = '$orszag'");
+    if($orszag==''){
+        $eredmeny = db_query("SELECT apja, apja_ev, apja_orszag, anyja, anyja_ev, anyja_orszag FROM lovak WHERE binary                         neve = '$lokernev' && ev = '$ev'");
+    }else{
+        $eredmeny = db_query("SELECT apja, apja_ev, apja_orszag, anyja, anyja_ev, anyja_orszag FROM lovak WHERE binary                         neve = '$lokernev' && ev = '$ev' && orszag = '$orszag'");
+    }
+
+}
+$tal_db=db_affected_rows();
+//zdebug($orszag,$lokernev,db_affected_rows());
+if($tal_db){
+    $res=db_fetch_array($eredmeny);
+    $ap=$res['apja'];
+    
+$apev=$res['apja_ev'];
+    $apker=preg_replace("/'/","\'",$ap);
+    if($apev==0){
+        $eredmenyap = db_query("SELECT ev, szine, neme, orszag, penz, rekord, no FROM lovak WHERE binary neve = '$apker'");
+    }else{
+        $eredmenyap = db_query("SELECT ev, szine, neme, orszag, penz, rekord, no FROM lovak WHERE binary neve = '$apker' && ev = '$apev'");
+    }
+    $tal_ap=db_affected_rows();
+    if($tal_ap){
+        $resap=db_fetch_array($eredmenyap);
+        $apev=$resap['ev'];
+        $apszine=$resap['szine'];
+        $apneme=$resap['neme'];
+        $aporszag=$resap['orszag'];
+        $aprek=$resap['rekord'];
+        $appenz=0;//$resap['penz'];
+        $apno=$resap['no'];
+        
+    }
+        
+    $an=$res['anyja'];
+    $anev=$res['anyja_ev'];
+    $anker=preg_replace("/'/","\'",$an);
+    if($anev==0){
+        $eredmenyan = db_query("SELECT ev, szine, neme,  orszag, penz, rekord, no FROM lovak WHERE binary neve = '$anker'");
+    }else{
+        $eredmenyan = db_query("SELECT ev, szine, neme,  orszag, penz, rekord, no FROM lovak WHERE binary neve = '$anker' && ev = '$anev'");
+    }
+    $tal_an=db_affected_rows();
+    if($tal_an){
+        $resan=db_fetch_array($eredmenyan);
+        $anev=$resan['ev'];
+        $anszine=$resan['szine'];
+        $anneme=$resan['neme'];
+        $anorszag=$resan['orszag'];
+        $anrek=$resan['rekord'];
+        $anpenz=0;//$resan['penz'];
+        $anno=$resan['no'];
+    }
+    $ret['ap']=$ap;
+    $ret['ap_ev']=$apev;
+    $ret['ap_szine']=$apszine;
+    $ret['ap_neme']=$apneme;
+    $ret['ap_orszag']=$aporszag;
+    $ret['ap_rek']=$aprek;
+    $ret['ap_penz']=$appenz;
+    $ret['ap_no']=$apno;
+    $ret['an']=$an;
+    $ret['an_ev']=$anev;
+    $ret['an_szine']=$anszine;
+    $ret['an_neme']=$anneme;
+    $ret['an_orszag']=$anorszag;
+    $ret['an_rek']=$anrek;
+    $ret['an_penz']=$anpenz;
+    $ret['an_no']=$anno;
+
+
+
+}
+//if($lonev=='Fandango'){print_r($ret);}
+//if($lonev=='Calandrello'){print_r($ret);}
+//if($lonev=='Fandango'){print "<br>orszag".$orszag;}
+
+return $ret;
+}
+
+function pedigre($lo,$mk,$yeslink='nolink'){
+
+$ret='';
+
+
+//zdebug($lo,$mk);
+//print "<br>Ped:";
+if($lo==""){return $ret;}
+//print "<br>loarray:";
+//print_r($lo);
+$lonev=$lo;
+$lonev_array=preg_split('!, !',$lonev);
+$lonev=$lonev_array['0'];
+$ev=$lonev_array['1'];
+$orszag=$lonev_array['3'];
+
+//print "<br>orszag:".$orszag;
+//print "<br>lonev:".$lonev;
+$lokernev=preg_replace("/'/","\'",$lonev);
+
+$select="SELECT no, neve, ev, szine, neme, rekord, penz, apja AS szarm_ap, anyja AS szarm_an FROM lovak WHERE ";
+if($mk == 'k'){ $select.= "anyja = '$lokernev' ";}else{ $select.= "apja = '$lokernev' && orszag = 'HU' && rekord !=0 ";}
+if($mk == 'k' and $ev != 0){ $select.= "&& anyja_ev = '$ev' ";}else{ $select.= "" ;}
+if($orszag != '' and $mk=='k' ){ $select.= "&& anyja_orszag = '$orszag' ";}
+if($orszag != '' and $mk!='k' ){ $select.= "&& apja_orszag = '$orszag' ";}
+if($mk == 'k'){ $select.= "ORDER BY -ev LIMIT 16 ";}else{ $select.= "ORDER BY rekord LIMIT 5 ";}
+
+$result=db_query($select);
+
+
+$tal_db=db_affected_rows();
+if($tal_db){
+    $i=0;
+    if($mk=="k"){
+        $ret.=''.drupal_convert_to_utf8("<i><font color='#D1B61B'>ivadékai:</font></i>", "iso-8859-2").'<br>';
+    }else{
+        $ret.=''.drupal_convert_to_utf8("<i><font color='#D1B61B'>legjobb 5 ivadéka (HU):</font></i>", "iso-8859-2").'<br>';
+    }
+    while ($res = db_fetch_object($result)) {
+        $i++;
+        $no=$res->no;
+        $nev=$res->neve;
+        $ev=$res->ev;
+        $szine=$res->szine;
+        $neme=$res->neme;
+        $rek=$res->rekord;
+        $penz=$res->penz;
+        if($mk == 'k'){$szarm=$res->szarm_ap;}
+        if($mk == 'm'){$szarm=$res->szarm_an;}
+        $ret.='';
+        //if($penz==0){
+//          $ret.=''.$nev.'---'.$no.', <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
+if($yeslink!='nolink'){
+//if($user->name == 'jz'){
+    $ret.='<a href="/lovak/sablon/'.$no.'">'.$nev.'</a>, <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
+//}else{
+//  $ret.=''.$nev.', <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
+//}
+}else{
+    $ret.=''.$nev.', <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
+}
+//ZOLI ez volt mielõtt a fentebbi user authos teszt ágat bele nem tettem        $ret.=''.$nev.', <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
+//          $ret.='<a href="/lovak/sablon/$no>"'.$nev.'</a>, <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
+        //}else{
+        //  $ret.='<b>'.$nev.'</b>, '.$ev.', '.$szine.''.$neme.', '.$rek.', '.$penz.'Ft.- '.$szarm.' &nbsp; ';
+        //}
+        $ret.='';
+        if($i==4){
+            $i=0;
+            $ret.='';
+        }
+    }
+}
+
+return $ret;
+}
+
+function lovak_keres($table, $field, $title1, $title2, $size=50, $feature){
+$ret='';
+
+
+
+
+
+////    $form_sel = form_select(drupal_convert_to_utf8("Választás", "iso-8859-2"), "name", $selected, $source, "", $size);
+//$form_hidden = form_hidden("elozoval", $_POST["edit"]["lonev"]);
+////    $form_submit = form_submit(drupal_convert_to_utf8("Választás", "iso-8859-2"));
+////    $group = '<div class="container-inline">' . $form_sel . $form_hidden . $form_submit . '<div>';
+////    $form = form(form_group(drupal_convert_to_utf8("Választás", "iso-8859-2"), $group));
+
+
+
+print theme("page", $form . theme("table", $fejlecek, $tablazat));
+
+return $ret;
+}
+
+
+function lovak_filter($op, $delta = 0, $format = -1, $text = '') {
+  switch ($op) {
+    case 'list':
+      return array(0 => 'Csunyaszo szuro');
+
+    case 'description':
+      return 'A csunya szavakat kiszuri.';
+
+    case 'no cache':
+      return TRUE;
+
+    case "process":
+      $szavak = array("ortogonalis", "bifokalis", "intellektualisztikus");
+      foreach ($szavak as $szo) {
+        $text = str_replace($szo, "***", $text);
+      }
+      return $text;
+
+    default:
+      return $text;
+  }
+}
+
+function lovak_filter_tips($delta, $format, $long = false) {
+  return 'A csunya szavak automatikus moderalasra kerulnek.';
+}
+
+
+        
+function convert_key_to_value($db, $fieldname, $array_key, $margin_low=0, $margin_high=9999999999){
+            $ret="";
+            
+            //kikeresni, hogy mi az x-edik elem, mert a SELECT -bõl csak a key jön át
+            $res = db_query("SELECT $fieldname FROM $db GROUP BY $fieldname");
+            $ii=0;
+            while($egysor = db_fetch_array($res)){
+            
+//          print_r($egysor);
+    
+                if(isset($margin_low) && isset($margin_high)){
+                    if($egysor[$fieldname]>=$margin_low && $egysor[$fieldname]<=$margin_high){
+                        if($ii==$array_key){
+                        $ret=$egysor[$fieldname];
+                        return $ret;
+                        }
+                    }
+                    $ii++;
+                
+                }else{
+                    if($ii==$array_key){
+
+                        $ret=$egysor[$fieldname];
+
+                        return $ret;
+                    }
+                    $ii++;
+                }
+            }
+
+                        return $ret;
+}
+        
+        
+
+function lovak_nodeapi(&$node, $op, $arg) {
+  switch ($op) {
+    case 'validate':
+      if (isset($node->path) && 
+          $node->type == 'story' &&
+          strpos($node->path, "hirek/") !== 0
+         ) {
+         form_set_error('path', 'Ehhez a tipushoz nem megfelelo alnev.');
+      }
+      break;
+  }
+}
+
+
+
+
+function lovak_evbeiras_univerzalis(){
+
+$ivadek_res=db_query('SELECT no, neve, ev, anyja, apja FROM lovak WHERE binary neve like "%"');
+print "<br>aff:".db_affected_rows();
+while($egysor = db_fetch_array($ivadek_res)){
+    $ivadek_neve=$egysor['neve'];
+    $ivadek_no=$egysor['no'];
+    $ivadek_apja=$egysor['apja'];
+    $ivadek_anyja=$egysor['anyja'];
+    print "<br>Ivadek:".$ivadek_neve;    
+    //keresni anyjat
+    $ivadek_anyja=preg_replace("/'/","\'",$ivadek_anyja);
+    $anyja_res=db_query("SELECT no, neve, ev FROM lovak WHERE binary neve = '$ivadek_anyja'");
+    if(db_affected_rows()==1){
+    print "ANYJA".db_affected_rows();
+    while($egysor = db_fetch_array($anyja_res)){
+        $anyja_ev=$egysor['ev'];
+    }
+    //db_query("UPDATE lovak SET anyja_ev = '$anyja_ev' WHERE no='$ivadek_no'");
+    if(db_affected_rows()){
+        print "ANYJABEIR ".$ivadek_anyja.db_affected_rows();
+    }
+    
+    
+    }
+    //keresni apjat
+    $ivadek_apja=preg_replace("/'/","\'",$ivadek_apja);
+    $apja_res=db_query("SELECT no, neve, ev FROM lovak WHERE binary neve = '$ivadek_apja'");
+    if(db_affected_rows()==1){
+    print "APJA".db_affected_rows();
+
+    while($egysor = db_fetch_array($apja_res)){
+        $apja_ev=$egysor['ev'];
+    }
+    //db_query("UPDATE lovak SET apja_ev = '$apja_ev' WHERE no='$ivadek_no'");
+    if(db_affected_rows()){
+        print "APJABEIR ".$ivadek_apja.db_affected_rows();
+    }
+    }
+}
+return;
+}
+
+
+function lovak_evbeiras_apja(){
+
+$res=db_query("SELECT apja, apja_ev, apja_orszag FROM lovak WHERE apja_ev<1111 || apja_orszag='' GROUP BY apja");
+while($egysor = db_fetch_array($res)){
+    $apja=$egysor['apja'];
+    $res2=db_query("SELECT neve, ev, orszag FROM lovak WHERE binary neve= '%s'", $apja);
+    if(db_affected_rows()==1){
+        print "<br>ONLY:".$apja;
+        while($egysor = db_fetch_array($res2)){
+            $neve=$egysor['neve'];
+            $ev=$egysor['ev'];
+            $orszag=$egysor['orszag'];
+            print "<br>APJANEVE:".$neve.$ev.$orszag;
+            //$res3=db_query("SELECT * FROM lovak WHERE apja='%s'", $neve);
+            $res3=db_query("UPDATE lovak SET apja_ev='%d', apja_orszag='%s' WHERE apja='%s'", $ev, $orszag, $neve);
+            print "AFF:".db_affected_rows();
+        }
+    }elseif(db_affected_rows()<1){
+        print "<br>!!!!!NINCS:".$apja;
+    }elseif(db_affected_rows()>1){
+        print "<br>!!!!!!MULTI:".$apja;
+    }
+}
+}
+
+
+function lovak_evbeiras_anyja(){
+
+$res=db_query("SELECT anyja, anyja_ev, anyja_orszag FROM lovak WHERE anyja_ev<1111 || anyja_orszag='' GROUP BY anyja");
+while($egysor = db_fetch_array($res)){
+    $anyja=$egysor['anyja'];
+    $res2=db_query("SELECT neve, ev, orszag FROM lovak WHERE binary neve= '%s'", $anyja);
+    if(db_affected_rows()==1){
+        print "<br>ONLY:".$anyja;
+        while($egysor = db_fetch_array($res2)){
+            $neve=$egysor['neve'];
+            $ev=$egysor['ev'];
+            $orszag=$egysor['orszag'];
+            print "<br>ANYJANEVE:".$neve.$ev.$orszag;
+            //$res3=db_query("SELECT * FROM lovak WHERE anyja='%s'", $neve);
+            $res3=db_query("UPDATE lovak SET anyja_ev='%d', anyja_orszag='%s' WHERE anyja='%s'", $ev, $orszag, $neve);
+            print "AFF:".db_affected_rows();
+        }
+    }elseif(db_affected_rows()<1){
+        print "<br>!!!!!NINCS:".$anyja;
+    }elseif(db_affected_rows()>1){
+        print "<br>!!!!!!MULTI:".$anyja;
+    }
+}
+}
+
+
+
+function nevdecode($str){
+    $ret="nulla";
+    $len=strlen($str);
+    $ordreg=0;
+    $ret="";
+    for($s=0;$s<=$len;$s++){
+    $char=substr($str,$s,1);
+    $ord=ord($char);
+        if($ord==0){
+        $char="";
+    }
+    if($ordreg==113 && $ord==1){
+        $ret=substr($ret,0,-1)."û";
+        }elseif($ordreg==81 && $ord==1){
+        $ret=substr($ret,0,-1)."õ";}
+        else{
+        $ret.=$char;
+        }
+    if($ord!=0){
+        $ordreg=$ord;
+    }
+
+        
+    }
+//$ret=drupal_convert_to_utf8($ret, "iso-8859-2");  
+return $ret;
+}
+                
+
+function lovak_orszag($o){
+    if($o=='AUT'){$o='AT';}
+    if($o=='CAN'){$o='CA';}
+    if($o=='CZE'){$o='CZ';}
+    if($o=='DEN'){$o='DK';}
+    if($o=='FIN'){$o='FI';}
+    if($o=='FRA'){$o='FR';}
+    if($o=='GER'){$o='DE';}
+    if($o=='HOL'){$o='NL';}
+    if($o=='HUN'){$o='HU';}
+    if($o=='ITY'){$o='IT';}
+    if($o=='NOR'){$o='NO';}
+    if($o=='RUS'){$o='RU';}
+    if($o=='SWE'){$o='SE';}
+    if($o=='UKR'){$o='UA';}
+    if($o=='USA'){$o='US';}
+    if($o=='YUG'){$o='YU';}
+$ret=$o;
+return $ret;
+}
+ 
+
+function lovak_block($op = 'list', $delta = 0, $edit = array()) {
+  global $user;
+  if ($op == 'list') {
+        $blocks[0]['info'] = t('Lovak');
+        $blocks[0]['cache'] = BLOCK_NO_CACHE;
+        return $blocks;
+  }
+  else{
+    
+      $block = array();
+      if(isset($_POST['lonev'])){
+        $lonev_ev_o=$_POST['lonev'];
+        //print "<br>lo:".$lonev_ev_o;
+        $lodarabok = explode("--", $lonev_ev_o);
+        $lonev=$lodarabok[0];
+        $ev=$lodarabok[1];
+        $orszag=$lodarabok[2];
+        if(trim($orszag)==""){
+            if($ev==0){
+                $res=db_query("SELECT no, ev, szine, neme, rekord, penz, tulajdonos, nevel FROM lovak WHERE binary neve = '%s' && ev = 0", $lonev);
+            }else{
+                $res=db_query("SELECT no, ev, szine, neme, rekord, penz, tulajdonos, nevel FROM lovak WHERE binary neve = '%s' && ev = '%d'", $lonev, $ev);
+            }
+        }else{
+            if($ev==0){
+                $res=db_query("SELECT no, ev, szine, neme, rekord, penz, tulajdonos, nevel FROM lovak WHERE binary neve = '%s' && orszag = '%s' && ev = 0", $lonev, $orszag);
+            }else{
+                $res=db_query("SELECT no, ev, szine, neme, rekord, penz, tulajdonos, nevel FROM lovak WHERE binary neve = '%s' && ev = '%d' && orszag = '%s'", $lonev, $ev, $orszag);
+            }
+        }
+        //print "<br>aff:".db_affected_rows();
+        while($egysor = db_fetch_array($res)) {
+            $lonev_no=$egysor['no'];
+            //print "<br>lonev_no:".$lonev_no;
+            $ev=$egysor['ev'];
+            $szine=$egysor['szine'];
+            $neme=$egysor['neme'];
+            $rekord=$egysor['rekord'];
+            $penz=$egysor['penz'];
+            $tulajdonos=$egysor['tulajdonos'];
+            $nevel=$egysor['nevel'];
+        }
+        $ret=$lonev_no;
+        if($lonev_no == ""){
+            $out='';
+            $out.='<center><font size="5">'.$lonev.' ???</font><br>
+            <img name="nincsilyenlo" src="/themes/ugetomarine/nincsilyenlo.gif" width="400" height="400" border="0" usemap="#m_nincsilyenlo" alt=""><map name="m_nincsilyenlo">
+            <area shape="rect" coords="115,351,289,379" href="/" alt="" >
+            <area shape="rect" coords="158,313,246,336" href="/lovak" alt="" >
+            </map></center>
+            ';
+            print theme("page", $out);
+            //header("location: /");
+            return;
+        }
+        //megnezni van-e forma adat a FORMA tablaban ehhez a lohoz
+        $vaneforma=0;
+        $res_lovak=db_query("SELECT neve, ev, orszag, szine, neme FROM lovak WHERE no = '%d'", $no);
+        if(db_affected_rows()>=1){
+            while($egysor = db_fetch_array($res_lovak)) {
+                $lonev=$egysor['neve'];
+                $ev=$egysor['ev'];
+                $orszag=$egysor['orszag'];
+                $szine=$egysor['szine'];
+                $neme=$egysor['neme'];
+            }
+        }
+        $iloid=0;
+        $res_lo=db_query("SELECT ILOID FROM LO WHERE SLONEV = '%s'", $lonev);
+        $talalt=db_affected_rows();
+        if($talalt==1){
+            while($egysor = db_fetch_array($res_lo)) {
+                $iloid=$egysor['ILOID'];
+            }
+        }
+        if($iloid!=0 && $iloid!=2877 && $iloid!=3339){
+            //$res_forma=db_query("SELECT FDIJ FROM FORMA WHERE ILOID = '%d' && IFUTAMID!=0 && DTDATUM>'2000'", $iloid);
+            $res_forma=db_query("SELECT ILOID FROM LO WHERE ILOID = %s", $iloid);
+            if(db_affected_rows()>0){
+                $vaneforma=1;
+            }
+        }
+        header("location:/lovak/sablon/$lonev_no/$vaneforma/$iloid");
+        if($vaneforma==1){
+            $out.="
+                <a href='http://82.131.211.99/php/uloforma.php?id=$iloid' alt='Fut&aacute;sok versenyekben' target='_new'><img src='/themes/ugetomarine/futicon.jpg' border='0' alt='Fut&aacute;sok'></a></div>
+            ";
+        }   
+        $out.="</div></td></tr><tr><td></td> </tr></table>";
+        print theme("page", $out);
+        return;
+    }
+    else{
+        $block['subject'] = t('L&oacute;keres&eacute;s');
+        $block['content'] = drupal_get_form('loker_form');
+    }         
+    return $block;
+    
+
+
+
+  }
+  
+  
+}
+function zdebug($v1='', $v2='', $v3='', $v4='', $v5=''){
+    global $user;
+    if($user->uid==1){
+        print '<br>var 1: ';if(gettype($v1)=='array'){print_r($v1);}else{print $v1;}
+        print '<br>var 2: ';if(gettype($v2)=='array'){print_r($v2);}else{print $v2;}
+        print '<br>var 3: ';if(gettype($v3)=='array'){print_r($v3);}else{print $v3;}
+        print '<br>var 4: ';if(gettype($v4)=='array'){print_r($v4);}else{print $v4;}
+        print '<br>var 5: ';if(gettype($v5)=='array'){print_r($v5);}else{print $v5;}
+    }
+    return;
+}
