@@ -213,7 +213,7 @@ function loker_formz($form, &$form_state, $vid) {
 function lovak_page($flag='normal'){
  global $user, $remo, $remono;
  
- //print_r($_GET);
+ print_r($_GET);
   if(isset($_GET["lovak_dbturk"])){
     
         $res = db_query("SELECT neve, ev, apja, apja_ev, anyja, anyja_ev FROM lovak WHERE lo_vagy_fed='LO'");
