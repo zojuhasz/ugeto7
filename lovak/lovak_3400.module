@@ -5,7 +5,7 @@ function lovak_help($section) {
     case 'admin/modules#description':
     function lovak_importalas(){
     }
-    return t('Lovak adatb·zism˚veletek');
+    return t('Lovak adatb√°zism√ªveletek');
   }
 }
 
@@ -16,13 +16,13 @@ function lovak_perm(){
 function theme_lovak_block($felirat) {
   return $felirat . ' Itt a LO blokkom';
 }
-
+//zz
 function lovak_menu() {
   $items = array();
   $access = array('lovak');
   $access_adm = array('lovak adm');
   $items['lovak'] = array(
-    'title' => drupal_convert_to_utf8(t('Lovak keresÈse'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Lovak keres√©se'), 'iso-8859-2'),
     'description' => 'Lovak',
     'page callback' => 'lovak_page',
     'access arguments' => $access,
@@ -31,7 +31,7 @@ function lovak_menu() {
   );
 
   $items['lovak/adm/%'] = array(
-    'title' => drupal_convert_to_utf8(t('Lovak felvitele-mÛdosÌt·sa'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Lovak felvitele-m√≥dos√≠t√°sa'), 'iso-8859-2'),
     'description' => 'Lovak',
     'page callback' => 'lovak_page',
     'access arguments' => $access_adm,
@@ -40,7 +40,7 @@ function lovak_menu() {
   );
 
    $items['lovak/admfed/%'] = array(
-    'title' => drupal_convert_to_utf8(t('FedeztetÈs keresÈse'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Fedeztet√©s keres√©se'), 'iso-8859-2'),
     'description' => 'Lovak fedeztetes',
     'page callback' => 'lovak_page',
     'access arguments' => $access_adm,
@@ -49,7 +49,7 @@ function lovak_menu() {
   );
 
   $items['lovak/lista/csiko'] = array(
-    'title' => drupal_convert_to_utf8(t('…vj·rat list·ja'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('√âvj√°rat list√°ja'), 'iso-8859-2'),
     'description' => 'Lovak',
     'page callback' => 'lovak_page',
     'access arguments' => $access,
@@ -57,7 +57,7 @@ function lovak_menu() {
     'type' => MENU_CALLBACK,
   );
   $items['lovak/lista/varipub'] = array(
-    'title' => drupal_convert_to_utf8(t('Be·llÌthatÛ lista'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Be√°ll√≠that√≥ lista'), 'iso-8859-2'),
     'description' => 'Lovak',
     'page callback' => 'lovak_page',
     'access arguments' => $access,
@@ -65,7 +65,7 @@ function lovak_menu() {
     'type' => MENU_CALLBACK,
   );
   $items['lovak/teny'] = array(
-    'title' => drupal_convert_to_utf8(t('Sz·rmaz·s modellezÈse'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Sz√°rmaz√°s modellez√©se'), 'iso-8859-2'),
     'page callback' => 'lokerteny',
     'access arguments' => $access,
     'file' => 'lovak.module',
@@ -73,14 +73,14 @@ function lovak_menu() {
   );
   
   $items['lovak/listavari'] = array(
-    'title' => drupal_convert_to_utf8(t('Lovak list·ja'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Lovak list√°ja'), 'iso-8859-2'),
     'page callback' => 'lovak_listavari',
     'access arguments' => $access_adm,
     'file' => 'lovak.module',
     'type' => MENU_CALLBACK,
   );
   $items['lovak/listaforma'] = array(
-    'title' => drupal_convert_to_utf8(t('Lovak keresÈse'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Lovak keres√©se'), 'iso-8859-2'),
     'page callback' => 'lovak_listaforma',
     'access arguments' => $access_adm,
     'file' => 'lovak.module',
@@ -88,7 +88,7 @@ function lovak_menu() {
   );
   
   $items['lovak/menstat'] = array(
-    'title' => drupal_convert_to_utf8(t('Lovak keresÈse'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Lovak keres√©se'), 'iso-8859-2'),
     'page callback' => 'lovak_menstat',
     'access arguments' => $access,
     'file' => 'lovak.module',
@@ -96,35 +96,35 @@ function lovak_menu() {
   );
   
   $items['lovak/listaujlovak'] = array(
-    'title' => drupal_convert_to_utf8(t('Lovak keresÈse'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Lovak keres√©se'), 'iso-8859-2'),
     'page callback' => 'lovak_listaujlovak',
     'access arguments' => $access_adm,
     'file' => 'lovak.module',
     'type' => MENU_CALLBACK,
   );
   $items['lovak/listamodlovak'] = array(
-    'title' =>drupal_convert_to_utf8(t('Lovak keresÈse'), 'iso-8859-2'),
+    'title' =>drupal_convert_to_utf8(t('Lovak keres√©se'), 'iso-8859-2'),
     'page callback' => 'lovak_listamodlovak',
     'access arguments' => $access_adm,
     'file' => 'lovak.module',
     'type' => MENU_CALLBACK,
   );
   $items['lovak/listamodtullovak'] = array(
-    'title' =>drupal_convert_to_utf8(t('Lovak keresÈse'), 'iso-8859-2'),
+    'title' =>drupal_convert_to_utf8(t('Lovak keres√©se'), 'iso-8859-2'),
     'page callback' => 'lovak_listamodtullovak',
     'access arguments' => $access_adm,
     'file' => 'lovak.module',
     'type' => MENU_CALLBACK,
   );
   $items['lovak/importalas'] = array(
-    'title' =>drupal_convert_to_utf8(t('Lovak keresÈse'), 'iso-8859-2'),
+    'title' =>drupal_convert_to_utf8(t('Lovak keres√©se'), 'iso-8859-2'),
     'page callback' => 'lovak_importalas',
     'access arguments' => $access_adm,
     'file' => 'lovak.module',
     'type' => MENU_CALLBACK,
   );
   $items['lovak/autocomplete'] = array(
-    'title' => drupal_convert_to_utf8(t('Lovak keresÈse'), 'iso-8859-2'),
+    'title' => drupal_convert_to_utf8(t('Lovak keres√©se'), 'iso-8859-2'),
     'page callback' => 'lovak_autocomplete',
     'access arguments' => $access,
     'file' => 'lovak.module',
@@ -292,7 +292,7 @@ function lovak_cron() {
  $res=db_query("DELETE FROM node WHERE changed < '$time'-3000000 && nid > 998000000 && nid < 999999998");
  $res=db_query("DELETE FROM node_revisions WHERE timestamp < '$time'-3000000 && nid > 998000000 && nid < 999999998");
 
- // automatikus adat·tvÈtel NL.KFT-tıl......., ha jˆtt ˙j lÛ, akkor lovak_upgrd is indul.
+ // automatikus adat√°tv√©tel NL.KFT-t√µl......., ha j√∂tt √∫j l√≥, akkor lovak_upgrd is indul.
 // lovak_importalas();
  if($hours==3){
       lovak_importalas();
@@ -399,7 +399,7 @@ function lovak_adm($action="new"){
                     $out.=$lonev." m&oacute;dos&iacute;t&aacute;sa megt&ouml;rt&eacute;nt...";
                     db_query("UPDATE lovak SET neve='%s', ev='%s', orszag='%s', szine='%s', neme='%s', anyja='%s', anyja_ev='%s', anyja_orszag='%s', apja='%s', apja_ev='%s', apja_orszag='%s', rekord='%s', penz='%d', ellet='%s', belyeg='%s', tulajdonos='%s', nevel='%s', imp_orsz='%s', imp_kelt='%s', elozo='%s', fedezomen='%s', egybevetes='%s', lo_vagy_fed='%s', updater='%s', updated_date='%s' WHERE no='%d'", $lonev,$ev,$orszag,$szine,$neme,$anyja,$anyja_ev,$anyja_orszag,$apja,$apja_ev,$apja_orszag,$rekord,$penz,$ellet,$belyeg,$tulajdonos,$nevel,$imp_orsz,$imp_kelt,$elozo,$fedezomen,$egybevetes,$lo_vagy_fed,$uservar,$mkt,$no);
 
-                    //tulajdonos t·bl·ba beÌr·s modosÌt·sn·l
+                    //tulajdonos t√°bl√°ba be√≠r√°s modos√≠t√°sn√°l
                     if($tulajdonos != ''){
                     db_query("SELECT * FROM tulajdonos WHERE no = '%d' && tulajdonos = '%s'", $no, $tulajdonos);
                         if(db_affected_rows()==0){
@@ -425,7 +425,7 @@ function lovak_adm($action="new"){
 
                 $no=mysql_insert_id();
 
-                //tulajdonos t·bl·ba beÌr·s ˙jfelvitelnÈl
+                //tulajdonos t√°bl√°ba be√≠r√°s √∫jfelviteln√©l
                 if($tulajdonos != ''){
                     db_query("SELECT * FROM tulajdonos WHERE no = '%d' && tulajdonos = '%s'", $no, $tulajdonos);
                     if(db_affected_rows()==0){
@@ -475,7 +475,7 @@ $param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)
             $rekord=$_POST['rekord'];
             //$rekord=substr($rekord,0,4).substr($rekord,5,1);
             
-            //÷SSZES IVAD…K LEK…R…SE/////////////////////////////////////////////////////////////////////////
+            //√ñSSZES IVAD√âK LEK√âR√âSE/////////////////////////////////////////////////////////////////////////
             $res_ossz=db_query("SELECT ev, neve, COUNT(neve) AS ossz FROM lovak WHERE apja = '$apja' && apja_ev = '$apja_ev' && orszag = 'HU' && lo_vagy_fed='LO' GROUP BY ev");
             if(db_affected_rows()<1){
                 $out.="Nincs eredm&eacute;nye a list&aacute;nak";
@@ -496,7 +496,7 @@ $param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)
                     $ev=$egysor['ev'];
                     $out.="<td>".$egysor['ossz']."</td>";   
                     $ossz_sum+=$egysor['ossz'];
-                    //FUTOTT IVAD…KOK LEK…R…SE $egysor['ev'] …VJ¡RATRA////////////////////////////////////////////////////////
+                    //FUTOTT IVAD√âKOK LEK√âR√âSE $egysor['ev'] √âVJ√ÅRATRA////////////////////////////////////////////////////////
                     $res_futott=db_query("SELECT ev, COUNT(neve) AS futott FROM lovak WHERE ev = '$ev' && apja = '$apja' && apja_ev = '$apja_ev' && rekord > 0 && orszag = 'HU' && lo_vagy_fed='LO' GROUP BY ev");
                     if(db_affected_rows()){
                         //print '<br>';
@@ -509,7 +509,7 @@ $param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)
                     }else{
                         $out.="<td>-</td>"; 
                     }
-                    //REKORD ALATTI IVAD…KOK LEK…R…SE $egysor['ev'] …VJ¡RATRA/////////////////////////////////////////////////
+                    //REKORD ALATTI IVAD√âKOK LEK√âR√âSE $egysor['ev'] √âVJ√ÅRATRA/////////////////////////////////////////////////
                     $res_alatti=db_query("SELECT ev, COUNT(neve) AS alatti FROM lovak WHERE ev = '$ev' && apja = '$apja' && apja_ev = '$apja_ev' && rekord > 0 && rekord < '$rekord' && orszag = 'HU' && lo_vagy_fed='LO' GROUP BY ev");
                     if(db_affected_rows()){
                         while($egysor_alatti = db_fetch_array($res_alatti)) {
@@ -519,7 +519,7 @@ $param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)
                     }else{
                         $out.="<td>-</td>"; 
                     }
-                    //TENYESZTESBE ALLITOTT IVADEKOK $egysor['ev'] …VJ¡RATRA/////////////////////////////////////////////////
+                    //TENYESZTESBE ALLITOTT IVADEKOK $egysor['ev'] √âVJ√ÅRATRA/////////////////////////////////////////////////
                     
                     
                     $res_teny=db_query("SELECT DISTINCT l1.neve AS teny 
@@ -551,7 +551,7 @@ $param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)
             $evjarat=$_POST['evad'];
             $param.="$evjarat -ben sz&uuml;letett lovak apam&eacute;n-statisztik&aacute;ja";        
             $rekord=$_POST['rekord'];   
-            //÷SSZES IVAD…K LEK…R…SE/////////////////////////////////////////////////////////////////////////
+            //√ñSSZES IVAD√âK LEK√âR√âSE/////////////////////////////////////////////////////////////////////////
             $res_ossz=db_query("SELECT ev, apja, apja_ev, COUNT(neve) AS ossz FROM lovak WHERE ev = '$evjarat' && orszag = 'HU' && lo_vagy_fed='LO' GROUP BY apja, apja_ev");
             if(db_affected_rows()<1){
                 $out.="Nincs eredm&eacute;nye a list&aacute;nak";
@@ -586,7 +586,7 @@ $param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)
                     $apja_ev=$egysor['apja_ev'];
                     $out.="<td>".$egysor['ossz']."</td>";   
                     $ossz_sum+=$egysor['ossz'];
-                    //FUTOTT IVAD…KOK LEK…R…SE $egysor['apja'] -RA////////////////////////////////////////////////////////
+                    //FUTOTT IVAD√âKOK LEK√âR√âSE $egysor['apja'] -RA////////////////////////////////////////////////////////
                     $res_futott=db_query("SELECT COUNT(neve) AS futott FROM lovak WHERE ev = '$evjarat' && apja = '$apja' && apja_ev = '$apja_ev' && rekord > 0 && orszag = 'HU' && lo_vagy_fed='LO'");
                     if(db_affected_rows()){
                         //print '<br>';
@@ -599,7 +599,7 @@ $param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)
                     }else{
                         $out.="<td>-</td>";
                     }
-                    //REKORD ALATTI IVAD…KOK LEK…R…SE $egysor['ev'] …VJ¡RATRA/////////////////////////////////////////////////
+                    //REKORD ALATTI IVAD√âKOK LEK√âR√âSE $egysor['ev'] √âVJ√ÅRATRA/////////////////////////////////////////////////
                     $res_alatti=db_query("SELECT COUNT(neve) AS alatti FROM lovak WHERE ev = '$evjarat' && apja = '$apja' && apja_ev = '$apja_ev' && rekord > 0 && rekord < '$rekord' && orszag = 'HU' && lo_vagy_fed='LO'");
                     if(db_affected_rows()){
                         while($egysor_alatti = db_fetch_array($res_alatti)) {
@@ -609,7 +609,7 @@ $param="Apam&eacute;n-statisztika (Magyarorsz&aacute;gon sz&uuml;letett lovakra)
                     }else{
                         $out.="<td>-</td>"; 
                     }
-                    //TENYESZTESBE ALLITOTT IVADEKOK $egysor['ev'] …VJ¡RATRA/////////////////////////////////////////////////
+                    //TENYESZTESBE ALLITOTT IVADEKOK $egysor['ev'] √âVJ√ÅRATRA/////////////////////////////////////////////////
                     
 
                     $res_teny=db_query("SELECT DISTINCT l1.neve AS teny 
@@ -909,7 +909,7 @@ function lovak_importalas(){
 
   //FORMA adatbazis uprgade--------------------------
      $forma_message="";
-     //utolsÛ meglevı versenynap d·tum·nak kikÈrÈse UPGRD t·bl·bÛl
+     //utols√≥ meglev√µ versenynap d√°tum√°nak kik√©r√©se UPGRD t√°bl√°b√≥l
         $res_upgrd=db_query("SELECT FORMA_upgrd_versenynap FROM UPGRD WHERE id=1");
         $res=db_fetch_array($res_upgrd);
         $utolso_datum=$res[FORMA_upgrd_versenynap];
@@ -931,7 +931,7 @@ function lovak_importalas(){
        //print "<br>streamvagott:".$streamvagott;
         $stream_array = explode("br>", $streamvagott);
 
-        //NL stream feldarabol·sa Ès feldolgoz·sa
+        //NL stream feldarabol√°sa √©s feldolgoz√°sa
       $jottujforma=0;
       foreach($stream_array as $v){
         if(substr($v,6,1)=="_"){
@@ -977,16 +977,16 @@ function lovak_importalas(){
 
   //LO adatbazis uprgade--------------------------
       $lo_message="";
-      //UTOE LO t·bla null·z·sa
+      //UTOE LO t√°bla null√°z√°sa
       db_query("DELETE FROM LO");
 
-      //NL stream begy¸jtÈse
+      //NL stream begy√ºjt√©se
       $stream = getUrlStream("http://82.131.211.99/zoli/ugeto_UTOE.php?func=lovak&param=1&secu=abrakadabra");
       $stream = iconv("ISO-8859-2","UTF-8",$stream);
       $stream_array = explode("br>", $stream);
       $LO_recno=sizeof($stream_array);
 
-      //NL stream feldarabol·sa Ès feldolgoz·sa
+      //NL stream feldarabol√°sa √©s feldolgoz√°sa
       foreach($stream_array as $v){
         if(substr($v,4,1)=="_"){
              //print "<br>sor:".$v."<br>";
@@ -1387,7 +1387,7 @@ function lovak_mod($lonev="", $ev=""){
         
     
     
-    //volt m·r form, akkor ell.
+    //volt m√°r form, akkor ell.
     if(isset($_POST['edit']['stadium']) && $_POST['edit']['stadium']=='elso_form'){
         //print_r($_POST);
         $lonev=$_POST['edit']['neve'];
@@ -1465,9 +1465,9 @@ function lovak_mod($lonev="", $ev=""){
         }
         $no=$_POST['edit']['no'];
         
-        //VALAMILYEN ELLEN’RZ…S KELL ITT IS     
+        //VALAMILYEN ELLEN√ïRZ√âS KELL ITT IS     
         $error="";
-        //Ha volt LON…V v·ltoztat·s
+        //Ha volt LON√âV v√°ltoztat√°s
         $lokernev=preg_replace("/'/","\'",$lonev);
         if($lonev_elozo != $lokernev){
             $lokernev=preg_replace("/'/","\'",$lonev_elozo);
@@ -1495,7 +1495,7 @@ function lovak_mod($lonev="", $ev=""){
             }else{
             print "<br> ".$lonev. " TORLESE NEM SIKERULT !!!!";
             }
-            print "<br><br><a href='/?q=lovak'>". drupal_convert_to_utf8("UGR¡S A LOVAKHOZ...", "iso-8859-2") ."</a>";
+            print "<br><br><a href='/?q=lovak'>". drupal_convert_to_utf8("UGR√ÅS A LOVAKHOZ...", "iso-8859-2") ."</a>";
 
             return;    
         }
@@ -1518,8 +1518,8 @@ function lovak_mod($lonev="", $ev=""){
         if($talalt==0){print "<br> NINCS VALTOZAS !!!!!, a MODOSITAS NEM SIKERULT!!!!";}    
         if($talalt>1){print "<br> TOBB ILYEN NEVU VAN, SZAMSZERINT ".$talalt." db. !!!!!, a MODOSITAS VEGREHAJTVA MINDENGYIKNEL!!!!";}  
         
-        print "<br><br><a href='/?q=lovak&&lovak_mod'>". drupal_convert_to_utf8("UGR¡S A M”DOSÕT¡SHOZ M¡SIK L” ADATAINAK BEÕR¡SA V…GETT...", "iso-8859-2") ."</a>"; 
-        print "<br><br><a href='/?q=lovak&&lovak_new'>". drupal_convert_to_utf8("K÷VETKEZ’ ⁄J L” FELVITELE", "iso-8859-2") ."</a>"; 
+        print "<br><br><a href='/?q=lovak&&lovak_mod'>". drupal_convert_to_utf8("UGR√ÅS A M√ìDOS√çT√ÅSHOZ M√ÅSIK L√ì ADATAINAK BE√çR√ÅSA V√âGETT...", "iso-8859-2") ."</a>"; 
+        print "<br><br><a href='/?q=lovak&&lovak_new'>". drupal_convert_to_utf8("K√ñVETKEZ√ï √öJ L√ì FELVITELE", "iso-8859-2") ."</a>"; 
 
         return;
 
@@ -1527,7 +1527,7 @@ function lovak_mod($lonev="", $ev=""){
 
     
     
-    //Ha nincs meeg kiv·lasztva lÛ akkor SELECT
+    //Ha nincs meeg kiv√°lasztva l√≥ akkor SELECT
 //  if($lonev==""){
     if($lonev=="" || $ev==""){
         $lonev_array=loker("neve", "modositando lo neve", "page");
@@ -1536,7 +1536,7 @@ function lovak_mod($lonev="", $ev=""){
         //return;
     }
     
-    //kigy¸jteni a lo alapadatait
+    //kigy√ºjteni a lo alapadatait
     $lokernev=preg_replace("/'/","\'",$lonev);
     $lo_res = db_query("SELECT * FROM lovak WHERE binary neve = '$lokernev' && ev='$ev' && lo_vagy_fed='LO'");
     if(db_affected_rows()>1){print "<br> ERROR: ".$lonev."-".$ev."-bol duplikalva van!!!!";return;}
@@ -1545,7 +1545,7 @@ function lovak_mod($lonev="", $ev=""){
     
 //  print_r($_POST);    
     //lonev
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_text_lonev = "<br><br>".form_textfield("Neve", "neve", $lonev, 20, 30);
     
 
@@ -1557,7 +1557,7 @@ function lovak_mod($lonev="", $ev=""){
         $fedezomen_array=array("1" => "IGEN", "2" => "NEM");
         //print_r($fedezomen_array);
         //print "<br>Fed:".$fedezomen;
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         
         //$fedezomen_poz=array_search($fedezomen,$fedezomen_array);
         
@@ -1569,20 +1569,20 @@ function lovak_mod($lonev="", $ev=""){
         
         //print "<br>FEDEZOMEN:".$fedezomen;
         //print "<br>FEDEZOMENPOZ:".$fedezomen_poz;
-        //form ˆssze·llÌt·s
-////            $form_sel_fedezomen = "<br><br>".form_select(drupal_convert_to_utf8("Aktu·lis fedezomenlist·ra ker¸ljˆn?", "iso-8859-2"), "fedezomen", $fedezomen_poz, $fedezomen_array, "", "size=1");
+        //form √∂ssze√°ll√≠t√°s
+////            $form_sel_fedezomen = "<br><br>".form_select(drupal_convert_to_utf8("Aktu√°lis fedezomenlist√°ra ker√ºlj√∂n?", "iso-8859-2"), "fedezomen", $fedezomen_poz, $fedezomen_array, "", "size=1");
     }
     
     //torles
-////            $form_delete = form_checkbox(drupal_convert_to_utf8("L” T÷RL…SE", "iso-8859-2"), "torles")."<br>";
+////            $form_delete = form_checkbox(drupal_convert_to_utf8("L√ì T√ñRL√âSE", "iso-8859-2"), "torles")."<br>";
     
     
     //ev
-        //form ˆssze·llÌt·s
-////            $form_text_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("…vj·rat", "iso-8859-2"), "ev", $ev, 2, 4, "");
+        //form √∂ssze√°ll√≠t√°s
+////            $form_text_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("√âvj√°rat", "iso-8859-2"), "ev", $ev, 2, 4, "");
         
     //szine
-        //feltˆlteni $szine_array -t a SELECT -hez
+        //felt√∂lteni $szine_array -t a SELECT -hez
         //$szine_res = db_query("SELECT szine FROM lovak GROUP BY szine");
         //while($egysor = db_fetch_array($szine_res)) {$szine_array[] = $egysor["szine"];}
         $szine_array=array("0" => " ", "1" => "f", "2" => "f/sz", "3" => "p", "4" => "p/stp", "5" => "p/vlp", "6" => "s", "7" => "stp", "8" => "stp/f", "9" => "stp/sz", "10" => "sz", "11" => "sz/stp", "12" => "tarka", "13" => "vlp");
@@ -1604,90 +1604,90 @@ function lovak_mod($lonev="", $ev=""){
         if($szine=="vlp"){$szine_poz="13";}
         //print "<br>SZIEN:".$szine;
         //print "<br>POZ:".$szine_poz;
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         //$szine_poz=array_search($lo_szine,$szine_array);
         
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_sel_szine_array=$szine_array;
 ////            $form_hidden_stadium = form_hidden("stadium", "elso_form"); 
 ////            $form_hidden_fv .= form_hidden("fv", "mod");    
 ////            $form_hidden_lonev .= form_hidden("lonev_elozo", $lonev);   
 ////            $form_hidden_ev .= form_hidden("ev_elozo", $ev);    
 ////            $form_hidden_no .= form_hidden("no", $lo_no);   
-////            $form_sel_szine = "<br><br>".form_select(drupal_convert_to_utf8("SzÌne", "iso-8859-2"), "szine", $szine_poz, $szine_array, "", "size=1");
+////            $form_sel_szine = "<br><br>".form_select(drupal_convert_to_utf8("Sz√≠ne", "iso-8859-2"), "szine", $szine_poz, $szine_array, "", "size=1");
         //$form_text_szine .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "szine_esetleg", "", 5, 5);
 
     //neme
         $neme_res = db_query("SELECT neme FROM lovak WHERE lo_vagy_fed='LO' GROUP BY neme");
         while($egysor = db_fetch_array($neme_res)) {$neme_array[] = $egysor["neme"];}
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         $neme_poz=array_search($lo_neme,$neme_array);
         
 //      print "<br>nemepoz:".$neme_poz;
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_sel_neme = "<br><br>".form_select(drupal_convert_to_utf8("Neme", "iso-8859-2"), "neme", $neme_poz, $neme_array, "", "size=1");
             
     //ellet
     
 
-        //form ˆssze·llÌt·s
-////            $form_text_ellet = "<br><br>".form_textfield(drupal_convert_to_utf8("Sz¸letett (pl: 02.19)", "iso-8859-2"), "ellet", $lo_ellet, 1, 5);
+        //form √∂ssze√°ll√≠t√°s
+////            $form_text_ellet = "<br><br>".form_textfield(drupal_convert_to_utf8("Sz√ºletett (pl: 02.19)", "iso-8859-2"), "ellet", $lo_ellet, 1, 5);
     
     //rek
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_text_rek = "<br><br>".form_textfield("Rek (pl:  1.20,0)", "rek", $lo_rek, 1, 6);
         
     
-    //pÈnz
-        //form ˆssze·llÌt·s
-////            $form_text_penz = "<br><br>".form_textfield(drupal_convert_to_utf8("PÈnz", "iso-8859-2"), "penz", $lo_penz, 6, 11, "Ft.-");
+    //p√©nz
+        //form √∂ssze√°ll√≠t√°s
+////            $form_text_penz = "<br><br>".form_textfield(drupal_convert_to_utf8("P√©nz", "iso-8859-2"), "penz", $lo_penz, 6, 11, "Ft.-");
         
-    //bÈlyeg
-        //form ˆssze·llÌt·s
-////            $form_text_belyeg = "<br><br>".form_textfield(drupal_convert_to_utf8("BÈlyeg", "iso-8859-2"), "belyeg", $lo_belyeg, 1, 5);
+    //b√©lyeg
+        //form √∂ssze√°ll√≠t√°s
+////            $form_text_belyeg = "<br><br>".form_textfield(drupal_convert_to_utf8("B√©lyeg", "iso-8859-2"), "belyeg", $lo_belyeg, 1, 5);
         
     //tulajdonos
-        //feltˆlteni $nevel_array -t a SELECT -hez
+        //felt√∂lteni $nevel_array -t a SELECT -hez
         $tulajdonos_res = db_query("SELECT tulajdonos FROM lovak where lo_vagy_fed='LO' GROUP BY tulajdonos");
         while($egysor = db_fetch_array($tulajdonos_res)) {$tulajdonos_array[] = $egysor["tulajdonos"];}
         $tulajdonos_array[]="";
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         $tulajdonos_poz=array_search($lo_tulajdonos,$tulajdonos_array);
 
     //nevel
-        //feltˆlteni $nevel_array -t a SELECT -hez
+        //felt√∂lteni $nevel_array -t a SELECT -hez
         $nevel_res = db_query("SELECT nevel FROM lovak where lo_vagy_fed='LO'GROUP BY nevel");
         while($egysor = db_fetch_array($nevel_res)) {$nevel_array[] = $egysor["nevel"];}
         $nevel_array[]="";
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         $nevel_poz=array_search($lo_nevel,$nevel_array);
 
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_sel_nevel = "<br><br>".form_select(drupal_convert_to_utf8("Nevel", "iso-8859-2"), "nevel", $nevel_poz, $nevel_array, "", "size=1");
 ////            $form_text_nevel .= drupal_convert_to_utf8("&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; ...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "nevel_esetleg", "", 50, 60);
 
     //orszag
-        //feltˆlteni $orszag_array -t a SELECT -hez
+        //felt√∂lteni $orszag_array -t a SELECT -hez
         $orszag_res = db_query("SELECT orszag FROM lovak where lo_vagy_fed='LO'GROUP BY orszag");
         while($egysor = db_fetch_array($orszag_res)) {$orszag_array[] = $egysor["orszag"];}
         $orszag_array[]="";
         
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         $orszag_poz=array_search($lo_orszag,$orszag_array);
         
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_sel_orszag_array=$orszag_array;
-////            $form_sel_orszag = "<br><br>".form_select(drupal_convert_to_utf8("orsz·g", "iso-8859-2"), "orszag", $orszag_poz, $orszag_array, "", "size=1");
+////            $form_sel_orszag = "<br><br>".form_select(drupal_convert_to_utf8("orsz√°g", "iso-8859-2"), "orszag", $orszag_poz, $orszag_array, "", "size=1");
 ////            $form_text_orszag .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "orszag_esetleg", "", 6, 5);
         
     //apja
-        //feltˆlteni $apja_array -t a SELECT -hez
+        //felt√∂lteni $apja_array -t a SELECT -hez
         $apja_res = db_query("SELECT apja FROM lovak where lo_vagy_fed='LO' GROUP BY apja");
         while($egysor = db_fetch_array($apja_res)) {$apja_array[] = $egysor["apja"];}
         $apja_array[]="";
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         $apja_poz=array_search($lo_apja,$apja_array);
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_sel_apja_array=$apja_array;
 ////            $form_sel_apja = "<br><br>".form_select(drupal_convert_to_utf8("Apja", "iso-8859-2"), "apja", $apja_poz, $apja_array, "", "size=1");
 ////            $form_text_apja .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "apja_esetleg", "", 20, 30);
@@ -1695,17 +1695,17 @@ function lovak_mod($lonev="", $ev=""){
 
 
 //apja_ev
-        //form ˆssze·llÌt·s
-////            $form_text_apja_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Apja evj·rat", "iso-8859-2"), "apja_ev", $lo_apja_ev, 2, 4, "");
+        //form √∂ssze√°ll√≠t√°s
+////            $form_text_apja_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Apja evj√°rat", "iso-8859-2"), "apja_ev", $lo_apja_ev, 2, 4, "");
 
     //apja_2
-        //feltˆlteni $apja_array -t a SELECT -hez
+        //felt√∂lteni $apja_array -t a SELECT -hez
         $apja_2_res = db_query("SELECT apja FROM lovak where lo_vagy_fed='LO' GROUP BY apja");
         while($egysor = db_fetch_array($apja_2_res)) {$apja_2_array[] = $egysor["apja"];}
         $apja_2_array[]="";
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         $apja_2_poz=array_search($lo_apja_2,$apja_2_array);
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_sel_apja_2_array=$apja_2_array;
 ////            $form_sel_apja_2 = "<br><br>".form_select(drupal_convert_to_utf8("Apja_2", "iso-8859-2"), "apja_2", $apja_2_poz, $apja_2_array, "", "size=1");
 ////            $form_text_apja_2 .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "apja_2_esetleg", "", 20, 30);
@@ -1713,55 +1713,55 @@ function lovak_mod($lonev="", $ev=""){
 
 
     //apja_2_ev
-        //form ˆssze·llÌt·s
-////            $form_text_apja_2_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Apja_2 evj·rat", "iso-8859-2"), "apja_2_ev", $lo_apja_2_ev, 2, 4, "");
+        //form √∂ssze√°ll√≠t√°s
+////            $form_text_apja_2_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Apja_2 evj√°rat", "iso-8859-2"), "apja_2_ev", $lo_apja_2_ev, 2, 4, "");
 
 
 
     //anyja
-        //feltˆlteni $anyja_array -t a SELECT -hez
+        //felt√∂lteni $anyja_array -t a SELECT -hez
         $anyja_res = db_query("SELECT anyja FROM lovak where lo_vagy_fed='LO' GROUP BY anyja");
         while($egysor = db_fetch_array($anyja_res)) {$anyja_array[] = $egysor["anyja"];}
         $anyja_array[]="";
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         $anyja_poz=array_search($lo_anyja,$anyja_array);
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_sel_anyja_array=$anyja_array;
 ////            $form_sel_anyja = "<br><br>".form_select(drupal_convert_to_utf8("Anyja", "iso-8859-2"), "anyja", $anyja_poz, $anyja_array, "", "size=1");
 ////            $form_text_anyja .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "anyja_esetleg", "", 20, 30);
         
 
 //anyja_ev
-        //form ˆssze·llÌt·s
-////            $form_text_anyja_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Anyja evj·rat", "iso-8859-2"), "anyja_ev", $lo_anyja_ev, 2, 4, "");
+        //form √∂ssze√°ll√≠t√°s
+////            $form_text_anyja_ev = "<br><br>".form_textfield(drupal_convert_to_utf8("Anyja evj√°rat", "iso-8859-2"), "anyja_ev", $lo_anyja_ev, 2, 4, "");
 
 
     //imp_orszag
-        //feltˆlteni $imp_o_array -t a SELECT -hez
+        //felt√∂lteni $imp_o_array -t a SELECT -hez
         $imp_orsz_res = db_query("SELECT imp_orsz FROM lovak where lo_vagy_fed='LO' GROUP BY imp_orsz");
         while($egysor = db_fetch_array($imp_orsz_res)) {$imp_orsz_array[] = $egysor["imp_orsz"];}
         $imp_orsz_array[]="";
-        //meghat·rozni az array-ben a poziciÛt, a SELECT -hez
+        //meghat√°rozni az array-ben a pozici√≥t, a SELECT -hez
         $imp_orsz_poz=array_search($lo_imp_orsz,$imp_orsz_array);
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_sel_imp_orsz_array=$imp_orsz_array;
 ////            $form_sel_imp_orsz = "<br><br>".form_select(drupal_convert_to_utf8("Imp.orsz", "iso-8859-2"), "imp_orsz", $imp_orsz_poz, $imp_orsz_array, "", "size=1");
 ////            $form_text_imp_orsz .= drupal_convert_to_utf8("...vagy esetleg:", "iso-8859-2").form_textfield(drupal_convert_to_utf8("", "iso-8859-2"), "imp_orsz_esetleg", "", 6, 5);
 
     
     //imp_kelt
-        //form ˆssze·llÌt·s
+        //form √∂ssze√°ll√≠t√°s
 ////            $form_text_imp_kelt = "<br><br>".form_textfield("Imp.kelt (pl: 2001.01.01)", "imp_kelt", $lo_imp_kelt, 6, 10);
         
     //regi_neve
-        //form ˆssze·llÌt·s
-////            $form_text_elozo = "<br><br>".form_textfield(drupal_convert_to_utf8("Elızı neve", "iso-8859-2"), "elozo", $lo_elozo, 25, 30);
+        //form √∂ssze√°ll√≠t√°s
+////            $form_text_elozo = "<br><br>".form_textfield(drupal_convert_to_utf8("El√µz√µ neve", "iso-8859-2"), "elozo", $lo_elozo, 25, 30);
     
     
     //submit, group
-////            $form_submit = "<br><br>".form_submit(drupal_convert_to_utf8("Bek¸ldÈs", "iso-8859-2"));
+////            $form_submit = "<br><br>".form_submit(drupal_convert_to_utf8("Bek√ºld√©s", "iso-8859-2"));
 ////            $group = '<div class="container-inline">' . $form_text_lonev . " &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" . $form_delete . $form_sel_fedezomen . $form_text_ev . $form_sel_szine . $form_sel_neme . $form_sel_apja . $form_text_apja . $form_text_apja_ev . $form_sel_apja_2 . $form_text_apja_2 . $form_text_apja_2_ev . $form_sel_anyja . $form_text_anyja . $form_text_anyja_ev . $form_hidden_stadium . $form_hidden_lonev . $form_hidden_ev . $form_hidden_no . $form_text_ellet . $form_text_rek . $form_text_penz . $form_text_belyeg . $form_sel_nevel . $form_text_nevel . $form_sel_orszag . $form_text_orszag . $form_sel_imp_orsz . $form_text_imp_orsz . $form_text_imp_kelt . $form_text_elozo . $form_submit .'<div>';
-////            $form = form(form_group($lonev." /".$ev."/ ".drupal_convert_to_utf8("adatainak mÛdosÌt·sa", "iso-8859-2"), $group));
+////            $form = form(form_group($lonev." /".$ev."/ ".drupal_convert_to_utf8("adatainak m√≥dos√≠t√°sa", "iso-8859-2"), $group));
         if ($lonev!=""){
         print theme("page", $form);
         }
@@ -1800,7 +1800,7 @@ if($t["neve"]!=""){
     WHERE (apja = '$lokernev' && apja_ev = '$szulo_ev') || (anyja = '$lokernev' && anyja_ev = '$szulo_ev') && lo_vagy_fed='LO' ORDER BY $ordered");
     }
     $ii=0;
-    $output="<b>".$szulo_neve.drupal_convert_to_utf8(" <i><font color='#D1B61B'>ivadÈkai</font></i><br>", "iso-8859-2")."</b>";
+    $output="<b>".$szulo_neve.drupal_convert_to_utf8(" <i><font color='#D1B61B'>ivad√©kai</font></i><br>", "iso-8859-2")."</b>";
     $output.="<table class='losablon' width='550'>";
     $output.="<tr>";$output.="<td>no</td>";$output.="<td>";$output.="<a href='?q=lovak&&ivadekai&&ordered=neve&&lo_no=$lo_no&&mod=lo_no'>neve</a>";
 $output.="</td>";$output.="<td>";$output.="<a href='?q=lovak&&ivadekai&&ordered=-ev&&lo_no=$lo_no&&mod=lo_no'>ev</a>";
@@ -1844,7 +1844,7 @@ $regexp = '%(?:^|,\ *)("(?>[^"]*)(?>""[^"]* )*"|(?: [^",]*))%x';
 
   $matches = array();
   if ($string) {
-     // Csak HU APAM…N
+     // Csak HU APAM√âN
      if($vid=='m'){
         $result = db_query_range("SELECT no, apja, apja_ev, apja_orszag FROM {lovak} WHERE LOWER(apja) LIKE LOWER('%s%%') && orszag = 'HU' GROUP BY apja ORDER BY apja", $string, 0, 30);
         while ($user = db_fetch_object($result)) {
@@ -1852,7 +1852,7 @@ $regexp = '%(?:^|,\ *)("(?>[^"]*)(?>""[^"]* )*"|(?: [^",]*))%x';
         }
 
     }
-    // Csak APAM…N
+    // Csak APAM√âN
     if($vid=='x'){
         $result = db_query_range("SELECT no, apja, apja_ev, apja_orszag FROM {lovak} WHERE LOWER(apja) LIKE LOWER('%s%%') GROUP BY apja ORDER BY apja", $string, 0, 30);
         while ($user = db_fetch_object($result)) {
@@ -1876,7 +1876,7 @@ $regexp = '%(?:^|,\ *)("(?>[^"]*)(?>""[^"]* )*"|(?: [^",]*))%x';
         }
 
     }
-    // Csak sim·n L”, ak·r KANCA ak·r M…N
+    // Csak sim√°n L√ì, ak√°r KANCA ak√°r M√âN
     if($vid=='a'){
         $result = db_query_range("SELECT no, neve, ev, orszag FROM {lovak} WHERE LOWER(neve) LIKE LOWER('%s%%') ORDER BY neve", $string, 0, 30);
         while ($user = db_fetch_object($result)) {
@@ -1947,7 +1947,7 @@ global $no;
             //print "<br>neme:".$neme;
             //print "<br>fedezomen:".$fedezomen;
         }
-        //utolsÛ tulajdonos kikeresÈse
+        //utols√≥ tulajdonos kikeres√©se
         $restulaj=db_query("SELECT * FROM tulajdonos WHERE no='$no' ORDER BY datum DESC LIMIT 1");
             while($egysor = db_fetch_array($restulaj)) {
                 $tuldat=$egysor["datum"];
@@ -1957,7 +1957,7 @@ global $no;
                 $tuldat=date("Y-m-d");
             }
 
-        //ˆsszes eddigi tulajdonos kikeresÈse
+        //√∂sszes eddigi tulajdonos kikeres√©se
         $restulaj=db_query("SELECT * FROM tulajdonos WHERE no='$no' ORDER BY datum DESC");
             if(db_affected_rows()){
                 $tulajdonos_osszes='<br><b>Eddigi tulajdonosok:</b><br>';
@@ -2001,7 +2001,7 @@ global $no;
     $form['ellet'] = array('#type' => 'textfield','#title' => 'S Z &Uuml; L E T E T T :<br>02.13','#default_value' => $ellet,'#maxlength' => 5,'#size' => 4);
     $form['belyeg'] = array('#type' => 'textfield','#title' => 'B &Eacute; L Y E G','#default_value' => $belyeg,'#maxlength' => 20,'#size' => 10);
     $form['tulajdonos'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('T U L A J D O N O S', 'iso-8859-2'),'#default_value' => $tulajdonos,'#maxlength' => 60,'#size' => 30, '#autocomplete_path' => 'lovak/autocomplete/t', '#description' => $tulajdonos_osszes);
-//  $form['tulajdonos_osszes'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('ˆsszes eddigi tulajdonos', 'iso-8859-2'),'#default_value' => $tulajdonos_osszes,'#maxlength' => 300,'#size' => 300);
+//  $form['tulajdonos_osszes'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('√∂sszes eddigi tulajdonos', 'iso-8859-2'),'#default_value' => $tulajdonos_osszes,'#maxlength' => 300,'#size' => 300);
     $form['tuldat'] = array('#type' => 'textfield','#title' => 'T U L. V &Aacute; L T. D &Aacute; T U M A: <br>eeee-hh-nn','#default_value' => $tuldat,'#maxlength' => 10,'#size' => 10);
     $form['nevel'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('T E N Y &Eacute; S Z T &Otilde;', 'iso-8859-2'),'#default_value' => $nevel,'#maxlength' => 60,'#size' => 30);
     $form['imp_orsz'] = array('#type' => 'textfield','#title' => 'I M P. O R S Z &Aacute; G :<br>SE','#default_value' => $imp_orsz,'#maxlength' => 3,'#size' => 2);
@@ -2022,7 +2022,7 @@ global $no;
 function loker_form() {
     //$form['stadium'] = array('#type' => 'hidden','#value' => 'TEXT_VAL');
     $form['lonev'] = array('#type' => 'textfield', '#title' => drupal_convert_to_utf8('', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#size' => 22,'#autocomplete_path' => 'lovak/autocomplete/a','#required' => TRUE);
-    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('k e r e s È s', 'iso-8859-2'));
+    $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('k e r e s √© s', 'iso-8859-2'));
     return $form;
 }
 
@@ -2107,9 +2107,9 @@ function menstat_form_evjaratra() {
 function lista_varipub_form() {
     $evjarat_array=array('1982','1983','1984','1985','1986','1987','1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005');
     //$form['stadium'] = array('#type' => 'hidden','#value' => 'TEXT_VAL');
-    $form['apja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('APJA (vagy ap·t, vagy any·t v·lasztani kell!)', 'iso-8859-2'),'#default_value' => drupal_convert_to_utf8('', 'iso-8859-2'), '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/x','#required' => TRUE);
-    $form['anyja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('ANYJA (vagy ap·t, vagy any·t v·lasztani kell!)', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/z','#required' => FALSE);
-    $form['orszag'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('ORSZ¡G (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => 'HU', '#maxlength' => 2, '#size' => 3, '#required' => FALSE);
+    $form['apja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('APJA (vagy ap√°t, vagy any√°t v√°lasztani kell!)', 'iso-8859-2'),'#default_value' => drupal_convert_to_utf8('', 'iso-8859-2'), '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/x','#required' => TRUE);
+    $form['anyja'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('ANYJA (vagy ap√°t, vagy any√°t v√°lasztani kell!)', 'iso-8859-2'),'#default_value' => '', '#maxlength' => 35, '#autocomplete_path' => 'lovak/autocomplete/z','#required' => FALSE);
+    $form['orszag'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('ORSZ√ÅG (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => 'HU', '#maxlength' => 2, '#size' => 3, '#required' => FALSE);
     //$form['rekord'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Rekord "alatt" (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => '1.20,0', '#maxlength' => 35, '#required' => FALSE);
     //$form['penz'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Nyerem&eacute;ny "felett" (&uuml;resre &aacute;ll&iacute;tva nincs sz&ucirc;r&eacute;s)', 'iso-8859-2'),'#default_value' => '1000000', '#maxlength' => 35, '#required' => FALSE);
     $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
@@ -2118,7 +2118,7 @@ function lista_varipub_form() {
 
 function lista_csiko_form() {
     $evjarat_array=array('2009','2008','2007','2006','2005','2004','2003','2002','2001','2000','1999','1998','1997','1996','1995','1994','1993','1992','1991','1990','1989','1988','1987','1986','1985','1984','1983','1982','1981','1980','1979','1978','1977','1976','1975','1974','1973','1972','1971','1970','1969','1968','1967','1966','1965','1964');
-    $form['ev'] = array('#type' => 'select','#title' =>drupal_convert_to_utf8('…vj·rat', 'iso-8859-2'),'#default_value' => $ev,'#options' => $evjarat_array);
+    $form['ev'] = array('#type' => 'select','#title' =>drupal_convert_to_utf8('√âvj√°rat', 'iso-8859-2'),'#default_value' => $ev,'#options' => $evjarat_array);
 //  $form['ev'] = array('#type' => 'textfield','#title' => drupal_convert_to_utf8('Evj&aacute;rat', 'iso-8859-2'),'#default_value' => '2005', '#maxlength' => 4, '#size' => 5, '#required' => FALSE);
     $form['submit'] = array('#type' => 'submit','#value' => drupal_convert_to_utf8('M e h e t', 'iso-8859-2'));
     return $form;
@@ -2127,7 +2127,7 @@ function lista_csiko_form() {
 
 function lokerteny_form() {
     $res=db_query("SELECT neve, ev, orszag FROM lovak WHERE fedezomen='IGEN' && lo_vagy_fed='LO' ORDER BY neve");
-    $fedezomen_array[]=drupal_convert_to_utf8('--V·lasszon!--', 'iso-8859-2');
+    $fedezomen_array[]=drupal_convert_to_utf8('--V√°lasszon!--', 'iso-8859-2');
     while($egysor = db_fetch_array($res)) {
         $fedezomen_array[]=$egysor["neve"].'--'.$egysor["ev"].'--'.$egysor["orszag"];   
     }   
@@ -2303,7 +2303,7 @@ if(isset($_POST['fedezomen'])){
     
     $fedezomen=$fedezomen_array[$fedezomen];
     $year=DATE("Y");
-    $proba = drupal_convert_to_utf8("SZ¡RMAZ¡S MODELLEZ…SE", "iso-8859-2");
+    $proba = drupal_convert_to_utf8("SZ√ÅRMAZ√ÅS MODELLEZ√âSE", "iso-8859-2");
     $sa=explode('--',$fedezomen);
     $apja=$sa[0];
     $apja_ev=$sa[1];
@@ -2677,7 +2677,7 @@ $res=db_query("SELECT neve, ev, orszag FROM lovak WHERE no = '%d' && lo_vagy_fed
 
         
 //print "<br>LONEV:".$lonev;
-//ha nyomtatÛra, akkor ez "0"
+//ha nyomtat√≥ra, akkor ez "0"
 $monitorra=1;
 
 $remo=array();
@@ -3190,9 +3190,9 @@ $tal_db=db_affected_rows();
 if($tal_db){
     $i=0;
     if($mk=="k"){
-        $ret.=''.drupal_convert_to_utf8("<i><font color='#D1B61B'>ivadÈkai:</font></i>", "iso-8859-2").'<br>';
+        $ret.=''.drupal_convert_to_utf8("<i><font color='#D1B61B'>ivad√©kai:</font></i>", "iso-8859-2").'<br>';
     }else{
-        $ret.=''.drupal_convert_to_utf8("<i><font color='#D1B61B'>legjobb 5 ivadÈka (HU):</font></i>", "iso-8859-2").'<br>';
+        $ret.=''.drupal_convert_to_utf8("<i><font color='#D1B61B'>legjobb 5 ivad√©ka (HU):</font></i>", "iso-8859-2").'<br>';
     }
     while ($res = db_fetch_object($result)) {
         $i++;
@@ -3217,7 +3217,7 @@ if($yeslink!='nolink'){
 }else{
     $ret.=''.$nev.', <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
 }
-//ZOLI ez volt mielıtt a fentebbi user authos teszt ·gat bele nem tettem        $ret.=''.$nev.', <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
+//ZOLI ez volt miel√µtt a fentebbi user authos teszt √°gat bele nem tettem        $ret.=''.$nev.', <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
 //          $ret.='<a href="/lovak/sablon/$no>"'.$nev.'</a>, <font size="1">'.$ev.', '.$szine.''.$neme.', '.$rek.', '.$szarm.'</font><br>';
         //}else{
         //  $ret.='<b>'.$nev.'</b>, '.$ev.', '.$szine.''.$neme.', '.$rek.', '.$penz.'Ft.- '.$szarm.' &nbsp; ';
@@ -3240,11 +3240,11 @@ $ret='';
 
 
 
-////    $form_sel = form_select(drupal_convert_to_utf8("V·laszt·s", "iso-8859-2"), "name", $selected, $source, "", $size);
+////    $form_sel = form_select(drupal_convert_to_utf8("V√°laszt√°s", "iso-8859-2"), "name", $selected, $source, "", $size);
 //$form_hidden = form_hidden("elozoval", $_POST["edit"]["lonev"]);
-////    $form_submit = form_submit(drupal_convert_to_utf8("V·laszt·s", "iso-8859-2"));
+////    $form_submit = form_submit(drupal_convert_to_utf8("V√°laszt√°s", "iso-8859-2"));
 ////    $group = '<div class="container-inline">' . $form_sel . $form_hidden . $form_submit . '<div>';
-////    $form = form(form_group(drupal_convert_to_utf8("V·laszt·s", "iso-8859-2"), $group));
+////    $form = form(form_group(drupal_convert_to_utf8("V√°laszt√°s", "iso-8859-2"), $group));
 
 
 
@@ -3286,7 +3286,7 @@ function lovak_filter_tips($delta, $format, $long = false) {
 function convert_key_to_value($db, $fieldname, $array_key, $margin_low=0, $margin_high=9999999999){
             $ret="";
             
-            //kikeresni, hogy mi az x-edik elem, mert a SELECT -bıl csak a key jˆn ·t
+            //kikeresni, hogy mi az x-edik elem, mert a SELECT -b√µl csak a key j√∂n √°t
             $res = db_query("SELECT $fieldname FROM $db GROUP BY $fieldname");
             $ii=0;
             while($egysor = db_fetch_array($res)){
@@ -3443,9 +3443,9 @@ function nevdecode($str){
         $char="";
     }
     if($ordreg==113 && $ord==1){
-        $ret=substr($ret,0,-1)."˚";
+        $ret=substr($ret,0,-1)."√ª";
         }elseif($ordreg==81 && $ord==1){
-        $ret=substr($ret,0,-1)."ı";}
+        $ret=substr($ret,0,-1)."√µ";}
         else{
         $ret.=$char;
         }
