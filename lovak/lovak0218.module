@@ -17,7 +17,7 @@ function lovak_perm(){
 function theme_lovak_block($felirat) {
   return $felirat . ' Itt a LO blokkom';
 }
-
+//gfgff
 function lovak_menu() {
   $items = array();
   $access = array('lovak');
